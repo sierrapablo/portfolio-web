@@ -1,0 +1,16 @@
+services:
+  web:
+    container_name: portfolio-web
+    image: ${DOCKER_IMAGE:-sierrapablo/portfolio-web:latest}
+    ports:
+      - "4321:4321"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=4321
+    restart: unless-stopped
+    networks:
+      - reverse-proxy
+
+networks:
+  reverse-proxy:
+    external: true
