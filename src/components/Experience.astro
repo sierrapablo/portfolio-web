@@ -1,0 +1,22 @@
+---
+import "../styles/experience.css";
+import { experiences } from "../data/experiences";
+---
+
+<section id="experience">
+  <h2>Professional Experience</h2>
+  <div class="timeline">
+    {
+      experiences.map((exp) => (
+        <div class="card">
+          <div class="header">
+            <h3>{exp.title}</h3>
+            <span class="company">{exp.company}</span>
+            <span class="period">{exp.period}</span>
+          </div>
+          <p>{exp.description}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>

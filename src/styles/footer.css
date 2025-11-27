@@ -1,0 +1,36 @@
+footer {
+    background: #0d0f14;
+    padding: 2rem;
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+p {
+    color: #888;
+    margin: 0;
+}
+
+.socials {
+    display: flex;
+    gap: 1.5rem;
+}
+
+a {
+    color: #c9c9c9;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: rgb(var(--accent-light));
+}

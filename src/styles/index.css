@@ -1,0 +1,9 @@
+main {
+    margin: auto;
+    padding: 1rem;
+    width: 100%;
+    max-width: 1200px;
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+}
