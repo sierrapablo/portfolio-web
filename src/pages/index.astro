@@ -1,16 +1,17 @@
 ---
+import "../styles/index.css";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Experience from "../components/Experience.astro";
+import Footer from "../components/Footer.astro";
 
+export const prerender = true;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Pablo Sierra - DevOps Engineer">
+  <Header />
+  <Hero server:defer />
+  <Experience server:defer />
+</Layout>
+<Footer />
