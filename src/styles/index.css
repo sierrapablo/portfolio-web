@@ -10,6 +10,8 @@ main {
     color: white;
     font-size: 20px;
     line-height: 1.6;
+    overflow-x: hidden;
+    box-sizing: border-box;
 }
 
 @keyframes fadeIn {
