@@ -4,6 +4,8 @@ import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
 import Experience from "../components/Experience.astro";
+import Projects from "../components/Projects.astro";
+import ScrollToTop from "../components/ScrollToTop.astro";
 import Footer from "../components/Footer.astro";
 
 export const prerender = true;
@@ -13,5 +15,7 @@ export const prerender = true;
   <Header />
   <Hero server:defer />
   <Experience server:defer />
+  <Projects server:defer />
+  <ScrollToTop />
 </Layout>
 <Footer />

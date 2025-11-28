@@ -1,0 +1,11 @@
+---
+import "../styles/scroll-to-top.css";
+import ScrollButton from "./ScrollButton.astro";
+---
+
+<ScrollButton id="scroll-to-top" />
+
+<script>
+  import { initScrollToTop } from "../animations/scrollToTop";
+  initScrollToTop("scroll-to-top");
+</script>
