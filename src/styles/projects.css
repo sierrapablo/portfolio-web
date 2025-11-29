@@ -41,6 +41,16 @@ h3 {
     color: #fff;
 }
 
+h3 a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+h3 a:hover {
+    color: rgb(var(--accent));
+}
+
 p {
     color: #c9c9c9;
     line-height: 1.6;
@@ -68,6 +78,7 @@ p {
     display: flex;
     gap: 1rem;
     margin-top: auto;
+    flex-wrap: wrap;
 }
 
 .link-btn {

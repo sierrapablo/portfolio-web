@@ -1,0 +1,59 @@
+---
+import "../styles/projectLayout.css";
+import "../styles/projects.css";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import type { Props } from "../types/projectLayout";
+import ScrollToTop from "../components/ScrollToTop.astro";
+
+const { frontmatter } = Astro.props;
+const { title, description, techStack, url, link } = frontmatter;
+---
+
+<Layout title={`${title} | Pablo Sierra`} description={description}>
+  <Header />
+  <main class="project-page">
+    <div class="project-header">
+      <a href="/#projects" class="back-link">← Back to Home</a>
+      <h1>{title}</h1>
+      <p class="project-description">{description}</p>
+      
+      <div class="tech-stack">
+        {techStack.map((tech) => (
+          <span class="tech-tag">{tech}</span>
+        ))}
+      </div>
+
+      <div class="project-links">
+        {url && (
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-btn"
+          >
+            View on GitHub
+          </a>
+        )}
+        {link && (
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-btn"
+          >
+            Live Demo
+          </a>
+        )}
+      </div>
+    </div>
+
+    <article class="project-content">
+      <slot />
+    </article>
+    <a href="/#projects" class="back-link">← Back to Home</a>
+    <ScrollToTop />
+  </main>
+  <Footer />
+</Layout>
