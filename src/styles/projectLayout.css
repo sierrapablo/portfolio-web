@@ -1,0 +1,293 @@
+.project-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    min-height: 100vh;
+}
+
+.project-header {
+    margin-bottom: 3rem;
+}
+
+.back-link {
+    display: inline-block;
+    color: var(--accent);
+    text-decoration: none;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    transition: transform 0.2s ease;
+}
+
+.back-link:hover {
+    transform: translateX(-5px);
+}
+
+.project-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+.project-description {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tech-tag {
+    background: rgba(var(--accent-rgb), 0.1);
+    color: var(--accent);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1px solid rgba(var(--accent-rgb), 0.2);
+}
+
+.project-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.link-btn {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.link-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(var(--accent-rgb), 0.3);
+}
+
+.project-content {
+    background: var(--card-bg);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    line-height: 1.8;
+}
+
+.project-content :global(h1) {
+    color: var(--text-primary);
+    margin-top: 2.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+.project-content :global(h2) {
+    color: var(--text-primary);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.project-content :global(h3) {
+    color: var(--text-primary);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.4rem;
+}
+
+.project-content :global(h4) {
+    color: var(--text-primary);
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.project-content :global(p) {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.project-content :global(ul),
+.project-content :global(ol) {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+.project-content :global(li) {
+    margin-bottom: 0.5rem;
+}
+
+/* Inline code */
+.project-content :global(code:not(pre code)) {
+    background: rgba(var(--accent-rgb), 0.15) !important;
+    color: var(--accent) !important;
+    padding: 0.2rem 0.5rem !important;
+    border-radius: 0.3rem !important;
+    font-size: 0.9em !important;
+    font-family: 'Courier New', Consolas, Monaco, monospace !important;
+    font-weight: 500 !important;
+    text-align: justify;
+}
+
+/* Code blocks - targeting Astro's generated classes */
+.project-content :global(pre),
+.project-content :global(pre.astro-code) {
+    background: #1e1e1e !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 1.5rem !important;
+    border-radius: 0.75rem !important;
+    overflow-x: auto !important;
+    margin: 1.5rem 0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.project-content :global(pre code),
+.project-content :global(pre.astro-code code) {
+    background: none !important;
+    padding: 0 !important;
+    color: #d4d4d4 !important;
+    font-size: 0.85rem !important;
+    line-height: 1.6 !important;
+    font-family: 'Courier New', Consolas, Monaco, monospace !important;
+}
+
+/* Override Astro syntax highlighting colors */
+.project-content :global(pre.astro-code span) {
+    color: inherit !important;
+}
+
+/* Images */
+.project-content :global(img) {
+    border-radius: 0.75rem;
+    margin: 1.5rem auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: block;
+}
+
+/* Tables */
+.project-content :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.project-content :global(thead) {
+    background: rgba(var(--accent-rgb), 0.15);
+}
+
+.project-content :global(th) {
+    color: var(--text-primary);
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 2px solid rgba(var(--accent-rgb), 0.3);
+}
+
+.project-content :global(td) {
+    color: var(--text-secondary);
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.project-content :global(tbody tr:hover) {
+    background: rgba(var(--accent-rgb), 0.05);
+}
+
+.project-content :global(tbody tr:last-child td) {
+    border-bottom: none;
+}
+
+/* Links */
+.project-content :global(a) {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+.project-content :global(a:hover) {
+    border-bottom-color: var(--accent);
+}
+
+/* Blockquotes */
+.project-content :global(blockquote) {
+    border-left: 4px solid var(--accent);
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Horizontal rules */
+.project-content :global(hr) {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 2rem 0;
+}
+
+/* Strong and emphasis */
+.project-content :global(strong) {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.project-content :global(em) {
+    color: var(--accent-light);
+}
+
+img {
+    max-width: 100%;
+}
+
+.astro-code {
+    font-size: 1rem;
+    padding: 1rem;
+}
+
+@media (max-width: 768px) {
+    .project-header h1 {
+        font-size: 2rem;
+    }
+
+    .project-description {
+        font-size: 1rem;
+    }
+
+    .project-content {
+        padding: 1.5rem;
+    }
+
+    .project-content :global(pre),
+    .project-content :global(pre.astro-code) {
+        padding: 1rem !important;
+        margin: 1rem 0 !important;
+    }
+
+    .project-content :global(img) {
+        max-width: 100%;
+    }
+
+    .project-content :global(table) {
+        font-size: 0.85rem;
+    }
+
+    .project-content :global(th),
+    .project-content :global(td) {
+        padding: 0.5rem;
+    }
+}

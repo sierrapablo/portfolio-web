@@ -4,4 +4,5 @@ export interface Project {
   techStack: string[];
   url?: string;
   link?: string;
+  slug?: string;
 }

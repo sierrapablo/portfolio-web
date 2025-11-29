@@ -8,6 +8,7 @@ export const projects: Project[] = [
     techStack: ["Astro", "TypeScript", "CSS"],
     url: "https://github.com/sierrapablo/portfolio-web",
     link: "https://www.sierrapablo.dev",
+    slug: "portfolio-web",
   },
   {
     title: "Reverse Proxy with Monitoring",
@@ -15,6 +16,7 @@ export const projects: Project[] = [
       "Monitoring for Nginx Reverse Proxy in Docker with HTTPS, Prometheus and Grafana.",
     techStack: ["Docker", "Nginx", "Prometheus", "Grafana", "Terraform"],
     url: "https://github.com/sierrapablo/reverse-proxy-monitoring",
+    slug: "reverse-proxy-monitoring",
   },
   {
     title: "CoachHub",
@@ -29,5 +31,6 @@ export const projects: Project[] = [
       "AWS",
     ],
     link: "https://coachhub.sierrapablo.dev",
+    slug: "coachhub",
   },
 ];
