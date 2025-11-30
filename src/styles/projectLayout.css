@@ -53,16 +53,6 @@
 }
 
 .project-links {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.link-btn {
-    padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
-    color: white;
-    text-decoration: none;
     border-radius: 0.5rem;
     font-weight: 500;
     transition: all 0.3s ease;
@@ -260,8 +250,21 @@ img {
 }
 
 @media (max-width: 768px) {
+    .project-page {
+        padding: 1rem;
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    .project-header {
+        margin-bottom: 2rem;
+    }
+
     .project-header h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
+        word-wrap: break-word;
+        line-height: 1.2;
     }
 
     .project-description {
@@ -269,25 +272,54 @@ img {
     }
 
     .project-content {
-        padding: 1.5rem;
+        padding: 1rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .project-content :global(h1) {
+        font-size: 1.75rem;
+        word-wrap: break-word;
+    }
+
+    .project-content :global(h2) {
+        font-size: 1.5rem;
+        word-wrap: break-word;
+    }
+
+    .project-content :global(h3) {
+        font-size: 1.25rem;
     }
 
     .project-content :global(pre),
     .project-content :global(pre.astro-code) {
         padding: 1rem !important;
         margin: 1rem 0 !important;
+        max-width: 100%;
+        overflow-x: auto !important;
+        border-radius: 0.5rem !important;
+    }
+
+    .project-content :global(code) {
+        word-break: break-word;
     }
 
     .project-content :global(img) {
         max-width: 100%;
+        height: auto;
     }
 
     .project-content :global(table) {
-        font-size: 0.85rem;
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        font-size: 0.8rem;
     }
 
     .project-content :global(th),
     .project-content :global(td) {
         padding: 0.5rem;
+        white-space: nowrap;
     }
 }

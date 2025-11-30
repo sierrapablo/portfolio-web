@@ -1,71 +1,87 @@
 ---
 layout: ../../layouts/ProjectLayout.astro
-title: "Portfolio Web"
-description: "A personal portfolio website built with Astro to showcase my experience and projects. Features a responsive design, dark mode, and smooth animations."
-techStack: ["Astro", "TypeScript", "CSS"]
+title: "DevOps-Driven Portfolio Web Deployment"
+description: "A comprehensive guide to the automated build and deployment pipeline of a modern Astro web application using Docker and Jenkins."
+techStack: ["Docker", "Jenkins", "Nginx", "Astro"]
 url: "https://github.com/sierrapablo/portfolio-web"
 link: "https://www.sierrapablo.dev"
 ---
 
-## Overview
+# DevOps-Driven Portfolio Web Deployment
 
-This portfolio website is built with **Astro**, a modern static site generator that delivers exceptional performance through its unique approach to shipping zero JavaScript by default. The site showcases my professional experience, technical skills, and personal projects in an elegant and responsive design.
+This project goes beyond just building a personal portfolio; it serves as a demonstration of a **modern DevOps workflow**. While the frontend is built with **Astro** for performance, the core focus of this documentation is on the **automated infrastructure**, **containerization strategy**, and **CI/CD pipelines** that ensure reliable and repeatable deployments.
 
-## Key Features
+## DevOps Highlights
 
-### Modern Design
-- **Responsive Layout**: Fully responsive design that works seamlessly across all devices
-- **Dark Mode Support**: Built-in dark mode with smooth transitions
-- **Smooth Animations**: Carefully crafted animations using CSS for enhanced user experience
-- **Gradient Accents**: Eye-catching gradient effects on headings and interactive elements
+- **Containerization**: Multi-stage Docker builds to ensure minimal image size and security.
+- **CI/CD Automation**: Full Jenkins pipelines for building, testing, and deploying.
+- **Infrastructure as Code**: Deployment managed via Docker Compose and automated scripts.
+- **Zero-Downtime Deployment**: Strategies to ensure high availability during updates.
 
-### Technical Highlights
-- **Static Site Generation**: Lightning-fast page loads with pre-rendered HTML
-- **TypeScript Integration**: Type-safe development for better code quality
-- **Component-Based Architecture**: Reusable Astro components for maintainable code
-- **SEO Optimized**: Proper meta tags and semantic HTML for better search engine visibility
+## Containerization Strategy
 
-### Performance
-- **Minimal JavaScript**: Only essential JavaScript is shipped to the browser
-- **Optimized Assets**: Automatic image optimization and asset bundling
-- **Fast Load Times**: Excellent Lighthouse scores across all metrics
+To ensure consistency across development and production environments, the application is fully containerized. We use a **multi-stage Dockerfile** to optimize the final image size and security.
 
-## Technical Stack
+### Optimized Docker Image
 
-The project leverages modern web technologies:
+The build process is split into 5 distinct stages to separate build dependencies from runtime requirements:
 
-- **Astro**: Static site generator with excellent performance
-- **TypeScript**: For type-safe development
-- **CSS**: Custom styling with CSS variables for theming
-- **Docker**: Containerized deployment with Nginx
+1.  **Base**: Sets up the shared Node.js environment.
+2.  **Prod-Deps**: Installs only production dependencies (cached).
+3.  **Build-Deps**: Installs all dependencies including dev tools (cached).
+4.  **Build**: Compiles the Astro application.
+5.  **Runtime**: A minimal layer containing only the built assets and production modules.
 
-## Architecture
+```dockerfile
+# Stage 1: Base
+FROM node:24.11.1-alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
-The site follows a clean, component-based architecture:
+# Stage 2: Prod Dependencies
+FROM base AS prod-deps
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
+# Stage 3: Build Dependencies
+FROM base AS build-deps
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
+# Stage 4: Build
+FROM build-deps AS build
+WORKDIR /app
+COPY . .
+RUN pnpm run build
+
+# Stage 5: Runtime
+FROM base AS runtime
+WORKDIR /app
+COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+
+ENV HOST=0.0.0.0
+ENV PORT=4321
+EXPOSE 4321
+
+CMD ["node", "./dist/server/entry.mjs"]
 ```
-src/
-├── components/     # Reusable UI components
-├── layouts/        # Page layouts
-├── pages/          # Route pages
-├── styles/         # Global and component styles
-├── data/           # Static data (projects, experiences)
-└── types/          # TypeScript type definitions
-```
 
-## Deployment
+## Continuous Integration (CI)
 
-The portfolio is deployed using Docker and served via Nginx, ensuring:
-- Fast content delivery
-- Reliable uptime
-- Easy scalability
-- Simple CI/CD integration
+The CI pipeline is responsible for validating the code, building the Docker image, and pushing it to the registry. It is defined in a `Jenkinsfile` and supports building specific tags as well as the `latest` version.
 
-Its deploy is automated using Jenkins, separating the build and deploy for flexibility.
+### Build Pipeline
 
-### Build pipeline
-Builds the Docker image and pushes it to Docker Hub.It always builds the latest tag and the tag specified in the parameters.
-```Groovy
+Key features of this pipeline:
+- **Parameterization**: Allows building specific git tags or branches.
+- **Artifact Management**: Pushes tagged images to Docker Hub.
+- **Cleanup**: Automatically removes local artifacts to save disk space.
+
+```groovy
 pipeline {
   agent any
 
@@ -158,72 +174,18 @@ pipeline {
 }
 ```
 
-#### Dockerfile
+## Continuous Deployment (CD)
 
-The Dockerfile is separated into 5 stages:
+The CD pipeline automates the release of the application to the production environment. It uses **Docker Compose** to orchestrate the deployment, ensuring that the new version is pulled and started seamlessly.
 
-- `base`: Base image with Node.js and pnpm
-- `prod-deps`: Production dependencies
-- `build-deps`: Build dependencies
-- `build`: Build stage
-- `runtime`: Runtime stage
+### Deploy Pipeline
 
-The `base` stage is used as a common base for all other stages, containing the Node.js and pnpm installation.
+This pipeline handles:
+- **Version Selection**: Deploys any specific tag available in the registry.
+- **Rollback Capability**: By deploying specific tags, we can easily revert to a previous version.
+- **Verification**: Automatically checks service health after deployment.
 
-```Dockerfile
-# Stage 1: Base
-FROM node:24.11.1-alpine AS base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
-```
-
-The `prod-deps` stage installs only production dependencies, which are cached for faster rebuilds.
-```Dockerfile
-# Stage 2: Prod Dependencies
-FROM base AS prod-deps
-WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
-```
-
-The `build-deps` stage installs all dependencies, including dev dependencies, which are cached for faster rebuilds.
-```Dockerfile
-# Stage 3: Build Dependencies
-FROM base AS build-deps
-WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-```
-
-The `build` stage builds the application using the cached dependencies.
-```Dockerfile
-# Stage 4: Build
-FROM build-deps AS build
-WORKDIR /app
-COPY . .
-RUN pnpm run build
-```
-
-The `runtime` stage copies the production dependencies and the built application to the runtime image.
-```Dockerfile
-# Stage 5: Runtime
-FROM base AS runtime
-WORKDIR /app
-COPY --from=prod-deps /app/node_modules ./node_modules
-COPY --from=build /app/dist ./dist
-
-ENV HOST=0.0.0.0
-ENV PORT=4321
-EXPOSE 4321
-
-CMD ["node", "./dist/server/entry.mjs"]
-```
-
-### Deploy pipeline
-
-The deploy pipeline allows to deploy a concrete version of the Docker image to the production environment. It serves itself as a rollback in case of failure when using the latest tag.
-```Groovy
+```groovy
 pipeline {
   agent any
 
@@ -320,3 +282,15 @@ pipeline {
   }
 }
 ```
+
+## Deployment Architecture
+
+The application runs behind an **Nginx** reverse proxy, which handles SSL termination and routes traffic to the containerized Astro application. This setup ensures:
+
+- **Security**: SSL/TLS encryption managed at the proxy level.
+- **Performance**: Nginx serves as an efficient gateway.
+- **Scalability**: The containerized app can be easily scaled horizontally.
+
+## Conclusion
+
+By implementing this DevOps-first approach, the portfolio project achieves a professional level of reliability and automation. The use of **Docker** ensures portability, while **Jenkins** orchestrates the complex lifecycle of building and deploying modern web applications.

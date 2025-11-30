@@ -15,7 +15,7 @@ const { title, description, techStack, url, link } = frontmatter;
   <Header />
   <main class="project-page">
     <div class="project-header">
-      <a href="/#projects" class="back-link">← Back to Home</a>
+      <a href="/" class="back-link">← Back to Home</a>
       <h1>{title}</h1>
       <p class="project-description">{description}</p>
       
@@ -52,7 +52,7 @@ const { title, description, techStack, url, link } = frontmatter;
     <article class="project-content">
       <slot />
     </article>
-    <a href="/#projects" class="back-link">← Back to Home</a>
+    <a href="/" class="back-link">← Back to Home</a>
     <ScrollToTop />
   </main>
   <Footer />

@@ -1,0 +1,26 @@
+---
+import "../styles/hero.css";
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import ScrollToTop from "../components/ScrollToTop.astro";
+import Footer from "../components/Footer.astro";
+
+export const prerender = true;
+---
+
+<Layout title="Pablo Sierra - DevOps Engineer - 404 Not Found">
+  <Header />
+  <section id="hero" class="fade-in">
+    <div class="hero-content">
+      <div class="hero-content">
+        <h1>404</h1>
+        <p class="tagline">Page Not Found</p>
+        <div class="cta">
+          <a class="primary-btn" href="/">Return to Home</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <ScrollToTop />
+</Layout>
+<Footer />
