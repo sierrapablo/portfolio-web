@@ -11,26 +11,11 @@ export const projects: Project[] = [
     slug: "portfolio-web",
   },
   {
-    title: "Reverse Proxy with Monitoring",
+    title: "Reverse Proxy & Monitoring",
     description:
       "Monitoring for Nginx Reverse Proxy in Docker with HTTPS, Prometheus and Grafana.",
     techStack: ["Docker", "Nginx", "Prometheus", "Grafana", "Terraform"],
     url: "https://github.com/sierrapablo/reverse-proxy-monitoring",
     slug: "reverse-proxy-monitoring",
-  },
-  {
-    title: "CoachHub",
-    description:
-      "CoachHub is a web platform for sports clubs to manage their teams and players.",
-    techStack: [
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "Node.js",
-      "PostgreSQL",
-      "AWS",
-    ],
-    link: "https://coachhub.sierrapablo.dev",
-    slug: "coachhub",
-  },
+  }
 ];

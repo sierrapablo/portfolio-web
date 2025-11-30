@@ -1,5 +1,7 @@
 ---
 import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
+import { fade } from 'astro:transitions';
 
 interface Props {
   title: string;
@@ -18,8 +20,9 @@ const { title, description = "Pablo Sierra Portfolio" } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <ClientRouter />
   </head>
-  <body>
+  <body transition:animate={fade({ duration: '1s' })}>
     <slot />
   </body>
 </html>

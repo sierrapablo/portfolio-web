@@ -1,154 +1,349 @@
 ---
 layout: ../../layouts/ProjectLayout.astro
-title: "Reverse Proxy with Monitoring"
-description: "Monitoring for Nginx Reverse Proxy in Docker with HTTPS, Prometheus and Grafana."
-techStack: ["Docker", "Nginx", "Prometheus", "Grafana", "Terraform"]
+title: "DevOps-Driven Reverse Proxy & Monitoring"
+description: "A comprehensive DevOps approach to deploying a secure Nginx reverse proxy with automated monitoring using Terraform, Docker, Prometheus, and Grafana."
+techStack: ["Terraform", "Docker", "Nginx", "Prometheus", "Grafana"]
 url: "https://github.com/sierrapablo/reverse-proxy-monitoring"
 ---
 
-# Monitoring for Nginx Reverse Proxy in Docker with HTTPS, Prometheus and Grafana
+# DevOps-Driven Reverse Proxy & Monitoring Infrastructure
 
-This project sets up an **Nginx reverse proxy** deployed in **Docker**, enables **HTTPS** for the proxy, and provides access to **Prometheus** and **Grafana** services on subdomains. It also includes the use of **Nginx Exporter** and **Node Exporter** (in a Docker container) to collect machine and proxy metrics and a **basic authentication** service for accessing Prometheus, and a background script that continuously monitors Nginx configuration changes to perform automatic reloads (hot reload effect).
+In modern DevOps practices, **Infrastructure as Code (IaC)** and **Observability** are pillars of a robust system. This project demonstrates a fully automated deployment of a secure **Nginx reverse proxy** coupled with a complete monitoring stack using **Prometheus** and **Grafana**.
 
-## Requirements
+Instead of manual configuration, this project leverages **Terraform** to define the entire infrastructure state, ensuring reproducibility and scalability. The architecture is containerized using **Docker**, making it portable and consistent across environments.
 
-- **Terraform** installed.
-- **SSL certificates** to enable HTTPS. These certificates must be stored in the `ssl/` folder, which should be created beforehand.
-- Basic knowledge of **Prometheus**, **Grafana**, and **Nginx**.
-- A server with **apt** access to install `htpasswd` and create a password file for Nginx.
+## Architecture Overview
 
-## Project Structure
+The infrastructure is designed to be modular and self-contained:
 
-The project includes the following components:
+- **Reverse Proxy (Nginx)**: Handles incoming traffic, terminates SSL, and routes requests to appropriate services.
+- **Monitoring Core (Prometheus)**: Scrapes metrics from defined targets.
+- **Visualization (Grafana)**: Consumes Prometheus data to render actionable dashboards.
+- **Exporters**:
+    - **Nginx Exporter**: Exposes Nginx-specific metrics.
+    - **Node Exporter**: Exposes host system metrics.
+- **Automation**: A sidecar process monitors configuration changes to trigger hot-reloads of the Nginx service.
 
-- **Nginx**: Acts as a reverse proxy and handles HTTPS traffic.
-- **Prometheus**: Used to collect and store metrics from the system and services.
-- **Grafana**: Provides a way to visualize the metrics collected by Prometheus.
-- **Nginx Exporter**: Collects metrics about the Nginx server itself.
-- **Node Exporter**: Collects system metrics.
-- **htpasswd**: Provides basic authentication to protect access to Prometheus.
+## Infrastructure as Code with Terraform
 
-## Configuration
+Terraform is the backbone of this deployment. It manages the lifecycle of Docker images, containers, networks, and volumes. By defining infrastructure in code, we avoid configuration drift and enable version-controlled infrastructure changes.
 
-### 1. **Prepare the Environment**
+### Provider Configuration
 
-- Clone the repository. You can check it out [here](https://github.com/sierrapablo/reverse-proxy-monitoring).
-```bash
-git clone https://github.com/sierrapablo/reverse-proxy-monitoring.git
-cd reverse-proxy-monitoring
-```
+We start by defining the required providers. In this case, we rely heavily on the Docker provider to orchestrate our containers locally or on a remote Docker host.
 
-- Create the `ssl/` folder in the root directory of the project to store the SSL certificates and place them in this folder. The name of the files must be `fullchain.pem` for the certificate and `server.key` for the private key.
-```bash
-mkdir ssl
-cp your/path/to/fullchain.pem ssl/fullchain.pem
-cp your/path/to/server.key ssl/server.key
-```
-
-- Navigate to `nginx/conf.d/` and modify `grafana.conf` and `prometheus.conf` to match your domain. Here's an example:
-```conf
-server {
-    listen 443 ssl;
-    server_name grafana.yourdomain.xxx; # change this line
-
-    location / {
-        proxy_pass http://grafana:3000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+```hcl
+terraform {
+  required_providers {
+    docker = {
+      source  = "kreuzwerker/docker"
+      version = "~> 3.0.2"
     }
+  }
 }
 
-server {
-    listen 80;
-    server_name grafana.yourdomain.xxx; # and this line
-    return 301 https://$host$request_uri;
+provider "docker" {}
+```
+
+### Network Infrastructure
+
+To ensure secure communication between services, a dedicated Docker network is provisioned. This isolates our monitoring stack from external noise and strictly controls ingress/egress.
+
+```hcl
+resource "docker_network" "reverse_proxy" {
+  name   = "reverse-proxy"
+  driver = "bridge"
+}
+
+output "reverse_proxy_network_id" {
+  description = "Docker network ID for the reverse-proxy network"
+  value       = docker_network.reverse_proxy.id
 }
 ```
 
-### 2. **Configure Basic Authentication for Prometheus**
-Access to Prometheus will be protected via basic authentication. **htpasswd** is used to create a password file for restricting access.
+### Container Resources
 
-#### 2.1 **Install htpasswd**
-If **htpasswd** is not installed, you can install it on your server with **apt**. On a Debian/Ubuntu-based distribution, use the following command:
-```bash
-sudo apt install apache2-utils
+Each service is defined as a Terraform resource. This includes the configuration for ports, volumes, and environment variables. For example, the Nginx container is configured to mount our local configuration and SSL certificates.
+
+```hcl
+resource "docker_image" "reverse_proxy_image" {
+  name = "nginx-reverse-proxy"
+  build {
+    context = abspath("${path.module}/..")
+  }
+}
+
+resource "docker_container" "reverse_proxy" {
+  name    = "nginx-proxy"
+  image   = docker_image.reverse_proxy_image.image_id
+  restart = "always"
+
+  networks_advanced {
+    name = docker_network.reverse_proxy.name
+  }
+
+  ports {
+    internal = 80
+    external = 80
+  }
+  ports {
+    internal = 443
+    external = 443
+  }
+
+  volumes {
+    host_path      = local.nginx_conf_abs
+    container_path = "/etc/nginx/nginx.conf"
+  }
+  volumes {
+    host_path      = local.nginx_conf_d_abs
+    container_path = "/etc/nginx/conf.d/"
+  }
+  volumes {
+    host_path      = local.ssl_path_abs
+    container_path = "/etc/nginx/ssl"
+    read_only      = true
+  }
+  volumes {
+    host_path      = local.htpasswd_abs
+    container_path = "/etc/nginx/.htpasswd"
+    read_only      = true
+  }
+}
+
+variable "nginx_conf_path" {
+  description = "Local path to nginx.conf"
+  type        = string
+  default     = "../nginx/nginx.conf"
+}
+
+variable "nginx_conf_d_path" {
+  description = "Local path to nginx conf.d directory"
+  type        = string
+  default     = "../nginx/conf.d/"
+}
+
+locals {
+  nginx_conf_abs   = abspath("${path.module}/${var.nginx_conf_path}")
+  nginx_conf_d_abs = abspath("${path.module}/${var.nginx_conf_d_path}")
+}
+
+output "reverse_proxy_ip" {
+  description = "Internal IP address of the nginx-proxy container in the reverse-proxy network"
+  value       = docker_container.reverse_proxy.network_data[0].ip_address
+}
+
+output "reverse_proxy_ports" {
+  description = "Ports exposed by the nginx-proxy container"
+  value = {
+    http  = docker_container.reverse_proxy.ports[0].external
+    https = docker_container.reverse_proxy.ports[1].external
+  }
+}
 ```
 
-#### 2.2 **Create the `.htpasswd` File**
-In the root directory of your project, create an `.htpasswd` file that contains the credentials for accessing Prometheus. You can generate it with the following command:
-```bash
-htpasswd -c .htpasswd <your-username>
+Similarly, the monitoring stack (Prometheus and Grafana) is provisioned with persistent storage to ensure data retention across restarts.
+
+**Prometheus**
+```hcl
+resource "docker_image" "prometheus" {
+  name = "prom/prometheus"
+}
+
+resource "docker_container" "prometheus" {
+  name    = "prometheus"
+  image   = docker_image.prometheus.image_id
+  restart = "always"
+
+  networks_advanced {
+    name = docker_network.reverse_proxy.name
+  }
+
+  ports {
+    internal = 4000
+    external = 4000
+  }
+
+  volumes {
+    host_path      = local.prometheus_path_abs
+    container_path = "/etc/prometheus/prometheus.yml"
+  }
+
+  command = ["--config.file=/etc/prometheus/prometheus.yml"]
+}
+
+variable "prometheus_config_path" {
+  description = "Local path to Prometheus config file"
+  type        = string
+  default     = "../prometheus/prometheus.yml"
+}
+
+locals {
+  prometheus_path_abs = abspath("${path.module}/${var.prometheus_config_path}")
+}
 ```
 
-This will prompt you to enter a password for the specified username. **This file will be used by Nginx to authenticate users before they can access Prometheus.**
+**Grafana**
+```hcl
+resource "docker_image" "grafana" {
+  name = "grafana/grafana"
+}
 
-### 3. **Start and Run the Services**
-Once you've configured the environment variables and placed the SSL certificates, you can start the services via Terraform.
+resource "docker_container" "grafana" {
+  name    = "grafana"
+  image   = docker_image.grafana.image_id
+  restart = "always"
 
-Navigate to terraform/ directory:
+  networks_advanced {
+    name = docker_network.reverse_proxy.name
+  }
 
-```bash
-cd terraform
+  ports {
+    internal = 3000
+    external = 3000
+  }
+
+  volumes {
+    host_path      = local.grafana_path_abs
+    container_path = "/etc/grafana/provisioning/"
+  }
+
+  env = [
+    "GF_SECURITY_ADMIN_USER=${var.grafana_admin_user}",
+    "GF_SECURITY_ADMIN_PASSWORD=${var.grafana_admin_password}"
+  ]
+}
+
+variable "grafana_admin_user" {
+  description = "Admin username for Grafana"
+  type        = string
+  default     = "admin"
+}
+
+variable "grafana_admin_password" {
+  description = "Admin password for Grafana"
+  type        = string
+  sensitive   = true
+  default     = "changeme" # needs to be changed on first logging in
+}
+
+variable "grafana_provisioning_path" {
+  description = "Local path to Grafana provisioning directory"
+  type        = string
+  default     = "../grafana/provisioning/"
+}
+
+locals {
+  grafana_path_abs = abspath("${path.module}/${var.grafana_provisioning_path}")
+}
 ```
 
-Then, run the following commands:
-```bash
-terraform init
-terraform plan
-terraform apply
+## Observability Pipeline
+
+Additional to Prometheus-Grafana stack, this project also implements a complete observability pipeline for the reverse proxy and the server is located:
+Uses the nginx-exporter to expose metrics from the reverse proxy:
+
+```hcl
+resource "docker_image" "nginx_exporter" {
+  name = "nginx/nginx-prometheus-exporter:latest"
+}
+
+resource "docker_container" "nginx_exporter" {
+  name    = "nginx-exporter"
+  image   = docker_image.nginx_exporter.image_id
+  restart = "always"
+  command = ["--nginx.scrape-uri=http://nginx-proxy:8080/nginx_status"]
+
+  networks_advanced {
+    name = docker_network.reverse_proxy.name
+  }
+
+  ports {
+    internal = 9113
+    external = 9113
+  }
+
+  depends_on = [docker_container.reverse_proxy]
+}
+
+output "nginx_exporter_ports" {
+  description = "Ports exposed by the nginx-exporter container"
+  value = {
+    metrics = docker_container.nginx_exporter.ports[0].external
+  }
+}
+
+output "nginx_exporter_url" {
+  description = "URL to access Nginx Exporter metrics"
+  value       = "http://localhost:${docker_container.nginx_exporter.ports[0].external}/metrics"
+}
 ```
-When applying, you need to confirm typing `yes` in the console when required.
 
-This will start the following services:
-- **Nginx**: Listening on port 443 with HTTPS enabled, serving Prometheus and Grafana on the configured subdomains.
-- **Prometheus**: Listening on port 9090 for metric collection.
-- **Grafana**: Listening on port 3000 for metric visualization.
-- **Nginx Exporter**: Collecting Nginx metrics and exposing them to Prometheus.
-- **Node Exporter**: Collecting system metrics and exposing them to Prometheus.
-- **Reload Script**:  A background script runs continuously to watch for changes in the Nginx configuration and automatically reload the service when updates are detected (hot reload effect).
+And the node-exporter to expose metrics from the server:
 
-| Service        | Container Port | Host Port | URL                                                                    | Notes                      |
-| -------------- | -------------- | --------- | ---------------------------------------------------------------------- | -------------------------- |
-| Nginx Proxy    | 80 / 443       | 80 / 443  | [https://yourdomain.xxx](https://yourdomain.xxx)                       | Reverse proxy + HTTPS      |
-| Prometheus     | 9090           | 9090      | [https://prometheus.yourdomain.xxx](https://prometheus.yourdomain.xxx) | Requires Basic Auth        |
-| Grafana        | 3000           | 3000      | [https://grafana.yourdomain.xxx](https://grafana.yourdomain.xxx)       | Admin credentials required |
-| Nginx Exporter | 9113           | 9113      | [http://localhost:9113/metrics](http://localhost:9113/metrics)         | Exposes Nginx metrics      |
-| Node Exporter  | 9100           | 9100      | [http://localhost:9100/metrics](http://localhost:9100/metrics)         | Exposes system metrics     |
+```hcl
+resource "docker_image" "node_exporter" {
+  name = "prom/node-exporter:latest"
+}
 
+resource "docker_container" "node_exporter" {
+  name    = "node-exporter"
+  image   = docker_image.node_exporter.image_id
+  restart = "always"
 
-### 4. **Access the Services**
-- **Prometheus**: **https://prometheus.yourdomain.xxx** (requires basic authentication)
-- **Grafana**: **https://grafana.yourdomain.xxx**
-  - Username: The default username configured is `admin`.
-  - Password: The default password configured is `changeme`.
-  **Note:** *Change these credentials inside Grafana immediately after first logging in.*
+  networks_advanced {
+    name = docker_network.reverse_proxy.name
+  }
 
-### 5. **Configure Grafana**
-Once you access Grafana, you can create dashboards to visualize the metrics collected by Prometheus. You can do this manually or import a pre-configured dashboard using the ID `12708`, which is a popular dashboard for monitoring system and application metrics for a nginx reverse proxy.
+  volumes {
+    host_path      = "/proc"
+    container_path = "/host/proc"
+    read_only      = true
+  }
+  volumes {
+    host_path      = "/sys"
+    container_path = "/host/sys"
+    read_only      = true
+  }
+  volumes {
+    host_path      = "/"
+    container_path = "/rootfs"
+    read_only      = true
+  }
 
-**To import the dashboards**:
-  1. Go to Grafana.
-  2. In the left menu, select **Dashboards > Manage > Import**.
-  3. Enter the ID `12708` in the Dashboard ID field.
-  4. Click **Load** and then **Import**.
-  5. Repeat the process for ID `1860`
+  command = [
+    "--path.procfs=/host/proc",
+    "--path.sysfs=/host/sys",
+    "--path.rootfs=/rootfs"
+  ]
+}
 
-This will load pre-configured dashboards with various panels for monitoring common system metrics and nginx proxy metrics.
+output "node_exporter_info" {
+  description = "Information about the Node Exporter container"
+  value = {
+    name  = docker_container.node_exporter.name
+    ports = docker_container.node_exporter.ports
+  }
+}
+```
 
-#### Nginx Exporter Dashboard
-![nginx-exporter-dashboard](/public/nginx-exporter-dashboard.png)
+A key DevOps goal is visibility. This project establishes a complete pipeline:
 
-#### Node Exporter Dashboard
-![node-exporter-dashboard](/public/node-exporter-dashboard.png)
+1.  **Metric Exposure**: Services expose metrics via HTTP endpoints (e.g., `/metrics`).
+2.  **Scraping**: Prometheus is configured to poll these endpoints at set intervals.
+3.  **Visualization**: Grafana queries Prometheus to display real-time data.
 
-### 6. **Add Custom Panels (Optional)**
-If you want to further customize your dashboard, you can create additional panels using PromQL queries to retrieve specific metrics.
+This setup allows for proactive monitoring of:
+- **Traffic Analysis**: Request rates, latency, and error rates from Nginx.
+- **Resource Usage**: CPU, memory, and disk I/O from the host system.
 
-## Advanced and Customization
-- **Alerts**: If you'd like to add alerts in Prometheus, you can configure alert rules in the Prometheus configuration file.
-- **Additional Services**: You can add more exporters to monitor other services or applications in your infrastructure. To have these services properly handled by the Nginx reverse proxy and detected by the hot reload script, you need to add their configuration files as separate `.conf` files in `./nginx/conf.d/` directory. Make sure those services are connected to the same network as the reverse proxy, Prometheus, and Grafana.
+## Security & Automation
+
+Security is integrated into the design:
+- **SSL/TLS**: Nginx is configured to serve traffic over HTTPS using provided certificates.
+- **Access Control**: Prometheus is protected behind a Basic Auth layer managed by Nginx, preventing unauthorized access to raw metrics.
+- **Hot Reloading**: An automated script watches for configuration changes, ensuring that updates to Nginx rules are applied immediately without downtime.
 
 ## Conclusion
-This project will allow you to set up a full monitoring system for your infrastructure using **Prometheus** and **Grafana**. It also provides an authentication layer via basic authentication for Prometheus, enables HTTPS for the services deployed through **Nginx**, and uses **nginx-exporter** to monitor Nginx itself and **node-exporter** to monitor system metrics. Also, this project allows you to replicate the configuration via IaC, using Terraform.
+
+This project serves as a template for a production-ready DevOps environment. By combining **Terraform** for provisioning, **Docker** for isolation, and **Prometheus/Grafana** for observability, it provides a solid foundation for deploying and monitoring web services.
