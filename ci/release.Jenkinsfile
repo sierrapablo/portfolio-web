@@ -15,25 +15,26 @@ pipeline {
         stage('Read current version') {
       steps {
         script {
-          def pkg = readJSON file: 'package.json'
-          def ver = pkg.version.tokenize('.')
-          MAJOR = ver[0].toInteger()
-          MINOR = ver[1].toInteger()
-          PATCH = ver[2].toInteger()
+            def raw = sh(script: 'jq -r .version package.json', returnStdout: true).trim()
+            def ver = raw.tokenize('.')
 
-          if (params.BUMP == 'X') {
-            MAJOR++
-            MINOR = 0
-            PATCH = 0
-          } else if (params.BUMP == 'Y') {
-            MINOR++
-            PATCH = 0
-          } else if (params.BUMP == 'Z') {
-            PATCH++
-          }
+            MAJOR = ver[0].toInteger()
+            MINOR = ver[1].toInteger()
+            PATCH = ver[2].toInteger()
 
-          NEW_VERSION = "${MAJOR}.${MINOR}.${PATCH}"
-          RELEASE_BRANCH = "release/${NEW_VERSION}"
+            if (params.BUMP == 'X') {
+                MAJOR++
+                MINOR = 0
+                PATCH = 0
+            } else if (params.BUMP == 'Y') {
+                MINOR++
+                PATCH = 0
+            } else if (params.BUMP == 'Z') {
+                PATCH++
+            }
+
+            NEW_VERSION = "${MAJOR}.${MINOR}.${PATCH}"
+            RELEASE_BRANCH = "release/${NEW_VERSION}"
         }
       }
         }
