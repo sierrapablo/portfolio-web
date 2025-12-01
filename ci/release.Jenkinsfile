@@ -48,7 +48,10 @@ pipeline {
         stage('Update version on release branch') {
       steps {
         script {
-          sh "jq --arg v '${NEW_VERSION}' '.version = $v' package.json > tmp.json && mv tmp.json package.json"
+          sh """
+            jq --arg v "${NEW_VERSION}" '.version = $v' package.json > tmp.json
+            mv tmp.json package.json
+          """
           sh 'git add package.json'
           sh "git commit -m 'Bump version to ${NEW_VERSION}'"
           sh "git push origin ${RELEASE_BRANCH}"
