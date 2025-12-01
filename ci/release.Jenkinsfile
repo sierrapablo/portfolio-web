@@ -73,7 +73,7 @@ pipeline {
                     set -e
                     eval \$(ssh-agent -s)
                     ssh-add \$SSH_KEY
-                    git push origin ${RELEASE_BRANCH}
+                    git push --set-upstream origin ${RELEASE_BRANCH}
                 """
             }
         }
