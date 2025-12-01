@@ -1,6 +1,5 @@
 pipeline {
     agent any
-    environment {}
 
     parameters {
         choice(name: 'BUMP', choices: ['X', 'Y', 'Z'], description: 'Qué parte de la versión incrementar')
