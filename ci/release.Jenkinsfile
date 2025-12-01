@@ -1,11 +1,3 @@
-pipeline {
-    agent any
-
-    parameters {
-        choice(name: 'BUMP', choices: ['X', 'Y', 'Z'], description: 'Qué parte de la versión incrementar')
-    }
-}
-
 def MAJOR
 def MINOR
 def PATCH
