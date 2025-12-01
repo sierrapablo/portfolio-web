@@ -16,6 +16,8 @@ pipeline {
         stage('Checkout develop') {
             steps {
                 checkout scm
+                sh 'git config user.name "Jenkins CI"'
+                sh 'git config user.email "jenkins@m910q.com"'
             }
         }
 
