@@ -57,45 +57,91 @@ pipeline {
         stage('Update version on release branch') {
             steps {
                 script {
+                    // Actualizar package.json
                     sh """
                         jq --arg v '${NEW_VERSION}' '.version = \$v' package.json > tmp.json
                         mv tmp.json package.json
                     """
                     sh 'git add package.json'
                     sh "git commit -m 'Bump version to ${NEW_VERSION}'"
-                    sh "git push origin ${RELEASE_BRANCH}"
+
+                    // Push de la rama release usando la credencial SSH
+                    withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
+                        sh """
+                            eval \$(ssh-agent -s)
+                            ssh-add \$SSH_KEY
+                            git push origin ${RELEASE_BRANCH}
+                        """
+                    }
                 }
             }
         }
 
         stage('Merge release into main') {
             steps {
-                sh 'git checkout main'
-                sh 'git pull origin main'
-                sh "git merge --no-ff ${RELEASE_BRANCH} -m 'Merge release ${NEW_VERSION}'"
-                sh 'git push origin main'
+                script {
+                    sh 'git checkout main'
+                    sh 'git pull origin main'
+
+                    sh "git merge --no-ff ${RELEASE_BRANCH} -m 'Merge release ${NEW_VERSION}'"
+
+                    // Push main usando credencial
+                    withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
+                        sh """
+                            eval \$(ssh-agent -s)
+                            ssh-add \$SSH_KEY
+                            git push origin main
+                        """
+                    }
+                }
             }
         }
 
         stage('Tag release on main') {
             steps {
-                sh "git tag -a v${NEW_VERSION} -m 'Release ${NEW_VERSION}'"
-                sh "git push origin v${NEW_VERSION}"
+                script {
+                    sh "git tag -a v${NEW_VERSION} -m 'Release ${NEW_VERSION}'"
+                    withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
+                        sh """
+                            eval \$(ssh-agent -s)
+                            ssh-add \$SSH_KEY
+                            git push origin v${NEW_VERSION}
+                        """
+                    }
+                }
             }
         }
 
         stage('Merge back to develop') {
             steps {
-                sh 'git checkout develop'
-                sh 'git pull origin develop'
-                sh "git merge --no-ff ${RELEASE_BRANCH} -m 'Merge release ${NEW_VERSION} back to develop'"
-                sh 'git push origin develop'
+                script {
+                    sh 'git checkout develop'
+                    sh 'git pull origin develop'
+
+                    sh "git merge --no-ff ${RELEASE_BRANCH} -m 'Merge release ${NEW_VERSION} back to develop'"
+
+                    withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
+                        sh """
+                            eval \$(ssh-agent -s)
+                            ssh-add \$SSH_KEY
+                            git push origin develop
+                        """
+                    }
+                }
             }
         }
 
         stage('Delete release branch') {
             steps {
-                sh "git push origin --delete ${RELEASE_BRANCH}"
+                script {
+                    withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
+                        sh """
+                            eval \$(ssh-agent -s)
+                            ssh-add \$SSH_KEY
+                            git push origin --delete ${RELEASE_BRANCH}
+                        """
+                    }
+                }
             }
         }
     }
