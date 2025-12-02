@@ -52,6 +52,7 @@ pipeline {
             sh """
               git config user.name "${env.GIT_USER_NAME}"
               git config user.email "${env.GIT_USER_EMAIL}"
+              git pull origin develop
               git add --all
               git commit --allow-empty -m "/release-${env.NEW_VERSION}"
               git push -u origin develop
