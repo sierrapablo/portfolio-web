@@ -1,4 +1,4 @@
-name: Release from Develop via Release Branch
+name: Safe Release from Develop
 
 on:
   push:
@@ -41,7 +41,10 @@ jobs:
 
       - name: Create release branch
         if: steps.version.outputs.version
-        run: git checkout -b release/${{ steps.version.outputs.version }}
+        run: |
+          ver=${{ steps.version.outputs.version }}
+          git checkout -b release/$ver
+          git push origin release/$ver
 
       - name: Update package.json version
         if: steps.version.outputs.version
@@ -51,16 +54,22 @@ jobs:
           mv tmp.json package.json
           git add package.json
           git commit -m "Update version to $ver"
+          git push origin release/$ver
 
-      - name: Push release branch to main
+      - name: Merge release branch into main
         if: steps.version.outputs.version
-        run: git push origin release/${{ steps.version.outputs.version }}:main
+        run: |
+          ver=${{ steps.version.outputs.version }}
+          git fetch origin main
+          git checkout main
+          git pull origin main
+          git merge release/$ver --no-ff -m "Release $ver from release branch"
+          git push origin main
 
       - name: Create tag on main
         if: steps.version.outputs.version
         run: |
           ver=${{ steps.version.outputs.version }}
-          git checkout main
           git tag $ver
           git push origin $ver
 
@@ -70,7 +79,7 @@ jobs:
           ver=${{ steps.version.outputs.version }}
           git checkout develop
           git pull origin develop
-          git merge main --no-ff -m "Merge release $ver from main"
+          git merge main --no-ff -m "Sync release $ver from main"
           git push origin develop
 
       - name: Delete release branch
@@ -79,3 +88,17 @@ jobs:
           ver=${{ steps.version.outputs.version }}
           git branch -d release/$ver || true
           git push origin --delete release/$ver || true
+
+      - name: Create GitHub Release
+        if: steps.version.outputs.version
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          release_name: Release ${{ steps.version.outputs.version }}
+          body: |
+            Automatic release from main branch via release branch.
+            Version: ${{ steps.version.outputs.version }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
