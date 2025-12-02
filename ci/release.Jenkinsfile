@@ -24,11 +24,17 @@ pipeline {
           checkout scm
           sh "git config user.name '${env.GIT_USER_NAME}'"
           sh "git config user.email '${env.GIT_USER_EMAIL}'"
-          sh 'git fetch --all --tags'
 
-          // Checkout explícito de develop
-          sh 'git checkout develop'
-          sh 'git pull origin develop'
+          // Usar credenciales SSH para comandos remotos
+          withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
+            sh """
+                            eval \$(ssh-agent -s)
+                            ssh-add \$SSH_KEY
+                            git fetch --all --tags
+                            git checkout develop
+                            git pull origin develop
+                        """
+          }
         }
       }
         }
