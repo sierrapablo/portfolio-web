@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import { ClientRouter } from "astro:transitions";
+// import { ClientRouter } from "astro:transitions";
 import { fade } from "astro:transitions";
 
 interface Props {
@@ -20,7 +20,8 @@ const { title, description = "Pablo Sierra Portfolio" } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-    <ClientRouter />
+    {/* TODO: investigate how to make it work properly with scrollToTop */}
+    {/* <ClientRouter /> */}
   </head>
   <body transition:animate={fade({ duration: "1s" })}>
     <slot />
