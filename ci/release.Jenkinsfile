@@ -21,15 +21,14 @@ pipeline {
       steps {
         script {
           echo 'Configurando Git...'
-          checkout scm
 
           // Usar sshagent para manejar la autenticación automáticamente
           sshagent(['sierrapablo']) {
             sh '''
-                            git fetch --all --tags
-                            // Forzar checkout de la rama develop desde origin
-                            git checkout -B develop origin/develop
-                        '''
+              set -xe
+              git fetch --all --tags
+              git checkout -B develop origin/develop
+            '''
           }
         }
       }
