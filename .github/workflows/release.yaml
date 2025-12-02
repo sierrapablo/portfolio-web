@@ -1,4 +1,4 @@
-name: Auto Release from Develop
+name: Release from Develop via Release Branch
 
 on:
   push:
@@ -25,11 +25,10 @@ jobs:
         id: version
         run: |
           echo "Commit message: $COMMIT_MSG"
-
           if [[ "$COMMIT_MSG" =~ /?release-([0-9]+\.[0-9]+\.[0-9]+) ]]; then
             VERSION="${BASH_REMATCH[1]}"
-            echo "Release detected: $VERSION"
             echo "VERSION=$VERSION" >> $GITHUB_ENV
+            echo "Release detected: $VERSION"
           else
             echo "No release tag found. Skipping release workflow."
             exit 0
@@ -50,27 +49,23 @@ jobs:
           git add package.json
           git commit -m "Update version to $VERSION"
 
-      - name: Push release branch
-        run: git push -u origin release/$VERSION
+      - name: Push release branch to main
+        run: |
+          git checkout release/$VERSION
+          git push origin release/$VERSION:main
 
-      - name: Merge into develop
+      - name: Create tag on main
+        run: |
+          git checkout main
+          git tag $VERSION
+          git push origin $VERSION
+
+      - name: Merge main back into develop
         run: |
           git checkout develop
           git pull origin develop
-          git merge release/$VERSION --no-ff -m "Merge release $VERSION"
+          git merge main --no-ff -m "Merge release $VERSION from main"
           git push origin develop
-
-      - name: Merge into main
-        run: |
-          git checkout main
-          git pull origin main
-          git merge release/$VERSION --no-ff -m "Merge release $VERSION"
-          git push origin main
-
-      - name: Create tag
-        run: |
-          git tag v$VERSION
-          git push origin v$VERSION
 
       - name: Delete release branch
         run: |
