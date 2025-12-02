@@ -8,27 +8,61 @@ pipeline {
     agent any
 
     parameters {
-        choice(name: 'BUMP', choices: ['X', 'Y', 'Z'], description: 'Qué parte de la versión incrementar')
+        choice(name: 'BUMP', choices: ['Z', 'Y', 'X'], description: 'Qué parte de la versión incrementar (X=Major, Y=Minor, Z=Patch)')
+    }
+
+    environment {
+        GIT_USER_NAME = 'Jenkins CI'
+        GIT_USER_EMAIL = 'jenkins@m910q.com'
     }
 
     stages {
-        stage('Checkout develop') {
+        stage('Validación inicial') {
       steps {
-        checkout scm
-        sh 'git config user.name "Jenkins CI"'
-        sh 'git config user.email "jenkins@m910q.com"'
+        script {
+          echo 'Validando precondiciones...'
+
+          def currentBranch = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
+          if (currentBranch != 'develop') {
+            error "El release debe iniciarse desde 'develop'. Rama actual: ${currentBranch}"
+          }
+
+          def gitStatus = sh(script: 'git status --porcelain', returnStdout: true).trim()
+          if (gitStatus) {
+            error 'Hay cambios sin commitear.'
+          }
+
+          echo 'Validación completada'
+        }
       }
         }
 
-        stage('Read current version') {
+        stage('Configurar Git') {
       steps {
         script {
+          echo 'Configurando Git...'
+          checkout scm
+          sh "git config user.name '${env.GIT_USER_NAME}'"
+          sh "git config user.email '${env.GIT_USER_EMAIL}'"
+          sh 'git fetch --all --tags'
+          sh 'git pull origin develop'
+        }
+      }
+        }
+
+        stage('Calcular nueva versión') {
+      steps {
+        script {
+          echo 'Calculando nueva versión...'
+
           def raw = sh(script: 'jq -r .version package.json', returnStdout: true).trim()
           def ver = raw.tokenize('.')
 
           MAJOR = ver[0].toInteger()
           MINOR = ver[1].toInteger()
           PATCH = ver[2].toInteger()
+
+          echo "Versión actual: ${MAJOR}.${MINOR}.${PATCH}"
 
           if (params.BUMP == 'X') {
             MAJOR++
@@ -43,52 +77,61 @@ pipeline {
 
           NEW_VERSION = "${MAJOR}.${MINOR}.${PATCH}"
           RELEASE_BRANCH = "release/${NEW_VERSION}"
+
+          echo "Nueva versión: ${NEW_VERSION}"
+
+          def tagExists = sh(script: "git tag -l v${NEW_VERSION}", returnStdout: true).trim()
+          if (tagExists) {
+            error "El tag v${NEW_VERSION} ya existe."
+          }
         }
       }
         }
 
-        stage('Create release branch') {
-      steps {
-        sh "git checkout -b ${RELEASE_BRANCH}"
-      }
-        }
-
-        stage('Update version on release branch') {
+        stage('Crear rama release') {
       steps {
         script {
-            // Actualizar package.json
+          echo "Creando rama: ${RELEASE_BRANCH}"
+          sh "git checkout -b ${RELEASE_BRANCH}"
+        }
+      }
+        }
+
+        stage('Actualizar versión') {
+      steps {
+        script {
+          echo "Actualizando versión a ${NEW_VERSION}..."
+
+          sh """
+                        jq --arg v '${NEW_VERSION}' '.version = \$v' package.json > tmp.json
+                        mv tmp.json package.json
+                    """
+
+          sh 'git add package.json'
+          sh "git commit -m 'chore: bump version to ${NEW_VERSION}'"
+
+          withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
             sh """
-                set -e
-                # Actualiza la versión en package.json
-                jq --arg v '${NEW_VERSION}' '.version = \$v' package.json > tmp.json
-                mv tmp.json package.json
-            """
+                            eval \$(ssh-agent -s)
+                            ssh-add \$SSH_KEY
+                            git push --set-upstream origin ${RELEASE_BRANCH}
+                        """
+          }
 
-            sh 'git add package.json'
-            sh "git commit -m 'Bump version to ${NEW_VERSION}'"
-
-            // Push de la rama release usando la credencial SSH
-            withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
-                sh """
-                    set -e
-                    eval \$(ssh-agent -s)
-                    ssh-add \$SSH_KEY
-                    git push --set-upstream origin ${RELEASE_BRANCH}
-                """
-            }
+          echo 'Versión actualizada'
         }
       }
         }
 
-        stage('Merge release into main') {
+        stage('Merge a main') {
       steps {
         script {
+          echo 'Mergeando a main...'
+
           sh 'git checkout main'
           sh 'git pull origin main'
+          sh "git merge --no-ff ${RELEASE_BRANCH} -m 'chore: release ${NEW_VERSION}'"
 
-          sh "git merge --no-ff ${RELEASE_BRANCH} -m 'Merge release ${NEW_VERSION}'"
-
-          // Push main usando credencial
           withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
             sh """
                             eval \$(ssh-agent -s)
@@ -96,14 +139,19 @@ pipeline {
                             git push origin main
                         """
           }
+
+          echo 'Mergeado a main'
         }
       }
         }
 
-        stage('Tag release on main') {
+        stage('Crear tag') {
       steps {
         script {
+          echo "Creando tag v${NEW_VERSION}..."
+
           sh "git tag -a v${NEW_VERSION} -m 'Release ${NEW_VERSION}'"
+
           withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
             sh """
                             eval \$(ssh-agent -s)
@@ -111,17 +159,20 @@ pipeline {
                             git push origin v${NEW_VERSION}
                         """
           }
+
+          echo 'Tag creado'
         }
       }
         }
 
-        stage('Merge back to develop') {
+        stage('Merge a develop') {
       steps {
         script {
+          echo 'Mergeando a develop...'
+
           sh 'git checkout develop'
           sh 'git pull origin develop'
-
-          sh "git merge --no-ff ${RELEASE_BRANCH} -m 'Merge release ${NEW_VERSION} back to develop'"
+          sh "git merge --no-ff ${RELEASE_BRANCH} -m 'chore: merge release ${NEW_VERSION} back to develop'"
 
           withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
             sh """
@@ -130,13 +181,17 @@ pipeline {
                             git push origin develop
                         """
           }
+
+          echo 'Mergeado a develop'
         }
       }
         }
 
-        stage('Delete release branch') {
+        stage('Limpiar rama release') {
       steps {
         script {
+          echo 'Eliminando rama release...'
+
           withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
             sh """
                             eval \$(ssh-agent -s)
@@ -144,8 +199,43 @@ pipeline {
                             git push origin --delete ${RELEASE_BRANCH}
                         """
           }
+
+          sh "git branch -d ${RELEASE_BRANCH} || true"
+
+          echo 'Rama eliminada'
         }
       }
+        }
+    }
+
+    post {
+        success {
+      echo """
+            RELEASE COMPLETADO
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            Release v${NEW_VERSION} creado exitosamente
+
+            Cambios:
+            • Versión: ${NEW_VERSION}
+            • Tag: v${NEW_VERSION}
+            • Mergeado a main y develop
+
+            GitHub: https://github.com/sierrapablo/portfolio-web/releases/tag/v${NEW_VERSION}
+            """
+        }
+
+        failure {
+      echo """
+            RELEASE FALLIDO
+            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            Limpia manualmente si es necesario:
+              git branch -D ${RELEASE_BRANCH}
+              git push origin --delete ${RELEASE_BRANCH}
+            """
+        }
+
+        always {
+      sh 'git checkout develop || true'
         }
     }
 }

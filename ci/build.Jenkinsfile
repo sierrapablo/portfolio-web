@@ -51,7 +51,7 @@ pipeline {
     stage('Cleanup') {
       steps {
         script {
-          echo '🧹 Cleaning up local images...'
+          echo 'Cleaning up local images...'
           sh """
             docker rmi ${env.REGISTRY_REPO}:latest || true
             ${params.IMAGE_TAG != 'latest' ? "docker rmi ${env.REGISTRY_REPO}:${params.IMAGE_TAG} || true" : ''}
