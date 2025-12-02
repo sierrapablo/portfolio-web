@@ -7,10 +7,6 @@ def RELEASE_BRANCH
 pipeline {
     agent any
 
-    options {
-        skipDefaultCheckout()
-    }
-
     parameters {
         choice(name: 'BUMP', choices: ['Z', 'Y', 'X'], description: 'Qué parte de la versión incrementar (X=Major, Y=Minor, Z=Patch)')
     }
