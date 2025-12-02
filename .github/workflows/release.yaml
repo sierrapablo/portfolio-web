@@ -12,7 +12,7 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -25,49 +25,56 @@ jobs:
         id: version
         run: |
           echo "Commit message: $COMMIT_MSG"
-          if [[ "$COMMIT_MSG" =~ /?release-([0-9]+\.[0-9]+\.[0-9]+) ]]; then
-            VERSION="${BASH_REMATCH[1]}"
-            echo "VERSION=$VERSION" >> $GITHUB_ENV
-            echo "Release detected: $VERSION"
+          if [[ "$COMMIT_MSG" =~ ^.*(/release[[:space:]]([0-9]+\.[0-9]+\.[0-9]+)).*$ ]]; then
+            echo "version=${BASH_REMATCH[2]}" >> $GITHUB_OUTPUT
+            echo "Release detected: ${BASH_REMATCH[2]}"
           else
             echo "No release tag found. Skipping release workflow."
             exit 0
-          fi
 
       - name: Configure Git
+        if: steps.version.outputs.version
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
       - name: Create release branch
-        run: git checkout -b release/$VERSION
+        if: steps.version.outputs.version
+        run: git checkout -b release/${{ steps.version.outputs.version }}
 
       - name: Update package.json version
+        if: steps.version.outputs.version
         run: |
-          jq --arg v "$VERSION" '.version = $v' package.json > tmp.json
+          ver=${{ steps.version.outputs.version }}
+          jq --arg v "$ver" '.version = $v' package.json > tmp.json
           mv tmp.json package.json
           git add package.json
-          git commit -m "Update version to $VERSION"
+          git commit -m "Update version to $ver"
 
       - name: Push release branch to main
-        run: |
-          git checkout release/$VERSION
-          git push origin release/$VERSION:main
+        if: steps.version.outputs.version
+        run: git push origin release/${{ steps.version.outputs.version }}:main
 
       - name: Create tag on main
+        if: steps.version.outputs.version
         run: |
+          ver=${{ steps.version.outputs.version }}
           git checkout main
-          git tag $VERSION
-          git push origin $VERSION
+          git tag v$ver
+          git push origin v$ver
 
       - name: Merge main back into develop
+        if: steps.version.outputs.version
         run: |
+          ver=${{ steps.version.outputs.version }}
           git checkout develop
           git pull origin develop
-          git merge main --no-ff -m "Merge release $VERSION from main"
+          git merge main --no-ff -m "Merge release $ver from main"
           git push origin develop
 
       - name: Delete release branch
+        if: steps.version.outputs.version
         run: |
-          git branch -d release/$VERSION || true
-          git push origin --delete release/$VERSION || true
+          ver=${{ steps.version.outputs.version }}
+          git branch -d release/$ver || true
+          git push origin --delete release/$ver || true
