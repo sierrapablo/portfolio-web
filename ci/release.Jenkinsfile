@@ -47,7 +47,7 @@ pipeline {
 
         stage('Commit vacío de release') {
       steps {
-        sshagent(credentials: ['git-ssh-credentials']) {
+        sshagent(credentials: ['github']) {
           script {
             sh """
               git config user.name "${env.GIT_USER_NAME}"
