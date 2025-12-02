@@ -1,0 +1,70 @@
+name: Auto Release from Develop
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read commit message
+        id: commit
+        run: echo "msg=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+
+      - name: Detect release version
+        id: version
+        run: |
+          echo "Commit message: ${{ steps.commit.outputs.msg }}"
+          if [[ "${{ steps.commit.outputs.msg }}" =~ release-([0-9]+\.[0-9]+\.[0-9]+) ]]; then
+            ver="${BASH_REMATCH[1]}"
+            echo "version=$ver" >> $GITHUB_OUTPUT
+          else
+            echo "No release tag found. Skipping."
+            exit 0
+          fi
+
+      - name: Create release branch
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          git checkout -b release/${{ steps.version.outputs.version }}
+
+      - name: Update package.json version
+        run: |
+          ver=${{ steps.version.outputs.version }}
+          jq ".version = \"$ver\"" package.json > tmp.json && mv tmp.json package.json
+          git add package.json
+          git commit -m "Update version to $ver"
+
+      - name: Push release branch
+        run: git push origin release/${{ steps.version.outputs.version }}
+
+      - name: Merge into develop
+        run: |
+          git checkout develop
+          git pull origin develop
+          git merge release/${{ steps.version.outputs.version }} --no-ff -m "Merge release"
+          git push origin develop
+
+      - name: Merge into main
+        run: |
+          git checkout main
+          git pull origin main
+          git merge release/${{ steps.version.outputs.version }} --no-ff -m "Merge release"
+          git push origin main
+
+      - name: Create tag
+        run: |
+          git tag v${{ steps.version.outputs.version }}
+          git push origin v${{ steps.version.outputs.version }}
