@@ -14,6 +14,7 @@ pipeline {
         stage('Checkout') {
       steps {
         checkout scm
+        git branch develop
       }
         }
 
