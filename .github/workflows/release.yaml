@@ -61,8 +61,8 @@ jobs:
         run: |
           ver=${{ steps.version.outputs.version }}
           git checkout main
-          git tag v$ver
-          git push origin v$ver
+          git tag $ver
+          git push origin $ver
 
       - name: Merge main back into develop
         if: steps.version.outputs.version
