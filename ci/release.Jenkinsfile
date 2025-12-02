@@ -27,8 +27,8 @@ pipeline {
           sshagent(['sierrapablo']) {
             sh '''
                             git fetch --all --tags
-                            git checkout develop
-                            git pull origin develop
+                            // Forzar checkout de la rama develop desde origin
+                            git checkout -B develop origin/develop
                         '''
           }
         }
