@@ -18,34 +18,36 @@ const { title, description, techStack, url, link } = frontmatter;
       <a href="/" class="back-link">← Back to Home</a>
       <h1>{title}</h1>
       <p class="project-description">{description}</p>
-      
+
       <div class="tech-stack">
-        {techStack.map((tech) => (
-          <span class="tech-tag">{tech}</span>
-        ))}
+        {techStack.map((tech) => <span class="tech-tag">{tech}</span>)}
       </div>
 
       <div class="project-links">
-        {url && (
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-btn"
-          >
-            View on GitHub
-          </a>
-        )}
-        {link && (
-          <a
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="link-btn"
-          >
-            Live Demo
-          </a>
-        )}
+        {
+          url && (
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link-btn"
+            >
+              View on GitHub
+            </a>
+          )
+        }
+        {
+          link && (
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link-btn"
+            >
+              Live Demo
+            </a>
+          )
+        }
       </div>
     </div>
 
@@ -53,7 +55,7 @@ const { title, description, techStack, url, link } = frontmatter;
       <slot />
     </article>
     <a href="/" class="back-link">← Back to Home</a>
-    <ScrollToTop />
   </main>
+  <ScrollToTop />
   <Footer />
 </Layout>
