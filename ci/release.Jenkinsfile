@@ -47,14 +47,16 @@ pipeline {
 
         stage('Commit vacío de release') {
       steps {
-        script {
-          sh """
-                        git config user.name "${env.GIT_USER_NAME}"
-                        git config user.email "${env.GIT_USER_EMAIL}"
-                        git add --all
-                        git commit --allow-empty -m "/release-${env.NEW_VERSION}"
-                        git push -u origin develop
-                    """
+        sshagent(credentials: ['git-ssh-credentials']) {
+          script {
+            sh """
+              git config user.name "${env.GIT_USER_NAME}"
+              git config user.email "${env.GIT_USER_EMAIL}"
+              git add --all
+              git commit --allow-empty -m "/release-${env.NEW_VERSION}"
+              git push -u origin develop
+            """
+          }
         }
       }
         }
