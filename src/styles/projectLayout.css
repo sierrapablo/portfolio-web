@@ -58,10 +58,8 @@
   transition: all 0.3s ease;
   border: none;
   cursor: pointer;
-}
-
-.link-btn {
-  margin-right: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
 }
 
 .link-btn:hover {
