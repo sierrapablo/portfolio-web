@@ -1,25 +1,25 @@
 {
-    "name": "portfolio-web",
-    "type": "module",
-    "version": "2.0.1",
-    "author": "Pablo Sierra",
-    "homepage": "https://www.sierrapablo.dev",
-    "bugs": {
-        "url": "https://github.com/sierrapablo/portfolio-web/issues"
-    },
-    "engines": {
-        "node": "24.11.1",
-        "pnpm": ">=10.23.0"
-    },
-    "packageManager": "pnpm@10.23.0",
-    "scripts": {
-        "dev": "astro dev",
-        "build": "astro build",
-        "preview": "astro preview",
-        "astro": "astro"
-    },
-    "dependencies": {
-        "@astrojs/node": "^9.5.1",
-        "astro": "^5.16.0"
-    }
+  "name": "portfolio-web",
+  "type": "module",
+  "version": "2.1.0",
+  "author": "Pablo Sierra",
+  "homepage": "https://www.sierrapablo.dev",
+  "bugs": {
+    "url": "https://github.com/sierrapablo/portfolio-web/issues"
+  },
+  "engines": {
+    "node": "24.11.1",
+    "pnpm": ">=10.23.0"
+  },
+  "packageManager": "pnpm@10.23.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/node": "^9.5.1",
+    "astro": "^5.16.0"
+  }
 }
