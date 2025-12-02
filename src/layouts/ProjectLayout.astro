@@ -25,28 +25,21 @@ const { title, description, techStack, url, link } = frontmatter;
 
       <div class="project-links">
         {
-          url && (
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="link-btn"
-            >
-              View on GitHub
-            </a>
-          )
-        }
-        {
-          link && (
-            <a
-              href={link}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="link-btn"
-            >
-              Live Demo
-            </a>
-          )
+          [
+            { href: url, text: "View on GitHub" },
+            { href: link, text: "Live Demo" },
+          ]
+            .filter((l) => l.href)
+            .map((l) => (
+              <a
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-btn"
+              >
+                {l.text}
+              </a>
+            ))
         }
       </div>
     </div>
