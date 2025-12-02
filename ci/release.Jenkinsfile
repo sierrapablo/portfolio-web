@@ -23,15 +23,13 @@ pipeline {
           echo 'Configurando Git...'
           checkout scm
 
-          // Usar credenciales SSH para comandos remotos
-          withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
-            sh """
-                            eval \$(ssh-agent -s)
-                            ssh-add \$SSH_KEY
+          // Usar sshagent para manejar la autenticación automáticamente
+          sshagent(['sierrapablo']) {
+            sh '''
                             git fetch --all --tags
                             git checkout develop
                             git pull origin develop
-                        """
+                        '''
           }
         }
       }
