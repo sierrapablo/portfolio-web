@@ -17,7 +17,23 @@ pipeline {
     }
 
     stages {
-        stage('Validación inicial') {
+        stage('Checkout y configuración') {
+      steps {
+        script {
+          echo 'Configurando Git...'
+          checkout scm
+          sh "git config user.name '${env.GIT_USER_NAME}'"
+          sh "git config user.email '${env.GIT_USER_EMAIL}'"
+          sh 'git fetch --all --tags'
+
+          // Checkout explícito de develop
+          sh 'git checkout develop'
+          sh 'git pull origin develop'
+        }
+      }
+        }
+
+        stage('Validación') {
       steps {
         script {
           echo 'Validando precondiciones...'
@@ -33,19 +49,6 @@ pipeline {
           }
 
           echo 'Validación completada'
-        }
-      }
-        }
-
-        stage('Configurar Git') {
-      steps {
-        script {
-          echo 'Configurando Git...'
-          checkout scm
-          sh "git config user.name '${env.GIT_USER_NAME}'"
-          sh "git config user.email '${env.GIT_USER_EMAIL}'"
-          sh 'git fetch --all --tags'
-          sh 'git pull origin develop'
         }
       }
         }
