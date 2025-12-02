@@ -52,7 +52,7 @@ pipeline {
                         git config user.email "${env.GIT_USER_EMAIL}"
                         git add --all
                         git commit --allow-empty -m "/release-${env.NEW_VERSION}"
-                        git push origin develop
+                        git push
                     """
         }
       }
