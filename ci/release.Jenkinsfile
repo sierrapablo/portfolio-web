@@ -22,8 +22,6 @@ pipeline {
         script {
           echo 'Configurando Git...'
           checkout scm
-          sh "git config user.name '${env.GIT_USER_NAME}'"
-          sh "git config user.email '${env.GIT_USER_EMAIL}'"
 
           // Usar credenciales SSH para comandos remotos
           withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
