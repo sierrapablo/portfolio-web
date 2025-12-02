@@ -31,6 +31,7 @@ jobs:
           else
             echo "No release tag found. Skipping release workflow."
             exit 0
+          fi
 
       - name: Configure Git
         if: steps.version.outputs.version
