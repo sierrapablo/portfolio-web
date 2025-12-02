@@ -115,12 +115,8 @@ pipeline {
           sh 'git add package.json'
           sh "git commit -m 'chore: bump version to ${NEW_VERSION}'"
 
-          withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
-            sh """
-                            eval \$(ssh-agent -s)
-                            ssh-add \$SSH_KEY
-                            git push --set-upstream origin ${RELEASE_BRANCH}
-                        """
+          sshagent(['sierrapablo']) {
+            sh "git push --set-upstream origin ${RELEASE_BRANCH}"
           }
 
           echo 'Versión actualizada'
@@ -137,12 +133,8 @@ pipeline {
           sh 'git pull origin main'
           sh "git merge --no-ff ${RELEASE_BRANCH} -m 'chore: release ${NEW_VERSION}'"
 
-          withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
-            sh """
-                            eval \$(ssh-agent -s)
-                            ssh-add \$SSH_KEY
-                            git push origin main
-                        """
+          sshagent(['sierrapablo']) {
+            sh 'git push origin main'
           }
 
           echo 'Mergeado a main'
@@ -157,12 +149,8 @@ pipeline {
 
           sh "git tag -a v${NEW_VERSION} -m 'Release ${NEW_VERSION}'"
 
-          withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
-            sh """
-                            eval \$(ssh-agent -s)
-                            ssh-add \$SSH_KEY
-                            git push origin v${NEW_VERSION}
-                        """
+          sshagent(['sierrapablo']) {
+            sh "git push origin v${NEW_VERSION}"
           }
 
           echo 'Tag creado'
@@ -179,12 +167,8 @@ pipeline {
           sh 'git pull origin develop'
           sh "git merge --no-ff ${RELEASE_BRANCH} -m 'chore: merge release ${NEW_VERSION} back to develop'"
 
-          withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
-            sh """
-                            eval \$(ssh-agent -s)
-                            ssh-add \$SSH_KEY
-                            git push origin develop
-                        """
+          sshagent(['sierrapablo']) {
+            sh 'git push origin develop'
           }
 
           echo 'Mergeado a develop'
@@ -197,12 +181,8 @@ pipeline {
         script {
           echo 'Eliminando rama release...'
 
-          withCredentials([sshUserPrivateKey(credentialsId: 'sierrapablo', keyFileVariable: 'SSH_KEY')]) {
-            sh """
-                            eval \$(ssh-agent -s)
-                            ssh-add \$SSH_KEY
-                            git push origin --delete ${RELEASE_BRANCH}
-                        """
+          sshagent(['sierrapablo']) {
+            sh "git push origin --delete ${RELEASE_BRANCH}"
           }
 
           sh "git branch -d ${RELEASE_BRANCH} || true"
