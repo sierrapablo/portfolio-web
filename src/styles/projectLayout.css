@@ -126,7 +126,7 @@
   padding: 0.2rem 0.5rem !important;
   border-radius: 0.3rem !important;
   font-size: 0.9em !important;
-  font-family: 'Courier New', Consolas, Monaco, monospace !important;
+  font-family: "Courier New", Consolas, Monaco, monospace !important;
   font-weight: 500 !important;
   text-align: justify;
 }
@@ -150,7 +150,7 @@
   color: #d4d4d4 !important;
   font-size: 0.85rem !important;
   line-height: 1.6 !important;
-  font-family: 'Courier New', Consolas, Monaco, monospace !important;
+  font-family: "Courier New", Consolas, Monaco, monospace !important;
 }
 
 /* Override Astro syntax highlighting colors */

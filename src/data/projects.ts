@@ -17,5 +17,5 @@ export const projects: Project[] = [
     techStack: ["Docker", "Nginx", "Prometheus", "Grafana", "Terraform"],
     url: "https://github.com/sierrapablo/reverse-proxy-monitoring",
     slug: "reverse-proxy-monitoring",
-  }
+  },
 ];
