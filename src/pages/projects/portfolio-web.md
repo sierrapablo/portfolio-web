@@ -77,6 +77,7 @@ The CI pipeline is responsible for validating the code, building the Docker imag
 ### Build Pipeline
 
 Key features of this pipeline:
+
 - **Parameterization**: Allows building specific git tags or branches.
 - **Artifact Management**: Pushes tagged images to Docker Hub.
 - **Cleanup**: Automatically removes local artifacts to save disk space.
@@ -181,6 +182,7 @@ The CD pipeline automates the release of the application to the production envir
 ### Deploy Pipeline
 
 This pipeline handles:
+
 - **Version Selection**: Deploys any specific tag available in the registry.
 - **Rollback Capability**: By deploying specific tags, we can easily revert to a previous version.
 - **Verification**: Automatically checks service health after deployment.

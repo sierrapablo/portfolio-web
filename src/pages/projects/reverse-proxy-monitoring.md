@@ -20,8 +20,8 @@ The infrastructure is designed to be modular and self-contained:
 - **Monitoring Core (Prometheus)**: Scrapes metrics from defined targets.
 - **Visualization (Grafana)**: Consumes Prometheus data to render actionable dashboards.
 - **Exporters**:
-    - **Nginx Exporter**: Exposes Nginx-specific metrics.
-    - **Node Exporter**: Exposes host system metrics.
+  - **Nginx Exporter**: Exposes Nginx-specific metrics.
+  - **Node Exporter**: Exposes host system metrics.
 - **Automation**: A sidecar process monitors configuration changes to trigger hot-reloads of the Nginx service.
 
 ## Infrastructure as Code with Terraform
@@ -145,6 +145,7 @@ output "reverse_proxy_ports" {
 Similarly, the monitoring stack (Prometheus and Grafana) is provisioned with persistent storage to ensure data retention across restarts.
 
 **Prometheus**
+
 ```hcl
 resource "docker_image" "prometheus" {
   name = "prom/prometheus"
@@ -184,6 +185,7 @@ locals {
 ```
 
 **Grafana**
+
 ```hcl
 resource "docker_image" "grafana" {
   name = "grafana/grafana"
@@ -334,12 +336,14 @@ A key DevOps goal is visibility. This project establishes a complete pipeline:
 3.  **Visualization**: Grafana queries Prometheus to display real-time data.
 
 This setup allows for proactive monitoring of:
+
 - **Traffic Analysis**: Request rates, latency, and error rates from Nginx.
 - **Resource Usage**: CPU, memory, and disk I/O from the host system.
 
 ## Security & Automation
 
 Security is integrated into the design:
+
 - **SSL/TLS**: Nginx is configured to serve traffic over HTTPS using provided certificates.
 - **Access Control**: Prometheus is protected behind a Basic Auth layer managed by Nginx, preventing unauthorized access to raw metrics.
 - **Hot Reloading**: An automated script watches for configuration changes, ensuring that updates to Nginx rules are applied immediately without downtime.
