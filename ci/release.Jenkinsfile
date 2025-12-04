@@ -67,7 +67,7 @@ pipeline {
         sshagent(credentials: ['github']) {
           script {
             sh """
-              jq --arg v "${env.NEW_VERSION}" '.version = $v' package.json > package.tmp.json
+              jq --arg v '${env.NEW_VERSION}' '.version = \$v' package.json > package.tmp.json
               mv package.tmp.json package.json
               git add package.json
               git commit -m "Update version to ${env.NEW_VERSION}"
