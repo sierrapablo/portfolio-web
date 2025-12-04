@@ -93,8 +93,8 @@ pipeline {
       steps {
         script {
           echo "Tagging image with version ${env.NEW_VERSION} and latest"
-          dockerTaggedImage = dockerImage.tag(env.NEW_VERSION)
-          dockerLatestImage = dockerImage.tag('latest')
+          dockerImage.tag(env.NEW_VERSION)
+          dockerImage.tag('latest')
         }
       }
     }
@@ -104,9 +104,9 @@ pipeline {
         script {
           echo 'Pushing Docker images to Docker Hub...'
           docker.withRegistry('', DOCKER_HUB_CREDENTIALS_ID) {
-            dockerTaggedImage.push()
+            dockerImage.push(env.NEW_VERSION)
             echo "Pushed ${env.REGISTRY_REPO}:${env.NEW_VERSION}"
-            dockerLatestImage.push()
+            dockerImage.push('latest')
             echo "Pushed ${env.REGISTRY_REPO}:latest"
           }
         }
