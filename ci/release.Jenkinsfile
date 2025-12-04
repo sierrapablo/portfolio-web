@@ -93,8 +93,8 @@ pipeline {
       steps {
         script {
           echo "Tagging image with version ${env.NEW_VERSION} and latest"
-          dockerTaggedImage = dockerImage.tag("${env.REGISTRY_REPO}:${env.NEW_VERSION}")
-          dockerLatestImage = dockerImage.tag("${env.REGISTRY_REPO}:latest")
+          dockerTaggedImage = dockerImage.tag(env.NEW_VERSION)
+          dockerLatestImage = dockerImage.tag('latest')
         }
       }
     }
