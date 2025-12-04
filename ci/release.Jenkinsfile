@@ -160,7 +160,8 @@ pipeline {
           script {
             sh '''
               git checkout develop
-              git merge main
+              git pull origin develop
+              git merge --ff-only main || git merge main
               git push origin develop
             '''
           }
