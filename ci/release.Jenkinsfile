@@ -190,5 +190,15 @@ pipeline {
         ==========================================
       """
     }
+    always {
+      script {
+        echo "Attempting to clean up remote branch release/${env.NEW_VERSION}..."
+        sshagent(credentials: ['github']) {
+          sh 'git fetch origin'
+          sh "git branch -D release/${env.NEW_VERSION} || true"
+          sh "git push origin --delete release/${env.NEW_VERSION} || true"
+        }
+      }
+    }
   }
 }
