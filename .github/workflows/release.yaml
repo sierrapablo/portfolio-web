@@ -1,9 +1,9 @@
-name: Safe Release from Develop
+name: Create Release on Tag
 
 on:
   push:
-    branches:
-      - develop
+    tags:
+      - "*"
 
 jobs:
   release:
@@ -17,87 +17,58 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Read last commit message
-        id: commit
-        run: echo "COMMIT_MSG=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
-
-      - name: Detect release version
-        id: version
+      - name: Get tag and commit
+        id: tag_info
         run: |
-          echo "Commit message: $COMMIT_MSG"
-          if [[ "$COMMIT_MSG" =~ ^/release-([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
-            echo "version=${BASH_REMATCH[1]}" >> $GITHUB_OUTPUT
-            echo "Release detected: ${BASH_REMATCH[1]}"
-          else
-            echo "No release tag found. Skipping release workflow."
+          CURRENT_TAG="${GITHUB_REF#refs/tags/}"
+          COMMIT_SHA=$(git rev-list -n 1 "$CURRENT_TAG")
+          echo "current_tag=$CURRENT_TAG" >> $GITHUB_OUTPUT
+          echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+
+      - name: Ensure tag is on main
+        run: |
+          git fetch origin main
+          TAG_COMMIT=${{ steps.tag_info.outputs.commit_sha }}
+          if ! git merge-base --is-ancestor "$TAG_COMMIT" origin/main; then
+            echo "Tag ${{ steps.tag_info.outputs.current_tag }} is not in main. Skipping release."
             exit 0
           fi
 
-      - name: Configure Git
-        if: steps.version.outputs.version
+      - name: Get previous tag
+        id: prev_tag
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          CURRENT_TAG=${{ steps.tag_info.outputs.current_tag }}
+          PREV_TAG=$(git describe --tags --abbrev=0 "${CURRENT_TAG}^" 2>/dev/null || echo "")
+          echo "previous_tag=$PREV_TAG" >> $GITHUB_OUTPUT
 
-      - name: Create release branch
-        if: steps.version.outputs.version
+      - name: Generate what's changed
+        id: changes
         run: |
-          ver=${{ steps.version.outputs.version }}
-          git checkout -b release/$ver
-          git push origin release/$ver
+          CURRENT_TAG=${{ steps.tag_info.outputs.current_tag }}
+          PREV_TAG=${{ steps.prev_tag.outputs.previous_tag }}
 
-      - name: Update package.json version
-        if: steps.version.outputs.version
-        run: |
-          ver=${{ steps.version.outputs.version }}
-          jq --arg v "$ver" '.version = $v' package.json > tmp.json
-          mv tmp.json package.json
-          git add package.json
-          git commit -m "Update version to $ver"
-          git push origin release/$ver
+          if [ -z "$PREV_TAG" ]; then
+            echo "No previous tag found. Showing all commits for $CURRENT_TAG"
+            git log --oneline > changes.txt
+          else
+            git log --oneline "$PREV_TAG".."$CURRENT_TAG" > changes.txt
+          fi
 
-      - name: Merge release branch into main
-        if: steps.version.outputs.version
-        run: |
-          ver=${{ steps.version.outputs.version }}
-          git fetch origin main
-          git checkout main
-          git pull origin main
-          git merge release/$ver --no-ff -m "Release $ver from release branch"
-          git push origin main
+          cat changes.txt
 
-      - name: Create tag on main
-        if: steps.version.outputs.version
-        run: |
-          ver=${{ steps.version.outputs.version }}
-          git tag $ver
-          git push origin $ver
-
-      - name: Merge main back into develop
-        if: steps.version.outputs.version
-        run: |
-          ver=${{ steps.version.outputs.version }}
-          git checkout develop
-          git pull origin develop
-          git merge main --no-ff -m "Sync release $ver from main"
-          git push origin develop
-
-      - name: Delete release branch
-        if: steps.version.outputs.version
-        run: |
-          ver=${{ steps.version.outputs.version }}
-          git branch -d release/$ver || true
-          git push origin --delete release/$ver || true
+          echo "changes<<EOF" >> $GITHUB_OUTPUT
+          cat changes.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
-        if: steps.version.outputs.version
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ steps.version.outputs.version }}
-          release_name: Release ${{ steps.version.outputs.version }}
+          tag_name: ${{ steps.tag_info.outputs.current_tag }}
+          release_name: "Release ${{ steps.tag_info.outputs.current_tag }}"
           body: |
-            Automatic release from main branch via release branch.
-            Version: ${{ steps.version.outputs.version }}
+            Automatic release from main branch.
+            Changes since last release:
+            ${{ steps.changes.outputs.changes }}
           draft: false
           prerelease: false
         env:
