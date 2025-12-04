@@ -169,4 +169,26 @@ pipeline {
       }
     }
   }
+  post {
+    success {
+      echo """
+        ==========================================
+        RELEASE SUCCESSFUL
+        ==========================================
+        Version: ${env.NEW_VERSION}
+        Duration: ${currentBuild.durationString}
+        ==========================================""
+      """
+    }
+    failure {
+      echo """
+        ==========================================
+        RELEASE FAILED
+        ==========================================
+        Version: ${env.NEW_VERSION}
+        Duration: ${currentBuild.durationString}
+        ==========================================
+      """
+    }
+  }
 }
