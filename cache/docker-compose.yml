@@ -1,0 +1,12 @@
+services:
+  valkey:
+    image: valkey/valkey:latest
+    container_name: valkey-portfolio-web-local
+    environment:
+      - VALKEY_PASSWORD=${VALKEY_PASSWORD}
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data:/data
+      - ./valkey.conf:/usr/local/etc/valkey.conf
+    command: [ "valkey-server", "/usr/local/etc/valkey.conf", "--requirepass", "${VALKEY_PASSWORD}" ]
