@@ -2,6 +2,7 @@
 import "../styles/footer.css";
 import { version } from "../../package.json";
 const currentYear = new Date().getFullYear();
+import VisitsCounter from "./VisitsCounter.astro";
 ---
 
 <footer>
@@ -10,6 +11,7 @@ const currentYear = new Date().getFullYear();
       &copy; {currentYear} Pablo Sierra. All rights reserved. <span
         class="version">v{version}</span
       >
+      <VisitsCounter server:defer />
     </p>
     <div class="socials">
       <a

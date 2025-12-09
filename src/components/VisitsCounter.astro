@@ -1,0 +1,25 @@
+---
+import { incrementVisits } from "../lib/visits.ts";
+import { createHash } from "node:crypto";
+
+const forwardedFor = Astro.request.headers.get("x-forwarded-for");
+const rawIp =
+  (forwardedFor ? forwardedFor.split(",")[0].trim() : null) ||
+  Astro.clientAddress ||
+  "anon";
+const ip = createHash("sha256").update(rawIp).digest("hex");
+let visits = null;
+try {
+  visits = await incrementVisits(ip);
+} catch (error) {
+  console.error("Failed to retrieve visit count:", error);
+}
+---
+
+{
+  visits !== null && (
+    <div>
+      <p>Visitas totales: {visits}</p>
+    </div>
+  )
+}
