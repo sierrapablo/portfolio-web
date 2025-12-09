@@ -2,9 +2,7 @@
 import { incrementVisits } from "../lib/visits.ts";
 
 const ip =
-  Astro.request.headers.get("x-forwarded-for") ||
-  Astro.request.headers.get("host") ||
-  "anon";
+  Astro.request.headers.get("x-forwarded-for") || Astro.clientAddress || "anon";
 const visits = await incrementVisits(ip);
 ---
 
