@@ -1,7 +1,11 @@
 ---
-import { incrementVisits } from '../lib/visits.ts';
+import { incrementVisits } from "../lib/visits.ts";
 
-const visits: number = await incrementVisits();
+const ip =
+  Astro.request.headers.get("x-forwarded-for") ||
+  Astro.request.headers.get("host") ||
+  "anon";
+const visits = await incrementVisits(ip);
 ---
 
 <div>

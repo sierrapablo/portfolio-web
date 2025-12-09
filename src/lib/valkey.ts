@@ -1,9 +1,10 @@
 import Redis from "ioredis";
+import { VALKEY_HOST, VALKEY_PORT, VALKEY_PASSWORD } from "astro:env/server";
 
 const client = new Redis({
-  host: process.env.VALKEY_HOST || "localhost",
-  port: Number(process.env.VALKEY_PORT) || 6379,
-  password: process.env.VALKEY_PASSWORD,
+  host: VALKEY_HOST || "localhost",
+  port: Number(VALKEY_PORT) || 6379,
+  password: VALKEY_PASSWORD,
 });
 
 export default client;
