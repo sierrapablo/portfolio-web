@@ -1,0 +1,9 @@
+---
+import { incrementVisits } from '../lib/visits.ts';
+
+const visits: number = await incrementVisits();
+---
+
+<div>
+  <p>Visitas totales: {visits}</p>
+</div>
