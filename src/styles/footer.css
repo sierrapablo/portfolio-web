@@ -1,8 +1,8 @@
 footer {
-  background: #0d0f14;
+  background: var(--bg-secondary);
   padding: 2rem;
   margin-top: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .content {
@@ -16,7 +16,7 @@ footer {
 }
 
 p {
-  color: #888;
+  color: var(--color-text-subtle);
   margin: 0;
 }
 
@@ -27,13 +27,13 @@ p {
 }
 
 a {
-  color: #c9c9c9;
+  color: var(--color-text-muted);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 a:hover {
-  color: rgb(var(--accent-light));
+  color: var(--accent-light);
 }
 
 .version {

@@ -2,8 +2,8 @@
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  background-color: rgb(var(--accent));
-  color: white;
+  background-color: var(--accent);
+  color: var(--color-text-dark);
   border: none;
   border-radius: 50%;
   width: 3rem;
@@ -28,7 +28,7 @@
 
 .scroll-to-top-btn:hover {
   transform: translateY(-3px);
-  background-color: rgb(var(--accent-light));
+  background-color: var(--accent-light);
 }
 
 .scroll-to-top-btn svg {

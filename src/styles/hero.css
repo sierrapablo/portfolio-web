@@ -16,6 +16,7 @@ h1 {
   font-weight: 700;
   line-height: 1.1;
   margin-bottom: 1rem;
+  text-align: center;
 }
 
 .text-gradient {
@@ -29,20 +30,22 @@ h1 {
 
 .tagline {
   font-size: 1.5rem;
-  color: #c9c9c9;
+  color: var(--color-text-muted);
   margin-bottom: 2rem;
+  text-align: center;
 }
 
 .bio {
   font-size: 1.1rem;
   line-height: 1.6;
-  color: #a1a1a1;
+  color: var(--color-text-subtle);
   margin-bottom: 3rem;
+  text-align: center;
 }
 
 .primary-btn {
-  background: rgb(var(--accent));
-  color: white;
+  background: var(--accent);
+  color: var(--color-text-dark);
   padding: 0.8rem 2rem;
   border-radius: 2rem;
   text-decoration: none;
@@ -53,6 +56,6 @@ h1 {
 }
 
 .primary-btn:hover {
-  background: rgb(var(--accent-dark));
+  background: var(--accent-dark);
   transform: translateY(-2px);
 }

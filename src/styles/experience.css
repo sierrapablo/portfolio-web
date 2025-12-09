@@ -8,7 +8,7 @@ h2 {
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 3rem;
-  color: rgb(var(--accent-light));
+  color: var(--accent-light);
 }
 
 .timeline {
@@ -18,10 +18,10 @@ h2 {
 }
 
 .card {
-  background: #23262d;
+  background: var(--bg-card);
   padding: 2rem;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-subtle);
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
@@ -30,7 +30,7 @@ h2 {
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  border-color: rgb(var(--accent));
+  border-color: var(--accent);
 }
 
 .header {
@@ -44,22 +44,22 @@ h2 {
 h3 {
   margin: 0;
   font-size: 1.5rem;
-  color: #fff;
+  color: var(--color-text-light);
 }
 
 .company {
-  color: rgb(var(--accent-light));
+  color: var(--accent-light);
   font-weight: 500;
 }
 
 .period {
   margin-left: auto;
-  color: #888;
+  color: var(--color-text-subtle);
   font-size: 0.9rem;
 }
 
 p {
-  color: #c9c9c9;
+  color: var(--color-text-muted);
   line-height: 1.6;
   margin: 0;
   text-align: justify;
