@@ -9,4 +9,10 @@ services:
     volumes:
       - ./data:/data
       - ./valkey.conf:/usr/local/etc/valkey.conf
-    command: [ "valkey-server", "/usr/local/etc/valkey.conf", "--requirepass", "${VALKEY_PASSWORD}" ]
+    command:
+      [
+        "valkey-server",
+        "/usr/local/etc/valkey.conf",
+        "--requirepass",
+        "${VALKEY_PASSWORD}",
+      ]

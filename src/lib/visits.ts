@@ -12,7 +12,7 @@ export async function incrementVisits(ip: string): Promise<number> {
     "1",
     "EX",
     DEBOUNCE_VISIT_TTL_SECONDS,
-    "NX"
+    "NX",
   );
 
   if (wasSet) {
