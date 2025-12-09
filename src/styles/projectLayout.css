@@ -30,7 +30,7 @@
 
 .project-description {
   font-size: 1.2rem;
-  color: var(--text-secondary);
+  color: var(--color-text-muted);
   margin-bottom: 1.5rem;
   line-height: 1.6;
 }
@@ -68,7 +68,7 @@
 }
 
 .project-content {
-  background: var(--card-bg);
+  background: var(--bg-card);
   border-radius: 1rem;
   padding: 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -76,41 +76,41 @@
 }
 
 .project-content :global(h1) {
-  color: var(--text-primary);
+  color: var(--color-text-light);
   margin-top: 2.5rem;
   margin-bottom: 1.5rem;
   font-size: 2rem;
 }
 
 .project-content :global(h2) {
-  color: var(--text-primary);
+  color: var(--color-text-light);
   margin-top: 2rem;
   margin-bottom: 1rem;
   font-size: 1.8rem;
 }
 
 .project-content :global(h3) {
-  color: var(--text-primary);
+  color: var(--color-text-light);
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
   font-size: 1.4rem;
 }
 
 .project-content :global(h4) {
-  color: var(--text-primary);
+  color: var(--color-text-light);
   margin-top: 1.25rem;
   margin-bottom: 0.5rem;
   font-size: 1.2rem;
 }
 
 .project-content :global(p) {
-  color: var(--text-secondary);
+  color: var(--color-text-muted);
   margin-bottom: 1rem;
 }
 
 .project-content :global(ul),
 .project-content :global(ol) {
-  color: var(--text-secondary);
+  color: var(--color-text-muted);
   margin-bottom: 1rem;
   padding-left: 1.5rem;
 }
@@ -121,8 +121,8 @@
 
 /* Inline code */
 .project-content :global(code:not(pre code)) {
-  background: rgba(var(--accent-rgb), 0.15) !important;
-  color: var(--accent) !important;
+  background: var(--bg-code-inline) !important;
+  color: var(--accent-light) !important;
   padding: 0.2rem 0.5rem !important;
   border-radius: 0.3rem !important;
   font-size: 0.9em !important;
@@ -134,36 +134,32 @@
 /* Code blocks - targeting Astro's generated classes */
 .project-content :global(pre),
 .project-content :global(pre.astro-code) {
-  background: #1e1e1e !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: var(--bg-code-block) !important;
+  border: 1px solid var(--border-medium) !important;
   padding: 1.5rem !important;
   border-radius: 0.75rem !important;
   overflow-x: auto !important;
   margin: 1.5rem 0 !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: 0 2px 8px rgba(var(--accent-dark-rgb), 0.2) !important;
 }
 
 .project-content :global(pre code),
 .project-content :global(pre.astro-code code) {
   background: none !important;
   padding: 0 !important;
-  color: #d4d4d4 !important;
+  color: var(--color-text-muted) !important;
   font-size: 0.85rem !important;
   line-height: 1.6 !important;
   font-family: "Courier New", Consolas, Monaco, monospace !important;
 }
 
-/* Override Astro syntax highlighting colors */
-.project-content :global(pre.astro-code span) {
-  color: inherit !important;
-}
 
 /* Images */
 .project-content :global(img) {
   border-radius: 0.75rem;
   margin: 1.5rem auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-subtle);
   display: block;
 }
 
@@ -183,7 +179,7 @@
 }
 
 .project-content :global(th) {
-  color: var(--text-primary);
+  color: var(--color-text-light);
   font-weight: 600;
   padding: 0.75rem 1rem;
   text-align: left;
@@ -191,9 +187,9 @@
 }
 
 .project-content :global(td) {
-  color: var(--text-secondary);
+  color: var(--color-text-muted);
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .project-content :global(tbody tr:hover) {
@@ -221,20 +217,20 @@
   border-left: 4px solid var(--accent);
   padding-left: 1.5rem;
   margin: 1.5rem 0;
-  color: var(--text-secondary);
+  color: var(--color-text-muted);
   font-style: italic;
 }
 
 /* Horizontal rules */
 .project-content :global(hr) {
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border-subtle);
   margin: 2rem 0;
 }
 
 /* Strong and emphasis */
 .project-content :global(strong) {
-  color: var(--text-primary);
+  color: var(--color-text-light);
   font-weight: 600;
 }
 

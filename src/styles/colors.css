@@ -1,0 +1,99 @@
+/**
+ * Centralized Color Palette
+ * All colors for the portfolio are defined here as CSS custom properties
+ */
+
+:root {
+  /* =============================================
+     PRIMARY PALETTE
+     ============================================= */
+
+  /* Main palette colors */
+  --color-carbon-black: #111D13;
+  --color-hunter-green: #415D43;
+  --color-muted-teal-dark: #A1CCA5;
+  --color-muted-teal-light: #B5D9BE;
+  --color-celadon: #C5E5C8;
+
+  /* =============================================
+     NUANCES & VARIATIONS
+     ============================================= */
+
+  /* Hunter Green variations */
+  --color-hunter-green-dark: #2F4331;
+  --color-hunter-green-light: #567558;
+
+  /* Celadon variations */
+  --color-celadon-light: #E0F5E3;
+  --color-celadon-dark: #A1CCA5;
+
+  /* Muted Teal variations */
+  --color-muted-teal-lighter: #D0E8D4;
+
+  /* =============================================
+     DERIVED COLORS
+     ============================================= */
+
+  /* Text colors */
+  --color-text-light: #F5F9F6;
+  /* Greenish white for dark backgrounds - MÁS CLARO */
+  --color-text-dark: #0A120B;
+  /* Dark greenish black for light backgrounds */
+  --color-text-muted: #D4E5D6;
+  /* Muted gray-green for secondary text - MÁS CLARO */
+  --color-text-subtle: #9BAC9D;
+  /* Subtle gray-green for tertiary text - MÁS CLARO */
+
+  /* =============================================
+     SEMANTIC COLORS
+     ============================================= */
+
+  /* Primary accent (main interactive elements) */
+  --accent: var(--color-celadon);
+  --accent-dark: var(--color-muted-teal-dark);
+  --accent-light: var(--color-celadon-light);
+
+  /* Backgrounds */
+  --bg-primary: var(--color-carbon-black);
+  --bg-secondary: var(--color-hunter-green-dark);
+  --bg-card: #1A2B1D;
+  /* Slightly lighter than carbon black */
+  --bg-card-hover: #223528;
+  /* Even lighter for hover states */
+  --bg-code-block: #151F17;
+  /* Dark green-tinted background for code blocks */
+  --bg-code-inline: rgba(161, 204, 165, 0.15);
+  /* Celadon tint for inline code */
+
+  /* Borders */
+  --border-subtle: rgba(143, 185, 150, 0.1);
+  /* Muted teal light with opacity */
+  --border-medium: rgba(143, 185, 150, 0.2);
+  --border-accent: rgba(161, 204, 165, 0.4);
+  /* Celadon with opacity */
+
+  /* =============================================
+     RGB VALUES (for rgba() usage)
+     ============================================= */
+
+  --accent-rgb: 161, 204, 165;
+  /* Celadon */
+  --accent-light-rgb: 197, 229, 200;
+  /* Celadon light */
+  --accent-dark-rgb: 112, 151, 117;
+  /* Muted teal dark */
+  --hunter-green-rgb: 65, 93, 67;
+
+  /* =============================================
+     GRADIENTS
+     ============================================= */
+
+  --accent-gradient: linear-gradient(45deg,
+      var(--color-muted-teal-dark),
+      var(--color-celadon) 30%,
+      var(--color-celadon-light) 60%);
+
+  --accent-gradient-subtle: linear-gradient(135deg,
+      var(--color-hunter-green),
+      var(--color-muted-teal-light));
+}
