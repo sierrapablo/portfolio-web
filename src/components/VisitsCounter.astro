@@ -1,8 +1,10 @@
 ---
 import { incrementVisits } from "../lib/visits.ts";
+import { createHash } from "node:crypto";
 
-const ip =
+const rawIp =
   Astro.request.headers.get("x-forwarded-for") || Astro.clientAddress || "anon";
+const ip = createHash("sha256").update(rawIp).digest("hex");
 const visits = await incrementVisits(ip);
 ---
 
