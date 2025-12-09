@@ -8,9 +8,18 @@ const rawIp =
   Astro.clientAddress ||
   "anon";
 const ip = createHash("sha256").update(rawIp).digest("hex");
-const visits = await incrementVisits(ip);
+let visits = null;
+try {
+  visits = await incrementVisits(ip);
+} catch (error) {
+  console.error("Failed to retrieve visit count:", error);
+}
 ---
 
-<div>
-  <p>Visitas totales: {visits}</p>
-</div>
+{
+  visits !== null && (
+    <div>
+      <p>Visitas totales: {visits}</p>
+    </div>
+  )
+}
