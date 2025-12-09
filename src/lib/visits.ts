@@ -13,8 +13,7 @@ export async function incrementVisits(ip: string): Promise<number> {
 
   // The key already existed, so this is a repeat visit within the TTL.
   // Just return the current count.
-  const visits = (await client.get("portfolio_visits")) || "0";
-  return parseInt(visits, 10);
+  return getVisits();
 }
 
 export async function getVisits(): Promise<number> {
