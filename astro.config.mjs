@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig, envField } from "astro/config";
 import node from "@astrojs/node";
+import { portfolioTheme } from "./theme.mjs";
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,6 +13,11 @@ export default defineConfig({
       VALKEY_HOST: envField.string({ context: "server", access: "secret" }),
       VALKEY_PORT: envField.number({ context: "server", access: "secret" }),
       VALKEY_PASSWORD: envField.string({ context: "server", access: "secret" }),
+    },
+  },
+  markdown: {
+    shikiConfig: {
+      theme: portfolioTheme,
     },
   },
 });
