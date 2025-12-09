@@ -7,6 +7,9 @@ services:
     environment:
       - HOST=0.0.0.0
       - PORT=4321
+      - VALKEY_HOST=${VALKEY_HOST}
+      - VALKEY_PORT=${VALKEY_PORT}
+      - VALKEY_PASSWORD=${VALKEY_PASSWORD}
     restart: unless-stopped
     networks:
       - reverse-proxy
