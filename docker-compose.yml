@@ -2,21 +2,12 @@ services:
   web:
     container_name: portfolio-web
     image: ${DOCKER_IMAGE:-sierrapablo/portfolio-web:latest}
-    ports:
-      - "4321:4321"
-    environment:
-      - HOST=0.0.0.0
-      - PORT=4321
-      - VALKEY_HOST=${VALKEY_HOST}
-      - VALKEY_PORT=${VALKEY_PORT}
-      - VALKEY_PASSWORD=${VALKEY_PASSWORD}
+    expose:
+      - "4321"
     restart: unless-stopped
     networks:
       - reverse-proxy
-      - valkey-portfolio-web_valkey-portfolio-network
 
 networks:
   reverse-proxy:
-    external: true
-  valkey-portfolio-web_valkey-portfolio-network:
     external: true
