@@ -19,7 +19,6 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/node": "^9.5.1",
     "astro": "^5.16.0",
     "ioredis": "^5.8.2"
   }
