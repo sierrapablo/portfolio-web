@@ -6,6 +6,7 @@ import { portfolioTheme } from "./theme.mjs";
 export default defineConfig({
   output: "static",
   site: "https://www.sierrapablo.dev",
+  trailingSlash: "always",
   markdown: {
     shikiConfig: {
       theme: portfolioTheme,
