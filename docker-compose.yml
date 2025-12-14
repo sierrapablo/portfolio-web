@@ -4,9 +4,6 @@ services:
     image: ${DOCKER_IMAGE:-sierrapablo/portfolio-web:latest}
     expose:
       - "4321"
-    environment:
-      - HOST=0.0.0.0
-      - PORT=4321
     restart: unless-stopped
     networks:
       - reverse-proxy

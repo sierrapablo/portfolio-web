@@ -11,9 +11,6 @@ importers:
       astro:
         specifier: ^5.16.0
         version: 5.16.0(@types/node@24.10.1)(ioredis@5.8.2)(rollup@4.53.3)(typescript@5.9.3)
-      ioredis:
-        specifier: ^5.8.2
-        version: 5.8.2
 
 packages:
 
@@ -1787,7 +1784,8 @@ snapshots:
   '@img/sharp-win32-x64@0.34.5':
     optional: true
 
-  '@ioredis/commands@1.4.0': {}
+  '@ioredis/commands@1.4.0':
+    optional: true
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
 
@@ -2110,7 +2108,8 @@ snapshots:
 
   clsx@2.1.1: {}
 
-  cluster-key-slot@1.1.2: {}
+  cluster-key-slot@1.1.2:
+    optional: true
 
   comma-separated-tokens@2.0.3: {}
 
@@ -2162,7 +2161,8 @@ snapshots:
 
   defu@6.1.4: {}
 
-  denque@2.1.0: {}
+  denque@2.1.0:
+    optional: true
 
   dequal@2.0.3: {}
 
@@ -2410,6 +2410,7 @@ snapshots:
       standard-as-callback: 2.1.0
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   iron-webcrypto@1.2.1: {}
 
@@ -2433,9 +2434,11 @@ snapshots:
 
   kleur@3.0.3: {}
 
-  lodash.defaults@4.2.0: {}
+  lodash.defaults@4.2.0:
+    optional: true
 
-  lodash.isarguments@3.1.0: {}
+  lodash.isarguments@3.1.0:
+    optional: true
 
   longest-streak@3.1.0: {}
 
@@ -2863,11 +2866,13 @@ snapshots:
 
   readdirp@4.1.2: {}
 
-  redis-errors@1.2.0: {}
+  redis-errors@1.2.0:
+    optional: true
 
   redis-parser@3.0.0:
     dependencies:
       redis-errors: 1.2.0
+    optional: true
 
   regex-recursion@6.0.2:
     dependencies:
@@ -3055,7 +3060,8 @@ snapshots:
 
   space-separated-tokens@2.0.2: {}
 
-  standard-as-callback@2.1.0: {}
+  standard-as-callback@2.1.0:
+    optional: true
 
   string-width@4.2.3:
     dependencies:
