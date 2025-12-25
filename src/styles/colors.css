@@ -9,95 +9,68 @@
      ============================================= */
 
   /* Main palette colors */
-  --color-carbon-black: #111d13;
-  --color-hunter-green: #415d43;
-  --color-muted-teal-dark: #a1cca5;
-  --color-muted-teal-light: #b5d9be;
-  --color-celadon: #c5e5c8;
-
-  /* =============================================
-     NUANCES & VARIATIONS
-     ============================================= */
-
-  /* Hunter Green variations */
-  --color-hunter-green-dark: #2f4331;
-  --color-hunter-green-light: #567558;
-
-  /* Celadon variations */
-  --color-celadon-light: #e0f5e3;
-  --color-celadon-dark: #a1cca5;
-
-  /* Muted Teal variations */
-  --color-muted-teal-lighter: #d0e8d4;
-
-  /* =============================================
-     DERIVED COLORS
-     ============================================= */
-
-  /* Text colors */
-  --color-text-light: #f5f9f6;
-  /* Greenish white for dark backgrounds - MÁS CLARO */
-  --color-text-dark: #0a120b;
-  /* Dark greenish black for light backgrounds */
-  --color-text-muted: #d4e5d6;
-  /* Muted gray-green for secondary text - MÁS CLARO */
-  --color-text-subtle: #9bac9d;
-  /* Subtle gray-green for tertiary text - MÁS CLARO */
+  --color-bg-deep: #23262C;
+  --color-bg-soft: #3A3F47;
+  --color-text-main: #FFFFFF;
+  --color-text-muted: #D1D5DB;
+  --color-accent-primary: #B1FA63;
+  /* Lime Green */
+  --color-accent-secondary: #FE7733;
+  /* Vibrant Orange */
 
   /* =============================================
      SEMANTIC COLORS
      ============================================= */
 
   /* Primary accent (main interactive elements) */
-  --accent: var(--color-celadon);
-  --accent-dark: var(--color-muted-teal-dark);
-  --accent-light: var(--color-celadon-light);
+  --accent: var(--color-accent-primary);
+  --accent-dark: #8ec94f;
+  --accent-light: #caff8a;
+
+  /* Secondary accent */
+  --accent-secondary: var(--color-accent-secondary);
 
   /* Backgrounds */
-  --bg-primary: var(--color-carbon-black);
-  --bg-secondary: var(--color-hunter-green-dark);
-  --bg-card: #1a2b1d;
-  /* Slightly lighter than carbon black */
-  --bg-card-hover: #223528;
-  /* Even lighter for hover states */
-  --bg-code-block: #151f17;
-  /* Dark green-tinted background for code blocks */
-  --bg-code-inline: rgba(161, 204, 165, 0.15);
-  /* Celadon tint for inline code */
+  --bg-primary: var(--color-bg-deep);
+  --bg-secondary: var(--color-bg-soft);
+  --bg-card: #2b2e35;
+  --bg-card-hover: #343840;
+  --bg-code-block: #1e2126;
+  --bg-code-inline: rgba(177, 250, 99, 0.1);
+
+  /* Text colors */
+  --color-text-light: var(--color-text-main);
+  --color-text-dark: #1a1d21;
+  --color-text-muted: #D1D5DB;
+  --color-text-subtle: #7f8691;
 
   /* Borders */
-  --border-subtle: rgba(143, 185, 150, 0.1);
-  /* Muted teal light with opacity */
-  --border-medium: rgba(143, 185, 150, 0.2);
-  --border-accent: rgba(161, 204, 165, 0.4);
-  /* Celadon with opacity */
+  --border-subtle: rgba(209, 213, 219, 0.1);
+  --border-medium: rgba(209, 213, 219, 0.2);
+  --border-accent: rgba(177, 250, 99, 0.4);
 
   /* =============================================
      RGB VALUES (for rgba() usage)
      ============================================= */
 
-  --accent-rgb: 161, 204, 165;
-  /* Celadon */
-  --accent-light-rgb: 197, 229, 200;
-  /* Celadon light */
-  --accent-dark-rgb: 112, 151, 117;
-  /* Muted teal dark */
-  --hunter-green-rgb: 65, 93, 67;
+  --accent-rgb: 177, 250, 99;
+  --accent-dark-rgb: 142, 201, 79;
+  --accent-secondary-rgb: 254, 119, 51;
+  --bg-deep-rgb: 35, 38, 44;
 
   /* =============================================
      GRADIENTS
      ============================================= */
 
-  --accent-gradient: linear-gradient(
-    45deg,
-    var(--color-muted-teal-dark),
-    var(--color-celadon) 30%,
-    var(--color-celadon-light) 60%
-  );
+  --accent-gradient: linear-gradient(45deg,
+      var(--color-accent-primary),
+      #d4ff9d 100%);
 
-  --accent-gradient-subtle: linear-gradient(
-    135deg,
-    var(--color-hunter-green),
-    var(--color-muted-teal-light)
-  );
+  --accent-gradient-secondary: linear-gradient(45deg,
+      var(--color-accent-secondary),
+      #ff9b6a 100%);
+
+  --accent-gradient-mixed: linear-gradient(45deg,
+      var(--color-accent-primary),
+      var(--color-accent-secondary));
 }

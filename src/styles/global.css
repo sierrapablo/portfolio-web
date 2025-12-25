@@ -11,6 +11,8 @@ html {
   background: var(--bg-primary);
   color: var(--color-text-light);
   overflow-x: hidden;
+  scroll-padding-top: 80px;
+  /* Offset for fixed header */
 }
 
 code {
