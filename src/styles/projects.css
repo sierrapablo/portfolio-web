@@ -66,7 +66,7 @@ p {
 }
 
 .tech-tag {
-  background: rgba(var(--accent-light-rgb), 0.1);
+  background: var(--color-bg-deep);
   color: var(--accent-light);
   padding: 0.25rem 0.75rem;
   border-radius: 999px;
@@ -92,5 +92,6 @@ p {
 }
 
 .link-btn:hover {
+  color: var(--color-bg-deep);
   background: rgba(var(--accent-rgb), 0.8);
 }
