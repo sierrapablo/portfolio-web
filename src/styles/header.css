@@ -9,7 +9,7 @@ header {
   border-bottom: 1px solid var(--border-subtle);
   width: 100%;
   box-sizing: border-box;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(var(--bg-deep-rgb), 0.5);
 }
 
 nav {
