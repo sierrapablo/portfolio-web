@@ -9,13 +9,13 @@
      ============================================= */
 
   /* Main palette colors */
-  --color-bg-deep: #23262C;
-  --color-bg-soft: #3A3F47;
-  --color-text-main: #FFFFFF;
-  --color-text-muted: #D1D5DB;
-  --color-accent-primary: #B1FA63;
+  --color-bg-deep: #23262c;
+  --color-bg-soft: #3a3f47;
+  --color-text-main: #ffffff;
+  --color-text-muted: #d1d5db;
+  --color-accent-primary: #b1fa63;
   /* Lime Green */
-  --color-accent-secondary: #FE7733;
+  --color-accent-secondary: #fe7733;
   /* Vibrant Orange */
 
   /* =============================================
@@ -41,7 +41,7 @@
   /* Text colors */
   --color-text-light: var(--color-text-main);
   --color-text-dark: #1a1d21;
-  --color-text-muted: #D1D5DB;
+  --color-text-muted: #d1d5db;
   --color-text-subtle: #7f8691;
 
   /* Borders */
@@ -62,15 +62,21 @@
      GRADIENTS
      ============================================= */
 
-  --accent-gradient: linear-gradient(45deg,
-      var(--color-accent-primary),
-      #d4ff9d 100%);
+  --accent-gradient: linear-gradient(
+    45deg,
+    var(--color-accent-primary),
+    #d4ff9d 100%
+  );
 
-  --accent-gradient-secondary: linear-gradient(45deg,
-      var(--color-accent-secondary),
-      #ff9b6a 100%);
+  --accent-gradient-secondary: linear-gradient(
+    45deg,
+    var(--color-accent-secondary),
+    #ff9b6a 100%
+  );
 
-  --accent-gradient-mixed: linear-gradient(45deg,
-      var(--color-accent-primary),
-      var(--color-accent-secondary));
+  --accent-gradient-mixed: linear-gradient(
+    45deg,
+    var(--color-accent-primary),
+    var(--color-accent-secondary)
+  );
 }
