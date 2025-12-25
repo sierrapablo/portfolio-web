@@ -2,17 +2,21 @@
  * @type {{ name: string; type: "dark" | "light"; colors: Record<string, string>; settings: Array<{ settings: { foreground?: string; background?: string } }>; tokenColors: Array<{ scope: string[]; settings: Record<string, string> }> }}
  */
 export const portfolioTheme = {
-  name: "portfolio-green",
+  name: "portfolio-modern",
   type: /** @type {"dark"} */ ("dark"),
   colors: {
-    "editor.background": "#151F17",
-    "editor.foreground": "#D4E5D6",
+    "editor.background": "#23262C",
+    "editor.foreground": "#FFFFFF",
+    "editorLineNumber.foreground": "#3A3F47",
+    "editorLineNumber.activeForeground": "#B1FA63",
+    "editor.selectionBackground": "#3A3F47",
+    "editor.lineHighlightBackground": "#2b2e35",
   },
   settings: [
     {
       settings: {
-        foreground: "#D4E5D6",
-        background: "#151F17",
+        foreground: "#FFFFFF",
+        background: "#23262C",
       },
     },
   ],
@@ -20,68 +24,90 @@ export const portfolioTheme = {
     {
       scope: ["comment", "punctuation.definition.comment"],
       settings: {
-        foreground: "#9BAC9D",
+        foreground: "#D1D5DB",
         fontStyle: "italic",
       },
     },
     {
-      scope: ["keyword", "storage.type", "storage.modifier"],
+      scope: ["keyword", "storage.type", "storage.modifier", "keyword.control"],
       settings: {
-        foreground: "#E0F5E3", // accent-light (más claro)
+        foreground: "#B1FA63",
       },
     },
     {
-      scope: ["entity.name.function", "support.function"],
+      scope: ["entity.name.function", "support.function", "variable.function"],
       settings: {
-        foreground: "#B5D9BE", // muted-teal-light (más claro)
+        foreground: "#FFFFFF",
       },
     },
     {
-      scope: ["string", "string.quoted"],
+      scope: ["string", "string.quoted", "constant.other.symbol"],
       settings: {
-        foreground: "#E0F5E3", // celadon-light (más claro)
+        foreground: "#FE7733",
       },
     },
     {
-      scope: ["constant.numeric", "constant.language"],
+      scope: ["constant.numeric", "constant.language", "support.constant"],
       settings: {
-        foreground: "#A1CCA5", // muted-teal-dark (más claro)
+        foreground: "#FE7733",
       },
     },
     {
-      scope: ["variable", "support.variable"],
+      scope: [
+        "variable",
+        "support.variable",
+        "variable.other.readwrite",
+        "variable.parameter",
+      ],
       settings: {
-        foreground: "#C5E5C8", // celadon (más claro)
+        foreground: "#D1D5DB",
       },
     },
     {
-      scope: ["entity.name.type", "entity.name.class"],
+      scope: [
+        "entity.name.type",
+        "entity.name.class",
+        "support.type",
+        "support.class",
+      ],
       settings: {
-        foreground: "#B5D9BE", // muted-teal-light (más claro)
+        foreground: "#B1FA63",
       },
     },
     {
-      scope: ["keyword.operator", "punctuation"],
+      scope: ["keyword.operator", "punctuation", "meta.brace"],
       settings: {
-        foreground: "#A1CCA5", // muted-teal-dark (más claro)
+        foreground: "#D1D5DB",
       },
     },
     {
       scope: ["entity.name.tag"],
       settings: {
-        foreground: "#E0F5E3", // accent-light (más claro)
+        foreground: "#B1FA63",
       },
     },
     {
       scope: ["entity.other.attribute-name"],
       settings: {
-        foreground: "#C5E5C8", // celadon (más claro)
+        foreground: "#FE7733",
       },
     },
     {
-      scope: ["support.type.property-name"],
+      scope: ["support.type.property-name", "meta.object-literal.key"],
       settings: {
-        foreground: "#B5D9BE", // muted-teal-light (más claro)
+        foreground: "#B1FA63",
+      },
+    },
+    {
+      scope: ["markup.heading", "markup.bold"],
+      settings: {
+        foreground: "#B1FA63",
+      },
+    },
+    {
+      scope: ["markup.italic"],
+      settings: {
+        fontStyle: "italic",
       },
     },
   ],

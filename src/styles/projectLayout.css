@@ -6,6 +6,7 @@
 }
 
 .project-header {
+  padding-top: 4rem;
   margin-bottom: 3rem;
 }
 
@@ -65,6 +66,7 @@
 .link-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(var(--accent-rgb), 0.3);
+  color: var(--color-bg-deep);
 }
 
 .project-content {
