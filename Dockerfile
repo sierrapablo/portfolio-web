@@ -9,8 +9,8 @@ WORKDIR /app
 
 COPY package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-COPY astro.config.* ./
-COPY tsconfig*.json ./
+COPY astro.config.mjs ./
+COPY tsconfig.json ./
 
 COPY src ./src
 COPY public ./public
