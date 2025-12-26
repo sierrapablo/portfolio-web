@@ -28,7 +28,7 @@ const handleScrollPrev = (carousel: HTMLElement, resetAutoplay: () => void) => {
 const handleJumpToSlide = (
   carousel: HTMLElement,
   index: number,
-  resetAutoplay: () => void
+  resetAutoplay: () => void,
 ) => {
   const cards = carousel.querySelectorAll(".card");
   const card = cards[index];
@@ -44,7 +44,7 @@ const handleJumpToSlide = (
 
 const updateUIState = (
   carousel: HTMLElement,
-  indicators: NodeListOf<Element>
+  indicators: NodeListOf<Element>,
 ) => {
   const cards = carousel.querySelectorAll(".card");
   const { left, width } = carousel.getBoundingClientRect();
@@ -56,7 +56,7 @@ const updateUIState = (
   cards.forEach((card, index) => {
     const cardRect = card.getBoundingClientRect();
     const distance = Math.abs(
-      cardRect.left + cardRect.width / 2 - carouselCenter
+      cardRect.left + cardRect.width / 2 - carouselCenter,
     );
 
     if (distance < minDistance) {
@@ -123,14 +123,14 @@ export function initExperienceCarousel() {
 
   indicators.forEach((indicator, index) => {
     indicator.addEventListener("click", () =>
-      handleJumpToSlide(carousel, index, resetAutoplay)
+      handleJumpToSlide(carousel, index, resetAutoplay),
     );
   });
 
   carousel.addEventListener("mouseenter", () => (isPaused = true));
   carousel.addEventListener("mouseleave", resumeAutoplay);
   carousel.addEventListener("scroll", () =>
-    updateUIState(carousel, indicators)
+    updateUIState(carousel, indicators),
   );
   window.addEventListener("resize", () => updateUIState(carousel, indicators));
 
