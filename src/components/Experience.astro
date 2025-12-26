@@ -5,18 +5,78 @@ import { experiences } from "../data/experiences";
 
 <section id="experience" class="fade-in delay-1">
   <h2>Professional Experience</h2>
-  <div class="timeline">
-    {
-      experiences.map((exp) => (
-        <div class="card">
-          <div class="header">
-            <h3>{exp.title}</h3>
-            <span class="company">{exp.company}</span>
-            <span class="period">{exp.period}</span>
+  <div class="carousel-container">
+    <button class="nav-btn prev" id="prev-btn" aria-label="Previous experience">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg
+      >
+    </button>
+
+    <div class="carousel" id="experience-carousel">
+      {
+        experiences.map((exp) => (
+          <div class="card">
+            <div class="header">
+              <h3>{exp.title}</h3>
+              <span class="company">{exp.company}</span>
+              <span class="period">{exp.period}</span>
+            </div>
+            <p>{exp.description}</p>
+            {exp.technologies && (
+              <div class="technologies">
+                {exp.technologies.map((tech) => (
+                  <span class="tech-tag">{tech}</span>
+                ))}
+              </div>
+            )}
           </div>
-          <p>{exp.description}</p>
-        </div>
-      ))
-    }
+        ))
+      }
+    </div>
+
+    <button class="nav-btn next" id="next-btn" aria-label="Next experience">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg
+      >
+    </button>
+  </div>
+
+  <div class="carousel-controls">
+    <div class="carousel-indicators" id="carousel-indicators">
+      {
+        experiences.map((_, index) => (
+          <button
+            class={`indicator ${index === 0 ? "active" : ""}`}
+            data-index={index}
+            aria-label={`Go to experience ${index + 1}`}
+          />
+        ))
+      }
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
   </div>
 </section>
+
+<script>
+  import { initExperienceCarousel } from "../animations/experienceCarousel";
+  initExperienceCarousel();
+</script>
