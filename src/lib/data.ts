@@ -20,8 +20,8 @@ export const experiences: Experience[] = rawExperiences.map((exp) =>
     exp.company,
     exp.period,
     exp.description,
-    exp.techKeys.map(mapTechKey)
-  )
+    exp.techKeys.map(mapTechKey),
+  ),
 );
 
 export const projects: Project[] = rawProjects.map((p) =>
@@ -31,6 +31,6 @@ export const projects: Project[] = rawProjects.map((p) =>
     p.techKeys.map(mapTechKey),
     p.slug,
     p.url,
-    p.link
-  )
+    p.link,
+  ),
 );

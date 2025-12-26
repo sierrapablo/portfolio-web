@@ -67,26 +67,13 @@
     "company": "SDG Group",
     "period": "February 2022 – October 2022",
     "description": "Development of ETL pipelines for banking data ingestion and transformation. Continuous validation and monitoring scripts to ensure integrity and consistency. Regulatory compliance through automated audits.",
-    "techKeys": [
-      "Oracle",
-      "Bash",
-      "Python",
-      "Docker",
-      "MySQL"
-    ]
+    "techKeys": ["Oracle", "Bash", "Python", "Docker", "MySQL"]
   },
   {
     "title": "Junior Engineer",
     "company": "NTT Data",
     "period": "May 2021 – February 2022",
     "description": "Optimization and validation of data quality in databases for pharmaceutical and public sector clients. Design and proposal of optimal data structures and visualization through templates.",
-    "techKeys": [
-      "Databricks",
-      "Spark",
-      "Bash",
-      "SQL",
-      "Python",
-      "Docker"
-    ]
+    "techKeys": ["Databricks", "Spark", "Bash", "SQL", "Python", "Docker"]
   }
 ]

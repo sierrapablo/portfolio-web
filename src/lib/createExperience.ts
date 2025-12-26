@@ -5,7 +5,7 @@ export const createExperience = (
   company: string,
   period: string,
   description: string,
-  technologies: string[]
+  technologies: string[],
 ): Experience => ({
   title,
   company,

@@ -6,7 +6,7 @@ export const createProject = (
   techStack: string[],
   slug: string,
   url?: string,
-  link?: string
+  link?: string,
 ): Project => ({
   title,
   description,
