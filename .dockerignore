@@ -1,4 +1,39 @@
-node_modules
-dist
+# VCS
 .git
+.gitignore
+
+# Node / pnpm
+node_modules
+.pnpm-store
+.pnpm
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist
+build
+.out
+.cache
+.tmp
+
+# Env / secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+
+# OS / editor
 .DS_Store
+Thumbs.db
+.vscode
+.idea
+
+# Tests / docs
+coverage
+__tests__
+*.spec.*
+*.test.*
+docs
