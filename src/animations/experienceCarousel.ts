@@ -31,7 +31,7 @@ const handleJumpToSlide = (
   resetAutoplay: () => void
 ) => {
   const cards = carousel.querySelectorAll(".card");
-  const card = cards[index] as HTMLElement;
+  const card = cards[index];
   if (card) {
     card.scrollIntoView({
       behavior: "smooth",
