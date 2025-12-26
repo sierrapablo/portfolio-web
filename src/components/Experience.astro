@@ -56,6 +56,24 @@ import { experiences } from "../data/experiences";
       >
     </button>
   </div>
+
+  <div class="carousel-controls">
+    <div class="carousel-indicators" id="carousel-indicators">
+      {
+        experiences.map((_, index) => (
+          <button
+            class={`indicator ${index === 0 ? "active" : ""}`}
+            data-index={index}
+            aria-label={`Go to experience ${index + 1}`}
+          />
+        ))
+      }
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+  </div>
 </section>
 
 <script>
