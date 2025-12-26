@@ -110,7 +110,7 @@ export function initExperienceCarousel() {
         const distance = Math.abs(
           cardRect.left +
             cardRect.width / 2 -
-            (carouselRect.left + carouselRect.width / 2)
+            (carouselRect.left + carouselRect.width / 2),
         );
 
         if (distance < minDistance) {
