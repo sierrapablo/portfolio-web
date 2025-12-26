@@ -1,15 +1,10 @@
 // @ts-check
-import { defineConfig } from "astro/config";
-import { portfolioTheme } from "./theme.mjs";
+import {
+    defineConfig
+} from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
-  output: "static",
-  site: "https://www.sierrapablo.dev",
-  // trailingSlash: "always",
-  markdown: {
-    shikiConfig: {
-      theme: portfolioTheme,
-    },
-  },
+    output: "static",
+    site: "https://www.sierrapablo.dev"
 });
