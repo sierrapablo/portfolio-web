@@ -29,3 +29,7 @@ valkey.conf
 
 # SonarQube
 .scannerwork
+
+# Jenkins
+changes.txt
+release.json
