@@ -178,6 +178,21 @@ pipeline {
       }
     }
 
+    stage('Generate Release Notes') {
+      steps {
+        script {
+          sh """
+            PREV_TAG=\$(git describe --tags --abbrev=0 "${env.NEW_VERSION}^" 2>/dev/null || echo "")
+            if [ -z "\$PREV_TAG" ]; then
+              git log --oneline > changes.txt
+            else
+              git log --oneline "\$PREV_TAG".."${env.NEW_VERSION}" > changes.txt
+            fi
+          """
+        }
+      }
+    }
+
     stage('Create GitHub Release') {
       steps {
         withCredentials([string(credentialsId: 'github-repo-pat', variable: 'GITHUB_PAT')]) {
