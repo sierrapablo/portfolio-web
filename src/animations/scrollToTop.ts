@@ -4,22 +4,22 @@ export const initScrollToTop = (buttonId: string) => {
   if (scrollToTopBtn) {
     let isScrolling: number;
 
-    window.addEventListener("scroll", () => {
+    window.addEventListener('scroll', () => {
       window.cancelAnimationFrame(isScrolling);
 
       isScrolling = window.requestAnimationFrame(() => {
         if (window.scrollY > 300) {
-          scrollToTopBtn.classList.add("show");
+          scrollToTopBtn.classList.add('show');
         } else {
-          scrollToTopBtn.classList.remove("show");
+          scrollToTopBtn.classList.remove('show');
         }
       });
     });
 
-    scrollToTopBtn.addEventListener("click", () => {
+    scrollToTopBtn.addEventListener('click', () => {
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     });
   }

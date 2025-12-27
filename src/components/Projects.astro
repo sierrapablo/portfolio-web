@@ -1,6 +1,6 @@
 ---
-import "../styles/projects.css";
-import { projects } from "../lib/data";
+import '../styles/projects.css';
+import { projects } from '../lib/data';
 ---
 
 <section id="projects" class="fade-in delay-2">
@@ -23,22 +23,12 @@ import { projects } from "../lib/data";
               Read More
             </a>
             {project.url && (
-              <a
-                href={project.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-btn"
-              >
+              <a href={project.url} target="_blank" rel="noopener noreferrer" class="link-btn">
                 View Project
               </a>
             )}
             {project.link && (
-              <a
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-btn"
-              >
+              <a href={project.link} target="_blank" rel="noopener noreferrer" class="link-btn">
                 Live Demo
               </a>
             )}

@@ -1,11 +1,11 @@
 ---
-import "../styles/projectLayout.css";
-import "../styles/projects.css";
-import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import type { Props } from "../types/projectLayout";
-import ScrollToTop from "../components/ScrollToTop.astro";
+import '../styles/projectLayout.css';
+import '../styles/projects.css';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { Props } from '../types/projectLayout';
+import ScrollToTop from '../components/ScrollToTop.astro';
 
 const { frontmatter } = Astro.props;
 const { title, description, techStack, url, link } = frontmatter;
@@ -26,17 +26,12 @@ const { title, description, techStack, url, link } = frontmatter;
       <div class="project-links">
         {
           [
-            { href: url, text: "View on GitHub" },
-            { href: link, text: "Live Demo" },
+            { href: url, text: 'View on GitHub' },
+            { href: link, text: 'Live Demo' },
           ]
             .filter((l) => l.href)
             .map((l) => (
-              <a
-                href={l.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="link-btn"
-              >
+              <a href={l.href} target="_blank" rel="noopener noreferrer" class="link-btn">
                 {l.text}
               </a>
             ))

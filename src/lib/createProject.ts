@@ -1,4 +1,4 @@
-import type { Project } from "../types/projects";
+import type { Project } from '../types/projects';
 
 export const createProject = (
   title: string,
