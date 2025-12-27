@@ -9,6 +9,7 @@ pipeline {
     GIT_USER_NAME = 'Jenkins CI'
     GIT_USER_EMAIL = 'jenkins[bot]@noreply.jenkins.io'
     SONAR_PROJECT_KEY = 'sierrapablo-portfolio-web'
+    GITHUB_TOKEN = credentials('github')
   }
 
   stages {
@@ -172,6 +173,40 @@ pipeline {
             sh """
               git tag ${env.NEW_VERSION}
               git push origin ${env.NEW_VERSION}
+            """
+          }
+        }
+      }
+    }
+
+    stage('Create GitHub Release') {
+      steps {
+        sshagent(credentials: ['github']) {
+          script {
+            sh """
+              if ! command -v gh >/dev/null 2>&1; then
+                echo "Installing GitHub CLI..."
+                type curl >/dev/null 2>&1 || apt update && apt install -y curl
+                curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+                chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg
+                echo "deb [arch=\$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+                apt update && apt install -y gh
+              fi
+
+              echo "${GITHUB_TOKEN}" | gh auth login --with-token
+
+              PREV_TAG=\$(git describe --tags --abbrev=0 "${env.NEW_VERSION}^" 2>/dev/null || echo "")
+              if [ -z "\$PREV_TAG" ]; then
+                git log --oneline > changes.txt
+              else
+                git log --oneline "\$PREV_TAG".."${env.NEW_VERSION}" > changes.txt
+              fi
+
+              gh release create ${env.NEW_VERSION} \
+                --title "Release ${env.NEW_VERSION}" \
+                --notes-file changes.txt \
+                --draft=false \
+                --prerelease=false
             """
           }
         }
