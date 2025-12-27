@@ -13,6 +13,7 @@
   },
   "packageManager": "pnpm@10.23.0",
   "scripts": {
+    "format": "prettier --config .prettierrc --write .",
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
@@ -20,5 +21,8 @@
   },
   "dependencies": {
     "astro": "^5.16.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.7.4"
   }
 }
