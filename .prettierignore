@@ -4,7 +4,9 @@ dist/
 .vscode/
 docs/
 *.config.js
-*.json
-*.md
+package.json
+package-lock.json
+pnpm-lock.yaml
+README.md
 .env
 .gitattributes
