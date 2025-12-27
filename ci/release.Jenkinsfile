@@ -73,13 +73,11 @@ pipeline {
               PRETTIER_VERSION=\$(jq -r '.devDependencies.prettier' package.json | sed 's/^[^0-9]*//')
 
               if [ -z "\$PRETTIER_VERSION" ]; then
-                PRETTIER_VERSION=3.7.4
-                echo "WARNING: Prettier not found in devDependencies, using fallback \$PRETTIER_VERSION"
+                echo "WARNING: Prettier not found in devDependencies, not formatting code."
+              else
+                echo "Using Prettier \$PRETTIER_VERSION"
+                pnpm dlx prettier@\$PRETTIER_VERSION --config .prettierrc --write "src/**/*.{ts,js,html,css,astro,md,json}"
               fi
-
-              echo "Using Prettier \$PRETTIER_VERSION"
-
-              pnpm dlx prettier@\$PRETTIER_VERSION --config .prettierrc --write "src/**/*.{ts,js,html,css,astro,md,json}"
 
               if ! git diff --quiet; then
                 git add .
