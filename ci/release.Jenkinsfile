@@ -80,7 +80,7 @@ pipeline {
       steps {
         withSonarQubeEnv('sonarqube') {
           sh """
-            sonar-scanner \
+            ${tool 'SonarScanner'}/bin/sonar-scanner \
             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
             -Dsonar.projectVersion=${env.NEW_VERSION} \
             -Dsonar.sources=. \
