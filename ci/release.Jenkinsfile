@@ -14,7 +14,7 @@ pipeline {
   stages {
     stage('Install dependencies') {
       steps {
-        sh 'apt update && apt install -y jq nodejs'
+        sh 'apt update && apt install -y jq nodejs npm'
       }
     }
 
