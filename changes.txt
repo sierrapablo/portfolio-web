@@ -1,0 +1,10 @@
+5b76a80 Merge branch 'release/5.0.6'
+15f2eda chore: format code
+3b27fde chore: update version to 5.0.6
+78aad0c fix: api github url fixed
+7fd2fbf fix: add Generate release notes stage
+5311794 fix: fix GitHub Release stage
+1759520 fix: fix stage create release with pat token
+d46b385 Merge pull request #44 from sierrapablo/feat/create-release-with-jeninks
+8c4f48e chore: remove legacy deprecated github actions
+f63749f feat: add create release stage on Jenkins pipeline
