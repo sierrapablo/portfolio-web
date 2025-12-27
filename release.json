@@ -1,0 +1,9 @@
+
+            {
+              "tag_name": "5.0.6",
+              "name": "Release 5.0.6",
+              "body": "5b76a80 Merge branch 'release/5.0.6'\n15f2eda chore: format code\n3b27fde chore: update version to 5.0.6\n78aad0c fix: api github url fixed\n7fd2fbf fix: add Generate release notes stage\n5311794 fix: fix GitHub Release stage\n1759520 fix: fix stage create release with pat token\nd46b385 Merge pull request #44 from sierrapablo/feat/create-release-with-jeninks\n8c4f48e chore: remove legacy deprecated github actions\nf63749f feat: add create release stage on Jenkins pipeline",
+              "draft": false,
+              "prerelease": false
+            }
+            
