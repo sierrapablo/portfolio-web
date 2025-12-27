@@ -217,6 +217,7 @@ pipeline {
                 https://api.github.com/repos/sierrapablo/portfolio-web/releases \
                 -d @release.json
             """
+            sh 'rm -f changes.txt release.json'
           }
         }
       }
