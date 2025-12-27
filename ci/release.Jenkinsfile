@@ -180,23 +180,27 @@ pipeline {
 
     stage('Create GitHub Release') {
       steps {
-        withCredentials([string(credentialsId: 'github-release-token', variable: 'GITHUB_PAT')]) {
+        withCredentials([string(credentialsId: 'github-repo-pat', variable: 'GITHUB_PAT')]) {
           script {
             def changes = readFile('changes.txt').trim()
-            def changesEscaped = changes.replace('"', '\\"')
+            def changesEscaped = changes.replace('"', '\\"').replace('\n', '\\n')
+
+            writeFile file: 'release.json', text: """
+            {
+              "tag_name": "${env.NEW_VERSION}",
+              "name": "Release ${env.NEW_VERSION}",
+              "body": "${changesEscaped}",
+              "draft": false,
+              "prerelease": false
+            }
+            """
 
             sh """
               curl -X POST \
                 -H "Authorization: token ${GITHUB_PAT}" \
                 -H "Accept: application/vnd.github+json" \
                 https://api.github.com/repos/<OWNER>/<REPO>/releases \
-                -d '{
-                  "tag_name": "${env.NEW_VERSION}",
-                  "name": "Release ${env.NEW_VERSION}",
-                  "body": "${changesEscaped}",
-                  "draft": false,
-                  "prerelease": false
-                }'
+                -d @release.json
             """
           }
         }
