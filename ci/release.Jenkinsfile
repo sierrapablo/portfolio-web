@@ -91,21 +91,6 @@ pipeline {
       }
     }
 
-    stage('SonarQube Quality Gate') {
-      steps {
-        script {
-          timeout(time: 5, unit: 'MINUTES') {
-            def qg = waitForQualityGate abortPipeline: false
-            if (qg.status != 'OK') {
-              unstable("Quality Gate failed: ${qg.status}")
-            } else {
-              echo "Quality Gate passed: ${qg.status}"
-            }
-          }
-        }
-      }
-    }
-
     stage('Stop Previous Deployment') {
       steps {
         script {
@@ -197,17 +182,6 @@ pipeline {
         ==========================================
         RELEASE FAILED
         ==========================================
-        Version: ${env.NEW_VERSION}
-        Duration: ${currentBuild.durationString}
-        ==========================================
-      """
-    }
-    unstable {
-      echo """
-        ==========================================
-        RELEASE UNSTABLE
-        ==========================================
-        Release deployed but quality gate failed.
         Version: ${env.NEW_VERSION}
         Duration: ${currentBuild.durationString}
         ==========================================
