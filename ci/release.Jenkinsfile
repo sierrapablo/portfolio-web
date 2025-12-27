@@ -1,7 +1,5 @@
 pipeline {
-  agent {
-    docker { image 'node:24.11.1-bullseye' }
-  }
+  agent any
 
   parameters {
     choice(name: 'BUMP', choices: ['MAJOR', 'MINOR', 'PATCH'], description: 'Which type of release (MAJOR, MINOR, PATCH)')
@@ -16,7 +14,7 @@ pipeline {
   stages {
     stage('Install dependencies') {
       steps {
-        sh 'apt update && apt install -y jq'
+        sh 'apt update && apt install -y jq nodejs'
       }
     }
 
