@@ -76,8 +76,8 @@ pipeline {
               jq --arg v '${env.NEW_VERSION}' '.version = \$v' package.json > package.tmp.json
               mv package.tmp.json package.json
 
-              echo "Installing dependencies..."
-              npm install --only=dev
+              echo "Installing dev dependencies only..."
+              npm install --omit=prod
 
               PRETTIER_VERSION=\$(jq -r '.devDependencies.prettier' package.json | sed 's/^[^0-9]*//')
 
