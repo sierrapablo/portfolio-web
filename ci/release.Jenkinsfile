@@ -76,13 +76,16 @@ pipeline {
               jq --arg v '${env.NEW_VERSION}' '.version = \$v' package.json > package.tmp.json
               mv package.tmp.json package.json
 
+              echo "Installing dependencies..."
+              npm install --only=dev
+
               PRETTIER_VERSION=\$(jq -r '.devDependencies.prettier' package.json | sed 's/^[^0-9]*//')
 
               if [ -z "\$PRETTIER_VERSION" ]; then
                 echo "WARNING: Prettier not found in devDependencies, not formatting code."
               else
                 echo "Using Prettier \$PRETTIER_VERSION"
-                npx prettier@\$PRETTIER_VERSION --plugin=prettier-plugin-astro --config .prettierrc --write "src/**/*.{ts,js,html,css,astro,md,json}"
+                npx prettier@\$PRETTIER_VERSION --config .prettierrc --write "src/**/*.{ts,js,html,css,astro,md,json}"
               fi
 
               if ! git diff --quiet; then
