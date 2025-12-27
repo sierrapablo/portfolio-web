@@ -1,5 +1,5 @@
 ---
-import "../styles/header.css";
+import '../styles/header.css';
 ---
 
 <header>
@@ -19,19 +19,19 @@ import "../styles/header.css";
 </header>
 
 <script>
-  const burgerMenu = document.querySelector(".burger-menu");
-  const navLinks = document.querySelector(".nav-links");
+  const burgerMenu = document.querySelector('.burger-menu');
+  const navLinks = document.querySelector('.nav-links');
 
-  burgerMenu?.addEventListener("click", () => {
-    burgerMenu.classList.toggle("active");
-    navLinks?.classList.toggle("active");
+  burgerMenu?.addEventListener('click', () => {
+    burgerMenu.classList.toggle('active');
+    navLinks?.classList.toggle('active');
   });
 
   // Close menu when clicking on a link
-  document.querySelectorAll(".nav-links a").forEach((link) => {
-    link.addEventListener("click", () => {
-      burgerMenu?.classList.remove("active");
-      navLinks?.classList.remove("active");
+  document.querySelectorAll('.nav-links a').forEach((link) => {
+    link.addEventListener('click', () => {
+      burgerMenu?.classList.remove('active');
+      navLinks?.classList.remove('active');
     });
   });
 </script>

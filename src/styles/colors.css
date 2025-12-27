@@ -62,17 +62,9 @@
      GRADIENTS
      ============================================= */
 
-  --accent-gradient: linear-gradient(
-    45deg,
-    var(--color-accent-primary),
-    #d4ff9d 100%
-  );
+  --accent-gradient: linear-gradient(45deg, var(--color-accent-primary), #d4ff9d 100%);
 
-  --accent-gradient-secondary: linear-gradient(
-    45deg,
-    var(--color-accent-secondary),
-    #ff9b6a 100%
-  );
+  --accent-gradient-secondary: linear-gradient(45deg, var(--color-accent-secondary), #ff9b6a 100%);
 
   --accent-gradient-mixed: linear-gradient(
     45deg,

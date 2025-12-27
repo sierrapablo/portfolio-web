@@ -12,6 +12,12 @@ pipeline {
   }
 
   stages {
+    stage('Install dependencies') {
+      steps {
+        sh 'apt update && apt install -y jq nodejs npm'
+      }
+    }
+
     stage('Checkout') {
       steps {
         checkout scm
@@ -60,16 +66,35 @@ pipeline {
       }
     }
 
-    stage('Update package.json') {
+    stage('Update version & format code') {
       steps {
         sshagent(credentials: ['github']) {
           script {
             sh """
+              set -e
+
               jq --arg v '${env.NEW_VERSION}' '.version = \$v' package.json > package.tmp.json
               mv package.tmp.json package.json
-              git add package.json
-              git commit -m "Update version to ${env.NEW_VERSION}"
-              git push origin release/${env.NEW_VERSION}
+
+              echo "Installing dependencies..."
+              npm install --only=dev
+
+              PRETTIER_VERSION=\$(jq -r '.devDependencies.prettier' package.json | sed 's/^[^0-9]*//')
+
+              if [ -z "\$PRETTIER_VERSION" ]; then
+                echo "WARNING: Prettier not found in devDependencies, not formatting code."
+              else
+                echo "Using Prettier \$PRETTIER_VERSION"
+                npx prettier@\$PRETTIER_VERSION --config .prettierrc --write "src/**/*.{ts,js,html,css,astro,md,json}"
+              fi
+
+              if ! git diff --quiet; then
+                git add .
+                git commit -m "chore: update version to ${env.NEW_VERSION}"
+                git push origin release/${env.NEW_VERSION}
+              else
+                echo "No changes to commit."
+              fi
             """
           }
         }

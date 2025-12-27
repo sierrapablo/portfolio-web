@@ -1,6 +1,6 @@
 ---
-import "../styles/experience.css";
-import { experiences } from "../lib/data";
+import '../styles/experience.css';
+import { experiences } from '../lib/data';
 ---
 
 <section id="experience" class="fade-in delay-1">
@@ -62,7 +62,7 @@ import { experiences } from "../lib/data";
       {
         experiences.map((_, index) => (
           <button
-            class={`indicator ${index === 0 ? "active" : ""}`}
+            class={`indicator ${index === 0 ? 'active' : ''}`}
             data-index={index}
             aria-label={`Go to experience ${index + 1}`}
           />
@@ -77,6 +77,6 @@ import { experiences } from "../lib/data";
 </section>
 
 <script>
-  import { initExperienceCarousel } from "../animations/experienceCarousel";
+  import { initExperienceCarousel } from '../animations/experienceCarousel';
   initExperienceCarousel();
 </script>

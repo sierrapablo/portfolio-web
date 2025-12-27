@@ -1,10 +1,10 @@
 ---
 layout: ../../layouts/ProjectLayout.astro
-title: "DevOps-Driven Portfolio Web Deployment"
-description: "A comprehensive guide to the automated build and deployment pipeline of a modern Astro web application using Docker and Jenkins."
-techStack: ["Docker", "Jenkins", "Nginx", "Astro"]
-url: "https://github.com/sierrapablo/portfolio-web"
-link: "https://www.sierrapablo.dev"
+title: 'DevOps-Driven Portfolio Web Deployment'
+description: 'A comprehensive guide to the automated build and deployment pipeline of a modern Astro web application using Docker and Jenkins.'
+techStack: ['Docker', 'Jenkins', 'Nginx', 'Astro']
+url: 'https://github.com/sierrapablo/portfolio-web'
+link: 'https://www.sierrapablo.dev'
 ---
 
 # DevOps-Driven Portfolio Web Deployment

@@ -1,7 +1,7 @@
 {
   "name": "portfolio-web",
   "type": "module",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "author": "Pablo Sierra",
   "homepage": "https://www.sierrapablo.dev",
   "bugs": {
@@ -20,5 +20,9 @@
   },
   "dependencies": {
     "astro": "^5.16.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.7.4",
+    "prettier-plugin-astro": "^0.14.1"
   }
 }

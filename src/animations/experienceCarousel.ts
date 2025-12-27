@@ -8,9 +8,9 @@ const handleScrollNext = (carousel: HTMLElement, resetAutoplay: () => void) => {
   const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 10;
 
   if (isAtEnd) {
-    carousel.scrollTo({ left: 0, behavior: "smooth" });
+    carousel.scrollTo({ left: 0, behavior: 'smooth' });
   } else {
-    carousel.scrollBy({ left: getScrollAmount(carousel), behavior: "smooth" });
+    carousel.scrollBy({ left: getScrollAmount(carousel), behavior: 'smooth' });
   }
   resetAutoplay();
 };
@@ -18,35 +18,28 @@ const handleScrollNext = (carousel: HTMLElement, resetAutoplay: () => void) => {
 const handleScrollPrev = (carousel: HTMLElement, resetAutoplay: () => void) => {
   const { scrollLeft, scrollWidth } = carousel;
   if (scrollLeft <= 10) {
-    carousel.scrollTo({ left: scrollWidth, behavior: "smooth" });
+    carousel.scrollTo({ left: scrollWidth, behavior: 'smooth' });
   } else {
-    carousel.scrollBy({ left: -getScrollAmount(carousel), behavior: "smooth" });
+    carousel.scrollBy({ left: -getScrollAmount(carousel), behavior: 'smooth' });
   }
   resetAutoplay();
 };
 
-const handleJumpToSlide = (
-  carousel: HTMLElement,
-  index: number,
-  resetAutoplay: () => void,
-) => {
-  const cards = carousel.querySelectorAll(".card");
+const handleJumpToSlide = (carousel: HTMLElement, index: number, resetAutoplay: () => void) => {
+  const cards = carousel.querySelectorAll('.card');
   const card = cards[index];
   if (card) {
     card.scrollIntoView({
-      behavior: "smooth",
-      inline: "center",
-      block: "nearest",
+      behavior: 'smooth',
+      inline: 'center',
+      block: 'nearest',
     });
   }
   resetAutoplay();
 };
 
-const updateUIState = (
-  carousel: HTMLElement,
-  indicators: NodeListOf<Element>,
-) => {
-  const cards = carousel.querySelectorAll(".card");
+const updateUIState = (carousel: HTMLElement, indicators: NodeListOf<Element>) => {
+  const cards = carousel.querySelectorAll('.card');
   const { left, width } = carousel.getBoundingClientRect();
   const carouselCenter = left + width / 2;
 
@@ -55,9 +48,7 @@ const updateUIState = (
 
   cards.forEach((card, index) => {
     const cardRect = card.getBoundingClientRect();
-    const distance = Math.abs(
-      cardRect.left + cardRect.width / 2 - carouselCenter,
-    );
+    const distance = Math.abs(cardRect.left + cardRect.width / 2 - carouselCenter);
 
     if (distance < minDistance) {
       minDistance = distance;
@@ -66,16 +57,16 @@ const updateUIState = (
   });
 
   indicators.forEach((indicator, index) => {
-    indicator.classList.toggle("active", index === activeIndex);
+    indicator.classList.toggle('active', index === activeIndex);
   });
 };
 
 export function initExperienceCarousel() {
-  const carousel = document.getElementById("experience-carousel");
-  const prevBtn = document.getElementById("prev-btn");
-  const nextBtn = document.getElementById("next-btn");
-  const progressBar = document.getElementById("progress-bar");
-  const indicators = document.querySelectorAll(".indicator");
+  const carousel = document.getElementById('experience-carousel');
+  const prevBtn = document.getElementById('prev-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const progressBar = document.getElementById('progress-bar');
+  const indicators = document.querySelectorAll('.indicator');
 
   if (!carousel || !prevBtn || !nextBtn || !progressBar) return;
 
@@ -85,7 +76,7 @@ export function initExperienceCarousel() {
 
   const resetAutoplay = () => {
     startTime = Date.now();
-    progressBar.style.width = "0%";
+    progressBar.style.width = '0%';
     cancelAnimationFrame(progressAnimationFrame);
     progressAnimationFrame = requestAnimationFrame(updateProgress);
   };
@@ -96,7 +87,7 @@ export function initExperienceCarousel() {
       const progress = (elapsed / AUTOPLAY_DURATION) * 100;
 
       if (progress >= 100) {
-        progressBar.style.width = "100%";
+        progressBar.style.width = '100%';
         handleScrollNext(carousel, resetAutoplay);
         return;
       }
@@ -112,27 +103,23 @@ export function initExperienceCarousel() {
   };
 
   // Event Listeners
-  prevBtn.addEventListener("click", (e) => {
+  prevBtn.addEventListener('click', (e) => {
     e.preventDefault();
     handleScrollPrev(carousel, resetAutoplay);
   });
-  nextBtn.addEventListener("click", (e) => {
+  nextBtn.addEventListener('click', (e) => {
     e.preventDefault();
     handleScrollNext(carousel, resetAutoplay);
   });
 
   indicators.forEach((indicator, index) => {
-    indicator.addEventListener("click", () =>
-      handleJumpToSlide(carousel, index, resetAutoplay),
-    );
+    indicator.addEventListener('click', () => handleJumpToSlide(carousel, index, resetAutoplay));
   });
 
-  carousel.addEventListener("mouseenter", () => (isPaused = true));
-  carousel.addEventListener("mouseleave", resumeAutoplay);
-  carousel.addEventListener("scroll", () =>
-    updateUIState(carousel, indicators),
-  );
-  window.addEventListener("resize", () => updateUIState(carousel, indicators));
+  carousel.addEventListener('mouseenter', () => (isPaused = true));
+  carousel.addEventListener('mouseleave', resumeAutoplay);
+  carousel.addEventListener('scroll', () => updateUIState(carousel, indicators));
+  window.addEventListener('resize', () => updateUIState(carousel, indicators));
 
   // Initial update and start
   updateUIState(carousel, indicators);

@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.github/
+.vscode/
+docs/
+*.config.js
+package.json
+package-lock.json
+pnpm-lock.yaml
+README.md
+.env
+.gitattributes

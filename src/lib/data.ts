@@ -1,10 +1,10 @@
-import type { Experience } from "../types/experiences";
-import type { Project } from "../types/projects";
-import { createExperience } from "./createExperience";
-import { createProject } from "./createProject";
-import TECH from "../data/tech.json";
-import rawExperiences from "../data/experiences.json";
-import rawProjects from "../data/projects.json";
+import type { Experience } from '../types/experiences';
+import type { Project } from '../types/projects';
+import { createExperience } from './createExperience';
+import { createProject } from './createProject';
+import TECH from '../data/tech.json';
+import rawExperiences from '../data/experiences.json';
+import rawProjects from '../data/projects.json';
 
 const mapTechKey = (key: string): string => {
   if (!(key in TECH)) {
@@ -25,12 +25,5 @@ export const experiences: Experience[] = rawExperiences.map((exp) =>
 );
 
 export const projects: Project[] = rawProjects.map((p) =>
-  createProject(
-    p.title,
-    p.description,
-    p.techKeys.map(mapTechKey),
-    p.slug,
-    p.url,
-    p.link,
-  ),
+  createProject(p.title, p.description, p.techKeys.map(mapTechKey), p.slug, p.url, p.link),
 );

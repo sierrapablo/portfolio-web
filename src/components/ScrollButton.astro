@@ -7,11 +7,7 @@ interface Props {
 const { id, className } = Astro.props;
 ---
 
-<button
-  id={id}
-  class:list={["scroll-to-top-btn", className]}
-  aria-label="Scroll to top"
->
+<button id={id} class:list={['scroll-to-top-btn', className]} aria-label="Scroll to top">
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
