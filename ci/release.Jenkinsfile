@@ -79,13 +79,13 @@ pipeline {
     stage('SonarQube analysis') {
       steps {
         withSonarQubeEnv('sonarqube') {
-          sh '''
+          sh """
             sonar-scanner \
             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
             -Dsonar.projectVersion=${env.NEW_VERSION} \
             -Dsonar.sources=. \
             -Dsonar.exclusions=node_modules/**,dist/**,build/**
-          '''
+          """
         }
       }
     }
