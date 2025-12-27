@@ -26,3 +26,6 @@ pnpm-debug.log*
 # valkey
 cache/data
 valkey.conf
+
+# SonarQube
+.scannerwork
