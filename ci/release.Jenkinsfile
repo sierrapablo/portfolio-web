@@ -1,5 +1,7 @@
 pipeline {
-  agent any
+  agent {
+    docker { image 'node:24.11.1-bullseye' }
+  }
 
   parameters {
     choice(name: 'BUMP', choices: ['MAJOR', 'MINOR', 'PATCH'], description: 'Which type of release (MAJOR, MINOR, PATCH)')
@@ -12,6 +14,12 @@ pipeline {
   }
 
   stages {
+    stage('Install dependencies') {
+      steps {
+        sh 'apt update && apt install -y jq'
+      }
+    }
+
     stage('Checkout') {
       steps {
         checkout scm
