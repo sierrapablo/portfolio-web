@@ -75,6 +75,8 @@ pipeline {
 
               jq --arg v '${env.NEW_VERSION}' '.version = \$v' package.json > package.tmp.json
               mv package.tmp.json package.json
+              git add package.json
+              git commit -m "chore: update version to ${env.NEW_VERSION}"
 
               echo "Installing dev dependencies only..."
               npm install --omit=prod
@@ -90,11 +92,12 @@ pipeline {
 
               if ! git diff --quiet; then
                 git add .
-                git commit -m "chore: update version to ${env.NEW_VERSION}"
-                git push origin release/${env.NEW_VERSION}
+                git commit -m "chore: format code"
               else
                 echo "No changes to commit."
               fi
+
+              git push origin release/${env.NEW_VERSION}
             """
           }
         }
