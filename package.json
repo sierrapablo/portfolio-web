@@ -20,5 +20,8 @@
   },
   "dependencies": {
     "astro": "^5.16.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.7.4"
   }
 }
