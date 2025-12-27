@@ -214,7 +214,7 @@ pipeline {
               curl -X POST \
                 -H "Authorization: token ${GITHUB_PAT}" \
                 -H "Accept: application/vnd.github+json" \
-                https://api.github.com/repos/<OWNER>/<REPO>/releases \
+                https://api.github.com/repos/sierracode/portfolio-web/releases \
                 -d @release.json
             """
           }
