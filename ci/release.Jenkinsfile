@@ -60,16 +60,34 @@ pipeline {
       }
     }
 
-    stage('Update package.json') {
+    stage('Update version & format code') {
       steps {
         sshagent(credentials: ['github']) {
           script {
             sh """
+              set -e
+
               jq --arg v '${env.NEW_VERSION}' '.version = \$v' package.json > package.tmp.json
               mv package.tmp.json package.json
-              git add package.json
-              git commit -m "Update version to ${env.NEW_VERSION}"
-              git push origin release/${env.NEW_VERSION}
+
+              PRETTIER_VERSION=\$(jq -r '.devDependencies.prettier' package.json | sed 's/^[^0-9]*//')
+
+              if [ -z "\$PRETTIER_VERSION" ]; then
+                PRETTIER_VERSION=3.7.4
+                echo "WARNING: Prettier not found in devDependencies, using fallback \$PRETTIER_VERSION"
+              fi
+
+              echo "Using Prettier \$PRETTIER_VERSION"
+
+              pnpm dlx prettier@\$PRETTIER_VERSION --config .prettierrc --write "src/**/*.{ts,js,html,css,astro,md,json}"
+
+              if ! git diff --quiet; then
+                git add .
+                git commit -m "chore: update version to ${env.NEW_VERSION}"
+                git push origin release/${env.NEW_VERSION}
+              else
+                echo "No changes to commit."
+              fi
             """
           }
         }
