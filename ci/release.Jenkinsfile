@@ -76,7 +76,7 @@ pipeline {
                 echo "WARNING: Prettier not found in devDependencies, not formatting code."
               else
                 echo "Using Prettier \$PRETTIER_VERSION"
-                pnpm dlx prettier@\$PRETTIER_VERSION --config .prettierrc --write "src/**/*.{ts,js,html,css,astro,md,json}"
+                npx prettier@\$PRETTIER_VERSION --config .prettierrc --write "src/**/*.{ts,js,html,css,astro,md,json}"
               fi
 
               if ! git diff --quiet; then
