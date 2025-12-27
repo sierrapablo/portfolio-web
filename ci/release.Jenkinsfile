@@ -81,6 +81,7 @@ pipeline {
         withSonarQubeEnv('sonarqube') {
           sh """
             ${tool 'sonar-scanner'}/bin/sonar-scanner \
+            -X \
             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
             -Dsonar.projectVersion=${env.NEW_VERSION} \
             -Dsonar.sources=. \
