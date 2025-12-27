@@ -2,14 +2,13 @@ pipeline {
   agent any
 
   parameters {
-    choice(name: 'BUMP', choices: ['X', 'Y', 'Z'], description: 'Which type of release (X=Major, Y=Minor, Z=Patch)')
+    choice(name: 'BUMP', choices: ['MAJOR', 'MINOR', 'PATCH'], description: 'Which type of release (MAJOR, MINOR, PATCH)')
   }
 
   environment {
     GIT_USER_NAME = 'Jenkins CI'
-    GIT_USER_EMAIL = 'jenkins@M910Q'
-    REGISTRY_REPO = 'sierrapablo/portfolio-web'
-    DOCKER_HUB_CREDENTIALS_ID = 'docker-hub-credentials'
+    GIT_USER_EMAIL = 'jenkins[bot]@noreply.jenkins.io'
+    SONAR_PROJECT_KEY = 'sierrapablo-portfolio-web'
   }
 
   stages {
@@ -29,17 +28,16 @@ pipeline {
           int minor = ver[1].toInteger()
           int patch = ver[2].toInteger()
 
-          if (params.BUMP == 'X') {
+          if (params.BUMP == 'MAJOR') {
             major += 1
             minor = 0
             patch = 0
-          } else if (params.BUMP == 'Y') {
+          } else if (params.BUMP == 'MINOR') {
             minor += 1
             patch = 0
-          } else if (params.BUMP == 'Z') {
+          } else if (params.BUMP == 'PATCH') {
             patch += 1
           }
-
           env.NEW_VERSION = "${major}.${minor}.${patch}"
           echo "New calculated version: ${env.NEW_VERSION}"
         }
@@ -78,37 +76,37 @@ pipeline {
       }
     }
 
-    stage('Build Docker image') {
+    stage('SonarQube analysis') {
       steps {
-        script {
-          echo 'Building Docker image...'
-          echo "Building image with tag: ${env.NEW_VERSION}"
-          dockerImage = docker.build("${env.REGISTRY_REPO}:temp-${env.NEW_VERSION}")
-          echo 'Build completed successfully'
+        withSonarQubeEnv('sonarqube') {
+          sh """
+            ${tool 'sonar-scanner'}/bin/sonar-scanner \
+            -X \
+            -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+            -Dsonar.projectVersion=${env.NEW_VERSION} \
+            -Dsonar.sources=. \
+            -Dsonar.exclusions=node_modules/**,dist/**,build/**
+          """
         }
       }
     }
 
-    stage('Tag Docker images') {
+    stage('Stop Previous Deployment') {
       steps {
         script {
-          echo "Tagging image with version ${env.NEW_VERSION} and latest"
-          dockerImage.tag(env.NEW_VERSION)
-          dockerImage.tag('latest')
+          echo 'Stopping previous deployment if exists...'
+          sh 'docker-compose down || true'
         }
       }
     }
 
-    stage('Push Docker images') {
+    stage('Deploy new version') {
       steps {
         script {
-          echo 'Pushing Docker images to Docker Hub...'
-          docker.withRegistry('', DOCKER_HUB_CREDENTIALS_ID) {
-            dockerImage.push(env.NEW_VERSION)
-            echo "Pushed ${env.REGISTRY_REPO}:${env.NEW_VERSION}"
-            dockerImage.push('latest')
-            echo "Pushed ${env.REGISTRY_REPO}:latest"
-          }
+          echo 'Deploying new version...'
+          sh '''
+            docker-compose up -d --build
+          '''
         }
       }
     }
@@ -117,11 +115,9 @@ pipeline {
       steps {
         script {
           echo 'Cleaning up local images...'
-          sh """
-            docker rmi ${env.REGISTRY_REPO}:latest || true
-            docker rmi ${env.REGISTRY_REPO}:${env.NEW_VERSION} || true
+          sh '''
             docker system prune -f
-          """
+          '''
           echo 'Cleanup completed'
         }
       }
@@ -169,6 +165,7 @@ pipeline {
       }
     }
   }
+
   post {
     success {
       echo """
@@ -194,6 +191,7 @@ pipeline {
       script {
         echo "Attempting to clean up remote branch release/${env.NEW_VERSION}..."
         sshagent(credentials: ['github']) {
+          sh 'git checkout develop'
           sh 'git fetch origin'
           sh "git branch -D release/${env.NEW_VERSION} || true"
           sh "git push origin --delete release/${env.NEW_VERSION} || true"

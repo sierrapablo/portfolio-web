@@ -1,7 +1,9 @@
 services:
   web:
     container_name: portfolio-web
-    image: ${DOCKER_IMAGE:-sierrapablo/portfolio-web:latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
     expose:
       - "4321"
     restart: unless-stopped
