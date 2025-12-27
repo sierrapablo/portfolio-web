@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.github/
+.vscode/
+docs/
+*.config.js
+*.json
+*.md
+.env
+.gitattributes
