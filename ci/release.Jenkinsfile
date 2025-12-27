@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   parameters {
-    choice(name: 'BUMP', choices: ['MAJOR', 'MINOR', 'PATCH', 'NO BUMP'], description: 'Which type of release (MAJOR, MINOR, PATCH, NO BUMP)')
+    choice(name: 'BUMP', choices: ['MAJOR', 'MINOR', 'PATCH'], description: 'Which type of release (MAJOR, MINOR, PATCH)')
   }
 
   environment {
@@ -37,10 +37,6 @@ pipeline {
             patch = 0
           } else if (params.BUMP == 'PATCH') {
             patch += 1
-          } else if (params.BUMP == 'NO BUMP') {
-            echo 'No version bump selected. Exiting pipeline.'
-            currentBuild.result = 'SUCCESS'
-            return
           }
           env.NEW_VERSION = "${major}.${minor}.${patch}"
           echo "New calculated version: ${env.NEW_VERSION}"
