@@ -8,13 +8,13 @@ pipeline {
   environment {
     GIT_USER_NAME = 'Jenkins CI'
     GIT_USER_EMAIL = 'jenkins[bot]@noreply.jenkins.io'
-    SONAR_PROJECT_KEY = 'sierrapablo-portfolio-web'
   }
 
   stages {
     stage('Install dependencies') {
       steps {
         sh 'apt update && apt install -y jq nodejs npm'
+        sh 'npm ci'
       }
     }
 
@@ -66,37 +66,16 @@ pipeline {
       }
     }
 
-    stage('Update version & format code') {
+    stage('Update version') {
       steps {
         sshagent(credentials: ['github']) {
           script {
             sh """
               set -e
-
               jq --arg v '${env.NEW_VERSION}' '.version = \$v' package.json > package.tmp.json
               mv package.tmp.json package.json
               git add package.json
               git commit -m "chore: update version to ${env.NEW_VERSION}"
-
-              echo "Installing dev dependencies only..."
-              npm install --omit=prod
-
-              PRETTIER_VERSION=\$(jq -r '.devDependencies.prettier' package.json | sed 's/^[^0-9]*//')
-
-              if [ -z "\$PRETTIER_VERSION" ]; then
-                echo "WARNING: Prettier not found in devDependencies, not formatting code."
-              else
-                echo "Using Prettier \$PRETTIER_VERSION"
-                npx prettier@\$PRETTIER_VERSION --config .prettierrc --write "src/**/*.{ts,js,html,css,astro,md,json}"
-              fi
-
-              if ! git diff --quiet; then
-                git add .
-                git commit -m "chore: format code"
-              else
-                echo "No changes to commit."
-              fi
-
               git push origin release/${env.NEW_VERSION}
             """
           }
@@ -104,49 +83,26 @@ pipeline {
       }
     }
 
-    stage('SonarQube analysis') {
+    stage('Build') {
       steps {
-        withSonarQubeEnv('sonarqube') {
-          sh """
-            ${tool 'sonar-scanner'}/bin/sonar-scanner \
-            -X \
-            -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-            -Dsonar.projectVersion=${env.NEW_VERSION} \
-            -Dsonar.sources=. \
-            -Dsonar.exclusions=node_modules/**,dist/**,build/**
-          """
-        }
+        sh 'npm run build'
       }
     }
 
-    stage('Stop Previous Deployment') {
+    stage('Deploy') {
       steps {
+        input message: "Deploy version ${env.NEW_VERSION}?", ok: 'Deploy'
         script {
-          echo 'Stopping previous deployment if exists...'
-          sh 'docker-compose down || true'
-        }
-      }
-    }
-
-    stage('Deploy new version') {
-      steps {
-        script {
-          echo 'Deploying new version...'
           sh '''
-            docker-compose up -d --build
-          '''
-        }
-      }
-    }
+            mkdir -p /srv/portfolio-web
+            chown -R 101:101 /srv/portfolio-web
+            chmod -R 755 /srv/portfolio-web
 
-    stage('Cleanup') {
-      steps {
-        script {
-          echo 'Cleaning up local images...'
-          sh '''
-            docker system prune -f
+            rm -rf /srv/portfolio-web/*
+            cp -r dist/* /srv/portfolio-web/
+
+            chown -R 101:101 /srv/portfolio-web
           '''
-          echo 'Cleanup completed'
         }
       }
     }
@@ -237,7 +193,7 @@ pipeline {
         }
       }
     }
-}
+  }
 
   post {
     success {
