@@ -94,7 +94,14 @@ pipeline {
         input message: "Deploy version ${env.NEW_VERSION}?", ok: 'Deploy'
         script {
           sh '''
+            sudo mkdir -p /srv/portfolio-web
+            sudo chown -R 101:101 /srv/portfolio-web
+            sudo chmod -R 755 /srv/portfolio-web
+
+            rm -rf /srv/portfolio-web/*
             cp -r dist/* /srv/portfolio-web/
+
+            chown -R 101:101 /srv/portfolio-web
           '''
         }
       }
