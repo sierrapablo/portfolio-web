@@ -8,7 +8,6 @@ pipeline {
   environment {
     GIT_USER_NAME = 'Jenkins CI'
     GIT_USER_EMAIL = 'jenkins[bot]@noreply.jenkins.io'
-    DIST_VOLUME_MOUNTPOINT = '/var/snap/docker/common/var-lib-docker/volumes/portfolio-web-dist/_data'
   }
 
   stages {
@@ -94,10 +93,10 @@ pipeline {
       steps {
         input message: "Deploy version ${env.NEW_VERSION}?", ok: 'Deploy'
         script {
-          sh """
-            rm -rf ${DIST_VOLUME_MOUNTPOINT}/*
-            cp -r dist/* ${DIST_VOLUME_MOUNTPOINT}/
-          """
+          sh '''
+            docker exec portfolio-web sh -c "rm -rf /usr/share/nginx/html/*"
+            docker cp dist/. portfolio-web:/usr/share/nginx/html/
+          '''
         }
       }
     }
