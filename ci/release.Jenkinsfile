@@ -94,14 +94,9 @@ pipeline {
         input message: "Deploy version ${env.NEW_VERSION}?", ok: 'Deploy'
         script {
           sh '''
-            mkdir -p /srv/portfolio-web
-            chown -R 101:101 /srv/portfolio-web
-            chmod -R 755 /srv/portfolio-web
-
-            rm -rf /srv/portfolio-web/*
-            cp -r dist/* /srv/portfolio-web/
-
-            chown -R 101:101 /srv/portfolio-web
+            docker exec --user root portfolio-web sh -c "rm -rf /usr/share/nginx/html/*"
+            docker cp dist/. portfolio-web:/usr/share/nginx/html/
+            docker exec --user root portfolio-web sh -c "chown -R 101:101 /usr/share/nginx/html"
           '''
         }
       }
