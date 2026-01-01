@@ -1,0 +1,94 @@
+pipeline {
+  agent any
+
+  parameters {
+    gitParameter(
+      name: 'TAG',
+      type: 'PT_TAG',
+      defaultValue: '',
+      description: 'Tag to deploy',
+      sortMode: 'DESCENDING_SMART',
+      selectedValue: 'TOP'
+    )
+  }
+
+  environment {
+    GIT_USER_NAME = 'Jenkins CI'
+    GIT_USER_EMAIL = 'jenkins[bot]@noreply.jenkins.io'
+  }
+
+  stages {
+    stage('Install dependencies') {
+      steps {
+        sh 'apt update && apt install -y jq nodejs npm'
+        sh 'npm ci'
+      }
+    }
+
+    stage('Checkout') {
+      steps {
+        sshagent(credentials: ['github']) {
+          script {
+            if (!params.TAG || params.TAG == '') {
+              error "The 'TAG' parameter is mandatory. Please select a valid tag."
+            }
+            sh """
+              git config user.name "${env.GIT_USER_NAME}"
+              git config user.email "${env.GIT_USER_EMAIL}"
+
+              git fetch --tags --force
+              git checkout ${params.TAG}
+            """
+          }
+        }
+      }
+    }
+
+    stage('Build') {
+      steps {
+        sh 'npm run build'
+      }
+    }
+
+    stage('Deploy') {
+      steps {
+        input message: "Deploy version ${params.TAG}?", ok: 'Deploy'
+        script {
+          sh '''
+            docker exec --user root portfolio-web sh -c "rm -rf /usr/share/nginx/html/*"
+            docker cp dist/. portfolio-web:/usr/share/nginx/html/
+            docker exec --user root portfolio-web sh -c "chown -R 101:101 /usr/share/nginx/html"
+          '''
+        }
+      }
+    }
+  }
+  post {
+    success {
+      echo """
+        ==========================================
+        DEPLOY SUCCESSFUL
+        ==========================================
+        Version: ${params.TAG}
+        Duration: ${currentBuild.durationString}
+        ==========================================""
+      """
+    }
+    failure {
+      echo """
+        ==========================================
+        DEPLOY FAILED
+        ==========================================
+        Version: ${params.TAG}
+        Duration: ${currentBuild.durationString}
+        ==========================================
+      """
+    }
+    always {
+      script {
+        echo 'Attempting to clean up workspace...'
+        cleanWs()
+      }
+    }
+  }
+}
