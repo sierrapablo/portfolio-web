@@ -11,13 +11,6 @@ pipeline {
   }
 
   stages {
-    stage('Install dependencies') {
-      steps {
-        sh 'apt update && apt install -y jq nodejs npm'
-        sh 'npm ci'
-      }
-    }
-
     stage('Checkout') {
       steps {
         checkout scm
@@ -79,25 +72,6 @@ pipeline {
               git push origin release/${env.NEW_VERSION}
             """
           }
-        }
-      }
-    }
-
-    stage('Build') {
-      steps {
-        sh 'npm run build'
-      }
-    }
-
-    stage('Deploy') {
-      steps {
-        input message: "Deploy version ${env.NEW_VERSION}?", ok: 'Deploy'
-        script {
-          sh '''
-            docker exec --user root portfolio-web sh -c "rm -rf /usr/share/nginx/html/*"
-            docker cp dist/. portfolio-web:/usr/share/nginx/html/
-            docker exec --user root portfolio-web sh -c "chown -R 101:101 /usr/share/nginx/html"
-          '''
         }
       }
     }
