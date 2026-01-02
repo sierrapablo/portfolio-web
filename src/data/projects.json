@@ -2,12 +2,7 @@
   {
     "title": "Portfolio Web",
     "description": "A personal portfolio website built with Astro to showcase my experience and projects. Features a responsive design, dark mode, and smooth animations.",
-    "techKeys": [
-      "Docker",
-      "Jenkins",
-      "Nginx",
-      "Astro"
-    ],
+    "techKeys": ["Docker", "Jenkins", "Nginx", "Astro"],
     "slug": "portfolio-web",
     "url": "https://github.com/sierrapablo/portfolio-web",
     "link": "https://www.sierrapablo.dev"
@@ -15,13 +10,7 @@
   {
     "title": "Reverse Proxy & Monitoring",
     "description": "Monitoring for Nginx Reverse Proxy in Docker with HTTPS, Prometheus and Grafana.",
-    "techKeys": [
-      "Docker",
-      "Nginx",
-      "Prometheus",
-      "Grafana",
-      "Terraform"
-    ],
+    "techKeys": ["Docker", "Nginx", "Prometheus", "Grafana", "Terraform"],
     "slug": "reverse-proxy-monitoring",
     "url": "https://github.com/sierrapablo/reverse-proxy-monitoring"
   }
