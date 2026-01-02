@@ -1,28 +1,45 @@
 pipeline {
   agent any
 
+  parameters {
+    gitParameter(
+      name: 'BRANCH_NAME',
+      type: 'PT_BRANCH',
+      defaultValue: 'develop',
+      branchFilter: 'origin/(.*)',
+      description: 'Selecciona la rama para ejecutar el formateo',
+      sortMode: 'DESCENDING_SMART',
+      selectedValue: 'DEFAULT'
+    )
+  }
+
   environment {
     GIT_USER_NAME = 'Jenkins CI'
     GIT_USER_EMAIL = 'jenkins[bot]@noreply.jenkins.io'
   }
 
   stages {
-    stage('Install dependencies') {
-      steps {
-        sh 'apt update && apt install -y jq nodejs npm'
-      }
-    }
-
     stage('Checkout') {
       steps {
         sshagent(credentials: ['github']) {
-          sh """
-            git config --global user.name "${GIT_USER_NAME}"
-            git config --global user.email "${GIT_USER_EMAIL}"
-            git checkout develop
-            git pull origin develop
-          """
+          script {
+            echo "Ejecutando formateo en la rama: ${params.BRANCH_NAME}"
+            sh """
+              git config user.name "${env.GIT_USER_NAME}"
+              git config user.email "${env.GIT_USER_EMAIL}"
+
+              git fetch --all
+              git checkout ${params.BRANCH_NAME}
+              git pull
+            """
+          }
         }
+      }
+    }
+
+    stage('Install dependencies') {
+      steps {
+        sh 'apt update && apt install -y jq nodejs npm'
       }
     }
 
@@ -52,7 +69,7 @@ pipeline {
                 echo "No changes to commit."
               fi
 
-              git push origin develop
+              git push
             """
           }
         }
