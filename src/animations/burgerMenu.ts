@@ -9,11 +9,11 @@ export const initBurgerMenu = () => {
     });
 
     // Close menu when clicking on a link
-    document.querySelectorAll('.nav-links a').forEach((link) => {
-      link.addEventListener('click', () => {
+    navLinks.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) {
         burgerMenu.classList.remove('active');
         navLinks.classList.remove('active');
-      });
+      }
     });
   }
 };
