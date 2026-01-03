@@ -9,7 +9,7 @@ export const initScrollToTop = (buttonId: string) => {
     window.addEventListener('scroll', () => {
       window.cancelAnimationFrame(isScrolling);
 
-      isScrolling = window.requestAnimationFrame(() => {
+      isScrolling = globalThis.requestAnimationFrame(() => {
         if (window.scrollY > SCROLL_THRESHOLD) {
           scrollToTopBtn.classList.add('show');
         } else {
