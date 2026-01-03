@@ -74,7 +74,10 @@ export function initExperienceCarousel() {
   const progressBar = document.getElementById('progress-bar');
   const indicators = document.querySelectorAll('.indicator');
 
-  if (!carousel || !prevBtn || !nextBtn || !progressBar) return;
+  if (!carousel || !prevBtn || !nextBtn || !progressBar) {
+    console.error('Experience carousel elements not found');
+    return;
+  }
 
   let startTime = Date.now();
   let isPaused = false;
