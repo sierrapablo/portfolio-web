@@ -1,184 +1,193 @@
 #statistics {
-  padding: 2rem 2rem 4rem;
-  max-width: 1200px;
-  margin: 0 auto;
+    padding: 2rem 2rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .statistics-container {
-  display: flex;
-  justify-content: center;
+    display: flex;
+    justify-content: center;
+}
+
+.skeleton-stats-container {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.skeleton-stat-value {
+    filter: blur(5px);
 }
 
 .stats-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  padding: 2.5rem;
-  width: 100%;
-  max-width: 900px;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease,
-    border-color 0.3s ease;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 900px;
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
 }
 
 .stats-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  border-color: var(--accent);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-color: var(--accent);
 }
 
 .skeleton-stats-card {
-  width: 900px;
+    width: 900px;
 }
 
 .stats-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
 }
 
 .stats-header h3 {
-  font-size: 1.75rem;
-  color: var(--color-text-light);
-  margin: 0;
+    font-size: 1.75rem;
+    color: var(--color-text-light);
+    margin: 0;
 }
 
 .stats-summary {
-  margin-bottom: 2rem;
+    margin-bottom: 2rem;
 }
 
 .stat-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .stat-value {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: var(--accent-light);
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--accent-light);
 }
 
 .stat-label {
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
 }
 
 /* Heatmap Grid */
 .heatmap-container {
-  overflow-x: auto;
-  padding-bottom: 1rem;
-  /* Scrollbar styling */
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-medium) transparent;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    /* Scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-medium) transparent;
 }
 
 .heatmap-container::-webkit-scrollbar {
-  height: 6px;
+    height: 6px;
 }
 
 .heatmap-container::-webkit-scrollbar-thumb {
-  background-color: var(--border-medium);
-  border-radius: 3px;
+    background-color: var(--border-medium);
+    border-radius: 3px;
 }
 
 .skeleton-heatmap-container {
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .heatmap {
-  display: grid;
-  grid-template-rows: repeat(7, 12px);
-  grid-auto-flow: column;
-  gap: 4px;
-  width: max-content;
-  /* Ensure it grows horizontally */
+    display: grid;
+    grid-template-rows: repeat(7, 12px);
+    grid-auto-flow: column;
+    gap: 4px;
+    width: max-content;
+    /* Ensure it grows horizontally */
 }
 
 .contribution-day {
-  width: 12px;
-  height: 12px;
-  border-radius: 2px;
-  background-color: var(--bg-code-block);
-  /* Default / Level 0 */
-  transition: transform 0.1s ease;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    background-color: var(--bg-code-block);
+    /* Default / Level 0 */
+    transition: transform 0.1s ease;
 }
 
 .contribution-day:hover {
-  transform: scale(1.2);
-  z-index: 2;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+    transform: scale(1.2);
+    z-index: 2;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Contribution Levels */
 .contribution-day[data-level='0'] {
-  background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 .contribution-day[data-level='1'] {
-  background-color: rgba(var(--accent-rgb), 0.2);
+    background-color: rgba(var(--accent-rgb), 0.2);
 }
 
 .contribution-day[data-level='2'] {
-  background-color: rgba(var(--accent-rgb), 0.4);
+    background-color: rgba(var(--accent-rgb), 0.4);
 }
 
 .contribution-day[data-level='3'] {
-  background-color: rgba(var(--accent-rgb), 0.7);
+    background-color: rgba(var(--accent-rgb), 0.7);
 }
 
 .contribution-day[data-level='4'] {
-  background-color: var(--accent);
-  box-shadow: 0 0 5px var(--accent);
+    background-color: var(--accent);
+    box-shadow: 0 0 5px var(--accent);
 }
 
 /* Legend */
 .heatmap-legend {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.5rem;
-  margin-top: 1.5rem;
-  color: var(--color-text-subtle);
-  font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    color: var(--color-text-subtle);
+    font-size: 0.8rem;
 }
 
 .legend-scale {
-  display: flex;
-  gap: 4px;
+    display: flex;
+    gap: 4px;
 }
 
 @media (max-width: 768px) {
-  #statistics {
-    padding: 2rem 1rem;
-  }
+    #statistics {
+        padding: 2rem 1rem;
+    }
 
-  .stats-card {
-    padding: 1.5rem;
-  }
+    .stats-card {
+        padding: 1.5rem;
+    }
 
-  .skeleton-stats-card {
-    width: 100%;
-  }
+    .skeleton-stats-card {
+        width: 100%;
+    }
 
-  .stats-header h3 {
-    font-size: 1.5rem;
-  }
+    .stats-header h3 {
+        font-size: 1.5rem;
+    }
 
-  .heatmap-container {
-    display: none;
-  }
+    .heatmap-container {
+        display: none;
+    }
 
-  .heatmap-legend {
-    display: none;
-  }
+    .heatmap-legend {
+        display: none;
+    }
 
-  .period {
-    display: none;
-  }
+    .period {
+        display: none;
+    }
 }
