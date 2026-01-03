@@ -31,6 +31,24 @@ pipeline {
       }
     }
 
+    stage('Setup pnpm') {
+      steps {
+        sh '''
+          set -euxo pipefail
+          node -v
+          corepack enable
+          corepack prepare pnpm@10.27.0 --activate
+          pnpm -v
+        '''
+      }
+    }
+
+    stage('Install dependencies') {
+      steps {
+        sh 'pnpm install --frozen-lockfile --shamefully-hoist'
+      }
+    }
+
     stage('SonarQube Analysis') {
       steps {
         withSonarQubeEnv('sonarqube') {
