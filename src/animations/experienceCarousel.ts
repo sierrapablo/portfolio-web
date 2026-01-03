@@ -1,5 +1,4 @@
 const AUTOPLAY_DURATION = 10000;
-
 const SCROLL_BREAKPOINT = 800;
 
 const getScrollAmount = (carousel: HTMLElement) => {
