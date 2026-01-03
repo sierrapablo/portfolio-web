@@ -98,7 +98,7 @@ export function initExperienceCarousel() {
 
   const resumeAutoplay = () => {
     isPaused = false;
-    const currentProgress = parseFloat(progressBar.style.width) || 0;
+    const currentProgress = Number.parseFloat(progressBar.style.width) || 0;
     startTime = Date.now() - (currentProgress / 100) * AUTOPLAY_DURATION;
   };
 
