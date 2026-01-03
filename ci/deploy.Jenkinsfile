@@ -37,11 +37,15 @@ pipeline {
       }
     }
 
-    stage('Check if pnpm is installed') {
+    stage('Setup pnpm') {
       steps {
-        script {
-          sh "pnpm --version"
-        }
+        sh '''
+          set -euxo pipefail
+          node -v
+          corepack enable
+          corepack prepare pnpm@10.27.0 --activate
+          pnpm -v
+        '''
       }
     }
 
