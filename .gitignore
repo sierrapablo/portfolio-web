@@ -33,3 +33,7 @@ valkey.conf
 # Jenkins
 changes.txt
 release.json
+
+# coverage
+coverage
+coverage/lcov.info
