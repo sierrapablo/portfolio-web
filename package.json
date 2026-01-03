@@ -1,34 +1,34 @@
 {
-    "name": "portfolio-web",
-    "type": "module",
-    "version": "6.0.9",
-    "author": "Pablo Sierra",
-    "homepage": "https://www.sierrapablo.dev",
-    "bugs": {
-        "url": "https://github.com/sierrapablo/portfolio-web/issues"
-    },
-    "engines": {
-        "node": "24.11.1",
-        "pnpm": ">=10.23.0"
-    },
-    "packageManager": "pnpm@10.23.0",
-    "scripts": {
-        "dev": "astro dev",
-        "build": "astro build",
-        "preview": "astro preview",
-        "astro": "astro",
-        "test": "vitest",
-        "test:run": "vitest run",
-        "test:coverage": "vitest run --coverage"
-    },
-    "dependencies": {
-        "astro": "^5.16.0"
-    },
-    "devDependencies": {
-        "@vitest/coverage-v8": "^4.0.16",
-        "jsdom": "^27.4.0",
-        "prettier": "^3.7.4",
-        "prettier-plugin-astro": "^0.14.1",
-        "vitest": "^4.0.16"
-    }
+  "name": "portfolio-web",
+  "type": "module",
+  "version": "6.0.10",
+  "author": "Pablo Sierra",
+  "homepage": "https://www.sierrapablo.dev",
+  "bugs": {
+    "url": "https://github.com/sierrapablo/portfolio-web/issues"
+  },
+  "engines": {
+    "node": "24.11.1",
+    "pnpm": ">=10.23.0"
+  },
+  "packageManager": "pnpm@10.23.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "astro": "^5.16.0"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.0.16",
+    "jsdom": "^27.4.0",
+    "prettier": "^3.7.4",
+    "prettier-plugin-astro": "^0.14.1",
+    "vitest": "^4.0.16"
+  }
 }
