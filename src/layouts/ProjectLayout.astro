@@ -1,11 +1,11 @@
 ---
-import '../styles/projectLayout.css';
-import '../styles/projects.css';
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import type { Props } from '../types/projectLayout';
-import ScrollToTop from '../components/ScrollToTop.astro';
+import '@/styles/projectLayout.css';
+import '@/styles/projects.css';
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import type { Props } from '@/types/projectLayout';
+import ScrollToTop from '@/components/ScrollToTop.astro';
 
 const { frontmatter } = Astro.props;
 const { title, description, techStack, url, link } = frontmatter;
