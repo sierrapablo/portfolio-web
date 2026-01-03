@@ -71,7 +71,7 @@ pipeline {
             -Dsonar.sources=src \
             -Dsonar.tests=src/tests \
             -Dsonar.test.inclusions=src/tests/**/*.{test,spec}.ts \
-            -Dsonar.exclusions=node_modules/**,dist/**,build/**,.astro/**,coverage/** \
+            -Dsonar.exclusions=node_modules/**,dist/**,build/**,.astro/**,coverage/**,src/tests/** \
             -Dsonar.coverage.exclusions=src/types/**,**/*.d.ts \
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
           """
