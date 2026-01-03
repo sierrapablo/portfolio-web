@@ -57,7 +57,7 @@ pipeline {
               set -e
 
               echo "Installing dev dependencies only..."
-              pnpm install --omit=prod
+              pnpm install --frozen-lockfile
 
               PRETTIER_VERSION=\$(jq -r '.devDependencies.prettier' package.json | sed 's/^[^0-9]*//')
 
