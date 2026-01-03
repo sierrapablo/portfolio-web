@@ -1,5 +1,5 @@
 ---
-layout: ../../layouts/ProjectLayout.astro
+layout: '@/layouts/ProjectLayout.astro'
 title: 'DevOps-Driven Reverse Proxy & Monitoring'
 description: 'A comprehensive DevOps approach to deploying a secure Nginx reverse proxy with automated monitoring using Terraform, Docker, Prometheus, and Grafana.'
 techStack: ['Terraform', 'Docker', 'Nginx', 'Prometheus', 'Grafana']
