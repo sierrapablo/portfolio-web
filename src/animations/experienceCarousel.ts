@@ -1,7 +1,7 @@
 const AUTOPLAY_DURATION = 10000;
+const SCROLL_BREAKPOINT = 800;
 
-const getScrollAmount = (carousel: HTMLElement) =>
-  carousel.clientWidth > 800 ? 800 : carousel.clientWidth;
+const getScrollAmount = (carousel: HTMLElement) => Math.min(carousel.clientWidth, SCROLL_BREAKPOINT);
 
 const handleScrollNext = (carousel: HTMLElement, resetAutoplay: () => void) => {
   const { scrollLeft, scrollWidth, clientWidth } = carousel;
@@ -68,7 +68,10 @@ export function initExperienceCarousel() {
   const progressBar = document.getElementById('progress-bar');
   const indicators = document.querySelectorAll('.indicator');
 
-  if (!carousel || !prevBtn || !nextBtn || !progressBar) return;
+  if (!carousel || !prevBtn || !nextBtn || !progressBar) {
+    console.error('Experience carousel elements not found');
+    return;
+  }
 
   let startTime = Date.now();
   let isPaused = false;
@@ -98,16 +101,16 @@ export function initExperienceCarousel() {
 
   const resumeAutoplay = () => {
     isPaused = false;
-    const currentProgress = parseFloat(progressBar.style.width) || 0;
+    const currentProgress = Number.parseFloat(progressBar.style.width) || 0;
     startTime = Date.now() - (currentProgress / 100) * AUTOPLAY_DURATION;
   };
 
   // Event Listeners
-  prevBtn.addEventListener('click', (e) => {
+  prevBtn.addEventListener('click', e => {
     e.preventDefault();
     handleScrollPrev(carousel, resetAutoplay);
   });
-  nextBtn.addEventListener('click', (e) => {
+  nextBtn.addEventListener('click', e => {
     e.preventDefault();
     handleScrollNext(carousel, resetAutoplay);
   });
