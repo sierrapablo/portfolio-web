@@ -1,8 +1,10 @@
 const AUTOPLAY_DURATION = 10000;
 
+const SCROLL_BREAKPOINT = 800;
+
 const getScrollAmount = (carousel: HTMLElement) => {
-  if (carousel.clientWidth > 800) {
-    return 800;
+  if (carousel.clientWidth > SCROLL_BREAKPOINT) {
+    return SCROLL_BREAKPOINT;
   } else {
     return carousel.clientWidth;
   }
