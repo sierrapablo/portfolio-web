@@ -1,5 +1,5 @@
 ---
-layout: ../../layouts/ProjectLayout.astro
+layout: '@/layouts/ProjectLayout.astro'
 title: 'DevOps-Driven Portfolio Web Deployment'
 description: 'A comprehensive guide to the automated build and deployment pipeline of a modern Astro web application using Docker and Jenkins.'
 techStack: ['Docker', 'Jenkins', 'Nginx', 'Astro']
