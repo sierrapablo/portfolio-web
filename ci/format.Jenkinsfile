@@ -59,14 +59,8 @@ pipeline {
               echo "Installing dev dependencies only..."
               pnpm install --frozen-lockfile
 
-              PRETTIER_VERSION=\$(jq -r '.devDependencies.prettier' package.json | sed 's/^[^0-9]*//')
-
-              if [ -z "\$PRETTIER_VERSION" ]; then
-                echo "WARNING: Prettier not found in devDependencies, not formatting code."
-              else
-                echo "Using Prettier \$PRETTIER_VERSION"
-                pnpm exec prettier@\$PRETTIER_VERSION --config .prettierrc --write "src/**/*.{ts,js,html,css,astro,md,json}"
-              fi
+              echo "Running prettier..."
+              pnpm exec prettier --config .prettierrc --write "src/**/*.{ts,js,html,css,astro,md,json}"
 
               if ! git diff --quiet; then
                 git add .
