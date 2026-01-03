@@ -49,20 +49,36 @@ pipeline {
       }
     }
 
+    stage('Run tests') {
+      steps {
+        sh """
+          set -euxo pipefail
+          pnpm test:coverage
+          ls -la coverage
+          test -f coverage/lcov.info
+          head -n 20 coverage/lcov.info
+        """
+      }
+    }
+
     stage('SonarQube Analysis') {
       steps {
         withSonarQubeEnv('sonarqube') {
           sh """
             ${tool 'sonar-scanner'}/bin/sonar-scanner \
-            -X \
             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
             -Dsonar.projectVersion=${env.VERSION} \
-            -Dsonar.sources=. \
-            -Dsonar.exclusions=node_modules/**,dist/**,build/**
+            -Dsonar.sources=src \
+            -Dsonar.tests=src/tests \
+            -Dsonar.test.inclusions=src/tests/**/*.{test,spec}.ts \
+            -Dsonar.exclusions=node_modules/**,dist/**,build/**,.astro/**,coverage/** \
+            -Dsonar.coverage.exclusions=src/types/**,**/*.d.ts \
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
           """
         }
       }
     }
+
   }
 
   post {
