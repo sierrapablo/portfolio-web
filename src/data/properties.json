@@ -1,4 +1,5 @@
 {
-  "GH_STATISTICS_API_ENDPOINT": "https://github-contributions-api.jogruber.de/v4/sierrapablo?y=",
-  "GH_YEAR": ""
+    "GH_STATISTICS_API_ENDPOINT": "https://github-contributions-api.jogruber.de/v4/",
+    "GH_USERNAME": "sierrapablo",
+    "GH_YEAR": ""
 }
