@@ -1,7 +1,8 @@
 const AUTOPLAY_DURATION = 10000;
 const SCROLL_BREAKPOINT = 800;
 
-const getScrollAmount = (carousel: HTMLElement) => Math.min(carousel.clientWidth, SCROLL_BREAKPOINT);
+const getScrollAmount = (carousel: HTMLElement) =>
+  Math.min(carousel.clientWidth, SCROLL_BREAKPOINT);
 
 const handleScrollNext = (carousel: HTMLElement, resetAutoplay: () => void) => {
   const { scrollLeft, scrollWidth, clientWidth } = carousel;
@@ -106,11 +107,11 @@ export function initExperienceCarousel() {
   };
 
   // Event Listeners
-  prevBtn.addEventListener('click', e => {
+  prevBtn.addEventListener('click', (e) => {
     e.preventDefault();
     handleScrollPrev(carousel, resetAutoplay);
   });
-  nextBtn.addEventListener('click', e => {
+  nextBtn.addEventListener('click', (e) => {
     e.preventDefault();
     handleScrollNext(carousel, resetAutoplay);
   });
