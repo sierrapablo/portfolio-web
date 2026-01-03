@@ -37,12 +37,6 @@ pipeline {
       }
     }
 
-    stage('Install dependencies') {
-      steps {
-        sh 'apt update && apt install -y jq nodejs npm'
-      }
-    }
-
     stage('Format code') {
       steps {
         sshagent(credentials: ['github']) {

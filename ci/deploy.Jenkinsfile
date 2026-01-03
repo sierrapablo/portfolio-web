@@ -18,13 +18,6 @@ pipeline {
   }
 
   stages {
-    stage('Install dependencies') {
-      steps {
-        sh 'apt update && apt install -y jq nodejs npm'
-        sh 'npm ci'
-      }
-    }
-
     stage('Checkout') {
       steps {
         sshagent(credentials: ['github']) {
