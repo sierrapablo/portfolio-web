@@ -8,7 +8,6 @@ import rawProjects from '../data/projects.json';
 
 const mapTechKey = (key: string): string => {
   if (!(key in TECH)) {
-    console.warn(`[Data] Tech key "${key}" not found in tech.json.`);
     return key;
   }
   return TECH[key as keyof typeof TECH];
