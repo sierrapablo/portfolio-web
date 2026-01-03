@@ -69,7 +69,9 @@ export function initExperienceCarousel() {
   const progressBar = document.getElementById('progress-bar');
   const indicators = document.querySelectorAll('.indicator');
 
-  if (!carousel || !prevBtn || !nextBtn || !progressBar) { return; }
+  if (!carousel || !prevBtn || !nextBtn || !progressBar) {
+    return;
+  }
 
   let startTime = Date.now();
   let isPaused = false;
