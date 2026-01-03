@@ -37,6 +37,14 @@ pipeline {
       }
     }
 
+    stage('Check if pnpm is installed') {
+      steps {
+        script {
+          sh "pnpm --version"
+        }
+      }
+    }
+
     stage('Format code') {
       steps {
         sshagent(credentials: ['github']) {
