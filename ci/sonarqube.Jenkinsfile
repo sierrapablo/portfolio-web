@@ -52,6 +52,7 @@ pipeline {
     stage('Run tests') {
       steps {
         sh """
+          set -euxo pipefail
           pnpm test:coverage
           ls -la coverage
           test -f coverage/lcov.info
