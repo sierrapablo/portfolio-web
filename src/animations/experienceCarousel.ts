@@ -112,11 +112,11 @@ export function initExperienceCarousel() {
   };
 
   // Event Listeners
-  prevBtn.addEventListener('click', (e) => {
+  prevBtn.addEventListener('click', e => {
     e.preventDefault();
     handleScrollPrev(carousel, resetAutoplay);
   });
-  nextBtn.addEventListener('click', (e) => {
+  nextBtn.addEventListener('click', e => {
     e.preventDefault();
     handleScrollNext(carousel, resetAutoplay);
   });
