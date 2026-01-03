@@ -6,6 +6,7 @@ import Hero from '@/components/Hero.astro';
 import Experience from '@/components/Experience.astro';
 import Projects from '@/components/Projects.astro';
 import Statistics from '@/components/Statistics.astro';
+import SkeletonStatistics from '@/components/SkeletonStatistics.astro';
 import ScrollToTop from '@/components/ScrollToTop.astro';
 import Footer from '@/components/Footer.astro';
 
@@ -16,7 +17,9 @@ export const prerender = true;
   <Header />
   <Hero />
   <Experience />
-  <Statistics />
+  <Statistics server:defer>
+    <SkeletonStatistics slot="fallback" />
+  </Statistics>
   <Projects />
   <ScrollToTop />
 </Layout>
