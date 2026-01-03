@@ -45,7 +45,7 @@ pipeline {
               set -e
 
               echo "Installing dev dependencies only..."
-              npm install --omit=prod
+              pnpm install --omit=prod
 
               PRETTIER_VERSION=\$(jq -r '.devDependencies.prettier' package.json | sed 's/^[^0-9]*//')
 
@@ -53,7 +53,7 @@ pipeline {
                 echo "WARNING: Prettier not found in devDependencies, not formatting code."
               else
                 echo "Using Prettier \$PRETTIER_VERSION"
-                npx prettier@\$PRETTIER_VERSION --config .prettierrc --write "src/**/*.{ts,js,html,css,astro,md,json}"
+                pnpm exec prettier@\$PRETTIER_VERSION --config .prettierrc --write "src/**/*.{ts,js,html,css,astro,md,json}"
               fi
 
               if ! git diff --quiet; then
