@@ -1,3 +1,5 @@
+const SCROLL_THRESHOLD = 300;
+
 export const initScrollToTop = (buttonId: string) => {
   const scrollToTopBtn = document.getElementById(buttonId);
 
@@ -5,10 +7,10 @@ export const initScrollToTop = (buttonId: string) => {
     let isScrolling: number;
 
     window.addEventListener('scroll', () => {
-      window.cancelAnimationFrame(isScrolling);
+      globalThis.cancelAnimationFrame(isScrolling);
 
-      isScrolling = window.requestAnimationFrame(() => {
-        if (window.scrollY > 300) {
+      isScrolling = globalThis.requestAnimationFrame(() => {
+        if (window.scrollY > SCROLL_THRESHOLD) {
           scrollToTopBtn.classList.add('show');
         } else {
           scrollToTopBtn.classList.remove('show');
