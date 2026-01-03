@@ -7,7 +7,7 @@ export const initScrollToTop = (buttonId: string) => {
     let isScrolling: number;
 
     window.addEventListener('scroll', () => {
-      window.cancelAnimationFrame(isScrolling);
+      globalThis.cancelAnimationFrame(isScrolling);
 
       isScrolling = globalThis.requestAnimationFrame(() => {
         if (window.scrollY > SCROLL_THRESHOLD) {
