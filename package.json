@@ -1,7 +1,7 @@
 {
   "name": "portfolio-web",
   "type": "module",
-  "version": "6.1.0",
+  "version": "7.0.0",
   "author": "Pablo Sierra",
   "homepage": "https://www.sierrapablo.dev",
   "bugs": {
@@ -22,6 +22,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@astrojs/node": "^9.5.1",
     "astro": "^5.16.0"
   },
   "devDependencies": {
