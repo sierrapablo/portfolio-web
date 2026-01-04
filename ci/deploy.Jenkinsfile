@@ -66,11 +66,10 @@ pipeline {
         input message: "Deploy version ${params.TAG}?", ok: 'Deploy'
         script {
           sh '''
-            docker stop portfolio-web || true
-            rm -rf /srv/portfolio-web/*
-            cp -r dist/. /srv/portfolio-web/
-            chown -R 1000:1000 /srv/portfolio-web/
-            docker start portfolio-web
+            docker exec --user root portfolio-web sh -c "rm -rf /app/*"
+            docker cp dist/. portfolio-web:/app/
+            docker exec --user root portfolio-web sh -c "chown -R node:node /app"
+            docker restart portfolio-web
           '''
         }
       }
