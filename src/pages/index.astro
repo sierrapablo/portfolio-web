@@ -8,6 +8,7 @@ import Statistics from '@/components/Statistics.astro';
 import SkeletonStatistics from '@/components/SkeletonStatistics.astro';
 import ScrollToTop from '@/components/ScrollToTop.astro';
 import Footer from '@/components/Footer.astro';
+import CTA from '@/components/CTA.astro';
 
 export const prerender = true;
 ---
@@ -19,6 +20,7 @@ export const prerender = true;
   <Statistics server:defer>
     <SkeletonStatistics slot="fallback" />
   </Statistics>
+  <CTA />
   <ScrollToTop />
 </Layout>
 <Footer />
