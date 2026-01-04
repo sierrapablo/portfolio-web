@@ -4,7 +4,7 @@ import Layout from '@/layouts/Layout.astro';
 import Header from '@/components/Header.astro';
 import Hero from '@/components/Hero.astro';
 import Experience from '@/components/Experience.astro';
-import Projects from '@/components/Projects.astro';
+// import Projects from '@/components/Projects.astro';
 import Statistics from '@/components/Statistics.astro';
 import SkeletonStatistics from '@/components/SkeletonStatistics.astro';
 import ScrollToTop from '@/components/ScrollToTop.astro';
@@ -20,7 +20,7 @@ export const prerender = true;
   <Statistics server:defer>
     <SkeletonStatistics slot="fallback" />
   </Statistics>
-  <Projects />
+  {/* <Projects /> */}
   <ScrollToTop />
 </Layout>
 <Footer />
