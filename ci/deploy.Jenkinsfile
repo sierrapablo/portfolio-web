@@ -66,16 +66,10 @@ pipeline {
         input message: "Deploy version ${params.TAG}?", ok: 'Deploy'
         script {
           sh '''
-            # Parar completamente
             docker stop portfolio-web || true
-            
-            # Copiar directamente al volumen en el host
-            # (usa la variable host_path de Terraform: /srv/portfolio-web)
-            sudo rm -rf /srv/portfolio-web/*
-            sudo cp -r dist/. /srv/portfolio-web/
-            sudo chown -R 1000:1000 /srv/portfolio-web/
-            
-            # Arrancar
+            rm -rf /srv/portfolio-web/*
+            cp -r dist/. /srv/portfolio-web/
+            chown -R 1000:1000 /srv/portfolio-web/
             docker start portfolio-web
           '''
         }
