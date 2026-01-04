@@ -66,10 +66,17 @@ pipeline {
         input message: "Deploy version ${params.TAG}?", ok: 'Deploy'
         script {
           sh '''
-            docker exec --user root portfolio-web sh -c "rm -rf /app/*"
-            docker cp dist/. portfolio-web:/app/
-            docker exec --user root portfolio-web sh -c "chown -R node:node /app"
-            docker restart portfolio-web
+            # Parar completamente
+            docker stop portfolio-web || true
+            
+            # Copiar directamente al volumen en el host
+            # (usa la variable host_path de Terraform: /srv/portfolio-web)
+            sudo rm -rf /srv/portfolio-web/*
+            sudo cp -r dist/. /srv/portfolio-web/
+            sudo chown -R 1000:1000 /srv/portfolio-web/
+            
+            # Arrancar
+            docker start portfolio-web
           '''
         }
       }
