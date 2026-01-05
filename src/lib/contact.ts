@@ -6,14 +6,13 @@ export const sendContactForm = async (data: ContactFormData): Promise<ContactFor
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify(data),
     });
 
     const result = await response.json();
     return result;
-
   } catch (error) {
     console.error('Error sending contact form:', error);
     return { success: false, message: 'Network error. Please check your connection.' };

@@ -1,59 +1,59 @@
 .legal-content {
-    padding: 8rem 2rem 6rem;
-    min-height: calc(100vh - 80px);
-    max-width: 800px;
-    margin: 0 auto;
-    text-align: justify;
+  padding: 8rem 2rem 6rem;
+  min-height: calc(100vh - 80px);
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: justify;
 }
 
 .legal-content h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 2rem;
-    color: var(--accent);
-    text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--accent);
+  text-align: center;
 }
 
 .legal-content h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    color: var(--color-text-main);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: var(--color-text-main);
 }
 
 .legal-content p {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: var(--color-text-muted);
-    margin-bottom: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
 }
 
 .legal-content .email-instruction {
-    background: var(--bg-card);
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--border-subtle);
-    margin: 1.5rem 0;
+  background: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-subtle);
+  margin: 1.5rem 0;
 }
 
 .legal-content code {
-    background: var(--bg-code-block);
-    padding: 0.2rem 0.4rem;
-    border-radius: 0.3rem;
-    font-family: inherit;
-    /* Or monospace if preferred */
-    color: var(--accent-light);
-    font-size: 0.9em;
+  background: var(--bg-code-block);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.3rem;
+  font-family: inherit;
+  /* Or monospace if preferred */
+  color: var(--accent-light);
+  font-size: 0.9em;
 }
 
 .legal-content a {
-    color: var(--accent);
-    text-decoration: none;
-    transition: opacity 0.2s;
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity 0.2s;
 }
 
 .legal-content a:hover {
-    text-decoration: underline;
-    opacity: 0.8;
+  text-decoration: underline;
+  opacity: 0.8;
 }

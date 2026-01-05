@@ -1,55 +1,55 @@
 #cta {
-    background: var(--bg-card);
-    padding: 6rem 2rem;
-    text-align: center;
-    margin-top: 4rem;
-    border-top: 1px solid var(--border-subtle);
-    border-bottom: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  padding: 6rem 2rem;
+  text-align: center;
+  margin-top: 4rem;
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .cta-content {
-    max-width: 800px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
 }
 
 #cta h2 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: var(--color-text-main);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-main);
 }
 
 #cta p {
-    font-size: 1.1rem;
-    color: var(--color-text-muted);
-    line-height: 1.6;
-    max-width: 600px;
-    text-align: center;
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  max-width: 600px;
+  text-align: center;
 }
 
 .cta-btn {
-    background: var(--accent);
-    color: var(--color-text-dark);
-    padding: 1rem 2.5rem;
-    border-radius: 2rem;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.1rem;
-    transition:
-        background 0.3s ease,
-        transform 0.2s ease,
-        box-shadow 0.3s ease;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  background: var(--accent);
+  color: var(--color-text-dark);
+  padding: 1rem 2.5rem;
+  border-radius: 2rem;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition:
+    background 0.3s ease,
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
 
 .cta-btn:hover {
-    background: var(--accent-dark);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  background: var(--accent-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 /* Add a subtle glow effect or pattern if desired, but keep it clean for now */
