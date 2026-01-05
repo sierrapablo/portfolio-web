@@ -62,7 +62,7 @@ pipeline {
       steps {
         sh """
           touch .env
-          echo "CONTACT_FORM_ENDPOINT=${CONTACT_FORM_ENDPOINT}" >> .env
+          echo "CONTACT_FORM_ENDPOINT=${CONTACT_FORM_ENDPOINT}" > .env
         """
       }
     }
