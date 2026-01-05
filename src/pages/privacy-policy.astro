@@ -1,0 +1,21 @@
+---
+import '@/styles/index.css';
+import '@/styles/legal.css';
+import Layout from '@/layouts/Layout.astro';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+
+import { Content as PrivacyPolicyContent } from '@/data/privacy-policy.md';
+
+export const prerender = true;
+---
+
+<Layout title="Pablo Sierra - Privacy Policy">
+  <Header />
+  <main class="legal-content fade-in">
+    <h1>Privacy Policy</h1>
+    <PrivacyPolicyContent />
+    <a href="/" class="back-link">← Back to Home</a>
+  </main>
+  <Footer />
+</Layout>

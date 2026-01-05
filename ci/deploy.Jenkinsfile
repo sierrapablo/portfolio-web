@@ -55,6 +55,18 @@ pipeline {
       }
     }
 
+    stage('Generate environment variables') {
+      environment {
+        CONTACT_FORM_ENDPOINT = credentials('portfolio-web-contact-endpoint')
+      }
+      steps {
+        sh """
+          touch .env
+          echo "CONTACT_FORM_ENDPOINT=${CONTACT_FORM_ENDPOINT}" > .env
+        """
+      }
+    }
+
     stage('Build') {
       steps {
         sh 'pnpm run build'
