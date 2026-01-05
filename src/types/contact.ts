@@ -11,3 +11,9 @@ export interface ContactFormResponse {
   success: boolean;
   message: string;
 }
+
+export interface CountryCode {
+  name: string;
+  code: string;
+  dial_code: string;
+}

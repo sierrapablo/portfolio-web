@@ -1,6 +1,7 @@
 ---
 import '@/styles/contact.css';
 import countryCodes from '@/data/countryCodes.json';
+import type { CountryCode } from '@/types/contact';
 ---
 
 <section id="contact" class="fade-in">
@@ -26,7 +27,7 @@ import countryCodes from '@/data/countryCodes.json';
         <div class="phone-input-group">
           <select id="country-code" name="country-code">
             {
-              countryCodes.map((country: { name: string; code: string; dial_code: string }) => (
+              countryCodes.map((country: CountryCode) => (
                 <option value={country.dial_code} selected={country.code === 'ES'}>
                   {country.code} ({country.dial_code})
                 </option>
