@@ -39,3 +39,11 @@ main {
 .delay-2 {
   animation-delay: 1s;
 }
+
+.delay-3 {
+  animation-delay: 1.5s;
+}
+
+.delay-4 {
+  animation-delay: 2s;
+}
