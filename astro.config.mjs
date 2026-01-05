@@ -1,6 +1,7 @@
 // @ts-check
 import {
-    defineConfig
+    defineConfig,
+    envField
 } from "astro/config";
 import node from "@astrojs/node";
 
@@ -11,4 +12,12 @@ export default defineConfig({
         mode: "standalone",
     }),
     site: "https://www.sierrapablo.dev",
+    env: {
+        schema: {
+            CONTACT_FORM_ENDPOINT: envField.string({
+                context: 'server',
+                access: 'secret'
+            }),
+        },
+    },
 });
