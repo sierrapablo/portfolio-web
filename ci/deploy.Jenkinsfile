@@ -78,9 +78,9 @@ pipeline {
         input message: "Deploy version ${params.TAG}?", ok: 'Deploy'
         script {
           sh '''
-            docker exec --user root portfolio-web sh -c "rm -rf /app/*"
-            docker cp dist/. portfolio-web:/app/
-            docker exec --user root portfolio-web sh -c "chown -R node:node /app"
+            docker exec --user root portfolio-web sh -c "rm -rf /app/server/*"
+            docker cp dist/. portfolio-web:/app/server/
+            docker exec --user root portfolio-web sh -c "chown -R node:node /app/server"
             docker restart portfolio-web
           '''
         }
